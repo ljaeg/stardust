@@ -218,7 +218,7 @@ matplotlib.use('GTK')
 fig, axs = plt.subplots(1, 2)
 axs[0].hist(np.array(yes_tags), bins = 10)
 axs[1].hist(np.array(no_tags), bins = 10)
-plt.show()
+plt.savefig('answer_space.png')
 
 # Plot the learning curve.
 # logresult = pd.read_csv('Foils_CNN_Log.txt', delimiter=',', index_col='epoch')
