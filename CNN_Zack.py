@@ -171,7 +171,7 @@ TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Zack_CNN/my_data/zack_data
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=10,
+                   epochs=200,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
