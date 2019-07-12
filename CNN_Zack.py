@@ -116,9 +116,9 @@ TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
 
 ####Here i am standardizing the data I don't know if it has already been standardized
-TrainData = standardize_exp(TrainData)
-TestData = standardize_exp(TestData)
-ValData = standardize_exp(ValData)
+# TrainData = standardize_exp(TrainData)
+# TestData = standardize_exp(TestData)
+# ValData = standardize_exp(ValData)
 
 
 # And make answer vectors
