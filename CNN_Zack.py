@@ -165,8 +165,8 @@ Checkpoint2 = ModelCheckpoint('Foils_CNN_loss.h5', verbose=1, save_best_only=Tru
 Checkpoint3 = ModelCheckpoint('Foils_CNN_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
-TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-#TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Zack_CNN/my_data/zack_data/July9/batchsize={}/convscale={}/DenseScale={}/GN_at_start={}/GN2={}/GN3={}/Lrelu_test_shouldbeGS'.format(batch_size, ConvScale, DenseScale, GN1, GN2, GN3))
+#TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Zack_CNN/my_data/zack_data/July9/batchsize={}/convscale={}/DenseScale={}/GN_at_start={}/GN2={}/GN3={}/Lrelu_test_shouldbeGS'.format(batch_size, ConvScale, DenseScale, GN1, GN2, GN3))
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
