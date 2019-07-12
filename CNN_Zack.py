@@ -113,15 +113,16 @@ TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
+####Here i am standardizing the data I don't know if it has already been standardize
+TrainNo = standardize_exp(TrainNo)
+TrainYes = standardize_exp(TrainYes)
+ValNo = standardize_exp(ValNo)
+ValYes = standardize_exp(ValYes)
+
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
 TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
-
-####Here i am standardizing the data I don't know if it has already been standardized
-TrainData = standardize_exp(TrainData)
-TestData = standardize_exp(TestData)
-ValData = standardize_exp(ValData)
 
 
 # And make answer vectors
