@@ -44,6 +44,7 @@ DenseScale=1
 GN1 = .03
 GN2 = .05
 GN3 = 0
+alpha = .01
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -120,28 +121,28 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
 model.add(Conv2D(int(32*ConvScale), (3, 3), padding='valid', input_shape=input_shape))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
 
 model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
 
 model.add(Flatten())
 model.add(Dense(int(512*DenseScale)))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(0.5))
 
 model.add(Dense(int(128*DenseScale)))
-model.add(LeakyReLU(alpha = 0))
+model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(0.5))
 
 model.add(Dense(1, activation='sigmoid'))
@@ -170,7 +171,7 @@ TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Zack_CNN/my_data/zack_data
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=175,
+                   epochs=10,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -213,6 +214,7 @@ yes_tags = predicted[3300:]
 # print('percent of the wrong that are false negatives: ', (len(yes) / (len(no) + len(yes))))
 
 import matplotlib.pyplot as plt
+matplotlib.pyplot.use('GTK')
 fig, axs = plt.subplots(1, 2)
 axs[0].hist(np.array(yes_tags), bins = 10)
 axs[1].hist(np.array(no_tags), bins = 10)
