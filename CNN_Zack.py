@@ -179,7 +179,7 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 
-testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall')
+testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 middles = testing_data['middle_small']
 sides = testing_data['side_small']
 blanks = testing_data['blanks']
