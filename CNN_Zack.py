@@ -75,6 +75,20 @@ def f1_acc(y_true, y_pred):
 
     return f1_score
 
+def standardize_exp(dataset):
+  #per image mean subtraction, divided by std
+  print(np.mean(dataset))
+  print(np.std(dataset))
+  print('######')
+  for im in dataset:
+    m = np.mean(im)
+    s = np.std(im)
+    im = (im - m) / s
+  print(np.mean(dataset))
+  print(np.std(dataset))
+  print('######')
+
+
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
@@ -96,6 +110,12 @@ ValYes = DataFile['ValYes']
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
 TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
+
+####Here i am standardizing the data I don't know if it has already been standardized
+TrainData = standardize_exp(TrainData)
+TestData = standardize_exp(TestData)
+ValData = standardize_exp(ValData)
+
 
 # And make answer vectors
 TrainAnswers = np.ones(len(TrainNo) + len(TrainYes))
@@ -184,6 +204,11 @@ middles = testing_data['middle_small']
 sides = testing_data['side_small']
 blanks = testing_data['blanks']
 
+#HERE I am standardizing this data. I know for certain this isn't standardized
+middles = standardize_exp(middles)
+sides = standardize_exp(sides)
+blanks = standardize_exp(blanks)
+
 middles = np.reshape(middles, (990, 30, 30, 1))
 sides = np.reshape(sides, (990, 30, 30, 1))
 blanks = np.reshape(blanks, (990, 30, 30, 1))
@@ -207,15 +232,15 @@ print('blank accuracy: ', blank_acc)
 import matplotlib.pyplot as plt 
 plt.subplot(231)
 plt.hist(np.array(middle_pred))
-plt.title('middle predictions (acc: {})'.format(mid_acc))
+plt.title('middle (acc: {})'.format(round(mid_acc, 2)))
 
 plt.subplot(232)
 plt.hist(np.array(side_pred))
-plt.title('side predictions (acc: {})'.format(side_acc))
+plt.title('side (acc: {})'.format(round(side_acc, 2)))
 
 plt.subplot(233)
 plt.hist(np.array(blank_pred))
-plt.title('blank predictions (acc: {})'.format(blank_acc))
+plt.title('blank (acc: {})'.format(round(blank_acc, 2)))
 
 plt.subplot(234)
 plt.hist(np.array(middle_wrong))
