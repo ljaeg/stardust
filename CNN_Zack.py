@@ -79,14 +79,15 @@ def standardize_exp(dataset):
   #per image mean subtraction, divided by std
   print(np.mean(dataset))
   print(np.std(dataset))
-  print('######')
+  print('###### before ^')
   for im in dataset:
     m = np.mean(im)
     s = np.std(im)
-    im = (im - m) / s
+    if s:
+      im = (im - m) / s
   print(np.mean(dataset))
   print(np.std(dataset))
-  print('######')
+  print('###### after ^')
 
 
 # Load the image datasets from the HDF.
