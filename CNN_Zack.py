@@ -90,10 +90,10 @@ def standardize_exp(dataset):
     if s:
       new_im = (im - m) / s
     x.append(new_im)
-  return x
   print(np.mean(x))
   print(np.std(x))
   print('###### after ^')
+  return x
 
 
 # Load the image datasets from the HDF.
@@ -119,9 +119,9 @@ TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
 
 ####Here i am standardizing the data I don't know if it has already been standardized
-# TrainData = standardize_exp(TrainData)
-# TestData = standardize_exp(TestData)
-# ValData = standardize_exp(ValData)
+TrainData = standardize_exp(TrainData)
+TestData = standardize_exp(TestData)
+ValData = standardize_exp(ValData)
 
 
 # And make answer vectors
