@@ -216,9 +216,8 @@ yes_tags = predicted[3300:]
 import matplotlib.pyplot as plt
 fig, axs = plt.subplots(1, 2)
 axs[0].hist(np.array(yes_tags), bins = 10)
-axs[0].title('with craters answers')
 axs[1].hist(np.array(no_tags), bins = 10)
-axs[1].title('blank answers')
+plt.title('+ // -')
 plt.savefig('answer_space.png')
 
 # Plot the learning curve.
