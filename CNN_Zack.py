@@ -114,8 +114,8 @@ ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
-TrainNo = standardize_exp(TrainNo)
-TrainYes = standardize_exp(TrainYes)
+# TrainNo = standardize_exp(TrainNo)
+# TrainYes = standardize_exp(TrainYes)
 ValNo = standardize_exp(ValNo)
 ValYes = standardize_exp(ValYes)
 
@@ -194,8 +194,9 @@ Checkpoint2 = ModelCheckpoint('Foils_CNN_loss.h5', verbose=1, save_best_only=Tru
 Checkpoint3 = ModelCheckpoint('Foils_CNN_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
+
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Zack_CNN/my_data/zack_data/July9/batchsize={}/convscale={}/DenseScale={}/GN_at_start={}/GN2={}/GN3={}/Lrelu_test_shouldbeGS'.format(batch_size, ConvScale, DenseScale, GN1, GN2, GN3))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July11/is_it_normed/training=no/val=yes/test=yes')
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
@@ -237,7 +238,7 @@ print('middle accuracy: ', mid_acc)
 print('side accuracy: ', side_acc)
 print('blank accuracy: ', blank_acc)
 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 plt.subplot(231)
 plt.hist(np.array(middle_pred))
 plt.title('middle (acc: {})'.format(round(mid_acc, 2)))
