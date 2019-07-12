@@ -214,7 +214,7 @@ yes_tags = predicted[3300:]
 # print('percent of the wrong that are false negatives: ', (len(yes) / (len(no) + len(yes))))
 
 import matplotlib.pyplot as plt
-matplotlib.pyplot.use('GTK')
+matplotlib.use('GTK')
 fig, axs = plt.subplots(1, 2)
 axs[0].hist(np.array(yes_tags), bins = 10)
 axs[1].hist(np.array(no_tags), bins = 10)
