@@ -179,46 +179,99 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 
-predicted = model.predict(np.reshape(TestData, (3300 * 2, 30, 30, 1)))
-no_tags = []
-yes_tags = []
-no = []
-yes = []
-file = h5py.File('/home/admin/Desktop/wrong_classifications.hdf5', 'w')
-# for n, r in enumerate(predicted):
-#   if n < 3300:
-#     #im = TestNo[n]
-#     #no.append(im)
-#     no_tags.append(r)
-#   else:
-#     #im = TestYes[n - 3300]
-#     #yes.append(im)
-#     yes_tags.append(r)
+testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall')
+middles = testing_data['middle_small']
+sides = testing_data['side_small']
+blanks = testing_data['blanks']
 
-# no = np.array(no)
-# yes = np.array(yes)
+middles = np.reshape(middles, (990, 30, 30, 1))
+sides = np.reshape(sides, (990, 30, 30, 1))
+blanks = np.reshape(blanks, (990, 30, 30, 1))
 
-no_tags = predicted[:3300]
-yes_tags = predicted[3300:]
+middle_pred = model.predict(middles)
+side_pred = model.predict(sides)
+blank_pred = model.predict(blanks)
+
+middle_wrong = [i for i in middle_pred if i < .5]
+side_wrong = [i for i in side_pred if i < .5]
+blank_wrong = [i for i in blank_pred if i > .5]
+
+mid_acc = 1 - (len(middle_wrong) / len(middle_pred))
+side_acc = 1 - (len(side_wrong) / len(side_pred))
+blank_acc = 1 - (len(blank_wrong) / len(blank_pred))
+
+print('middle accuracy: ', mid_acc)
+print('side accuracy: ', side_acc)
+print('blank accuracy: ', blank_acc)
+
+import matplotlib.pyplot as plt 
+plt.subplot(231)
+plt.hist(np.array(middle_pred))
+plt.title('middle predictions (acc: {})'.format(mid_acc))
+
+plt.subplot(232)
+plt.hist(np.array(side_pred))
+plt.title('side predictions (acc: {})'.format(side_acc))
+
+plt.subplot(233)
+plt.hist(np.array(blank_pred))
+plt.title('blank predictions (acc: {})'.format(blank_acc))
+
+plt.subplot(234)
+plt.hist(np.array(middle_wrong))
+plt.title('middle wrong')
+
+plt.subplot(235)
+plt.hist(np.array(side_wrong))
+plt.title('side wrong')
+
+plt.subplot(236)
+plt.hist(np.array(blank_wrong))
+plt.title('blank wrong')
+
+plt.savefig('MiddleVsSide.png')
 
 
-# false_pos = file.create_dataset('false_pos', shape = no.shape, data = no)
-# false_neg = file.create_dataset('false_neg', shape = yes.shape, data = yes)
+# predicted = model.predict(np.reshape(TestData, (3300 * 2, 30, 30, 1)))
+# no_tags = []
+# yes_tags = []
+# no = []
+# yes = []
+# file = h5py.File('/home/admin/Desktop/wrong_classifications.hdf5', 'w')
+# # for n, r in enumerate(predicted):
+# #   if n < 3300:
+# #     #im = TestNo[n]
+# #     #no.append(im)
+# #     no_tags.append(r)
+# #   else:
+# #     #im = TestYes[n - 3300]
+# #     #yes.append(im)
+# #     yes_tags.append(r)
+
+# # no = np.array(no)
+# # yes = np.array(yes)
+
+# no_tags = predicted[:3300]
+# yes_tags = predicted[3300:]
 
 
-# print('####')
-# print('yes: ', len(yes))
-# print('no: ', len(no))
-# print('total wrong: ', len(yes) + len(no))
-# print('percent wrong: ', (len(no) + len(yes)) / (6600))
-# print('percent of the wrong that are false negatives: ', (len(yes) / (len(no) + len(yes))))
+# # false_pos = file.create_dataset('false_pos', shape = no.shape, data = no)
+# # false_neg = file.create_dataset('false_neg', shape = yes.shape, data = yes)
 
-import matplotlib.pyplot as plt
-fig, axs = plt.subplots(1, 2)
-axs[0].hist(np.array(yes_tags), bins = 10)
-axs[1].hist(np.array(no_tags), bins = 10)
-plt.title('+ // -')
-plt.savefig('answer_space.png')
+
+# # print('####')
+# # print('yes: ', len(yes))
+# # print('no: ', len(no))
+# # print('total wrong: ', len(yes) + len(no))
+# # print('percent wrong: ', (len(no) + len(yes)) / (6600))
+# # print('percent of the wrong that are false negatives: ', (len(yes) / (len(no) + len(yes))))
+
+# import matplotlib.pyplot as plt
+# fig, axs = plt.subplots(1, 2)
+# axs[0].hist(np.array(yes_tags), bins = 10)
+# axs[1].hist(np.array(no_tags), bins = 10)
+# plt.title('+ // -')
+# plt.savefig('answer_space.png')
 
 # Plot the learning curve.
 # logresult = pd.read_csv('Foils_CNN_Log.txt', delimiter=',', index_col='epoch')
