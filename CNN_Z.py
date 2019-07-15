@@ -114,10 +114,10 @@ ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
-TrainNo = standardize_exp(TrainNo)
-TrainYes = standardize_exp(TrainYes)
-ValNo = standardize_exp(ValNo)
-ValYes = standardize_exp(ValYes)
+# TrainNo = standardize_exp(TrainNo)
+# TrainYes = standardize_exp(TrainYes)
+# ValNo = standardize_exp(ValNo)
+# ValYes = standardize_exp(ValYes)
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
@@ -196,7 +196,7 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July11/is_it_normed/training=no/val=yes/test=yes')
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July11/is_it_normed/all_no')
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
@@ -214,9 +214,9 @@ sides = testing_data['side_small']
 blanks = testing_data['blanks']
 
 #HERE I am standardizing this data. I know for certain this isn't standardized
-middles = standardize_exp(middles)
-sides = standardize_exp(sides)
-blanks = standardize_exp(blanks)
+# middles = standardize_exp(middles)
+# sides = standardize_exp(sides)
+# blanks = standardize_exp(blanks)
 
 middles = np.reshape(middles, (990, 30, 30, 1))
 sides = np.reshape(sides, (990, 30, 30, 1))
@@ -237,6 +237,7 @@ blank_acc = 1 - (len(blank_wrong) / len(blank_pred))
 print('middle accuracy: ', mid_acc)
 print('side accuracy: ', side_acc)
 print('blank accuracy: ', blank_acc)
+print('overall accuracy: ', (mid_acc+side_acc+blank_acc) / 3)
 
 import matplotlib.pyplot as plt
 plt.subplot(231)
