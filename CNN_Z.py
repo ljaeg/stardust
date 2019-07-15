@@ -114,10 +114,10 @@ ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
-TrainNo = standardize_exp(TrainNo)
-TrainYes = standardize_exp(TrainYes)
-ValNo = standardize_exp(ValNo)
-ValYes = standardize_exp(ValYes)
+# TrainNo = standardize_exp(TrainNo)
+# TrainYes = standardize_exp(TrainYes)
+# ValNo = standardize_exp(ValNo)
+# ValYes = standardize_exp(ValYes)
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
@@ -200,7 +200,7 @@ TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July15/tryingonremote/{}'.
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=500,
+                   epochs=250,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -214,9 +214,9 @@ sides = testing_data['side_small']
 blanks = testing_data['blanks']
 
 #HERE I am standardizing this data. I know for certain this isn't standardized
-middles = standardize_exp(middles)
-sides = standardize_exp(sides)
-blanks = standardize_exp(blanks)
+# middles = standardize_exp(middles)
+# sides = standardize_exp(sides)
+# blanks = standardize_exp(blanks)
 
 middles = np.reshape(middles, (990, 30, 30, 1))
 sides = np.reshape(sides, (990, 30, 30, 1))
