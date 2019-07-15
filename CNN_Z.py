@@ -114,8 +114,8 @@ ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
-# TrainNo = standardize_exp(TrainNo)
-# TrainYes = standardize_exp(TrainYes)
+TrainNo = standardize_exp(TrainNo)
+TrainYes = standardize_exp(TrainYes)
 ValNo = standardize_exp(ValNo)
 ValYes = standardize_exp(ValYes)
 
