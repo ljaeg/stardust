@@ -44,7 +44,7 @@ DenseScale=1
 GN1 = .03
 GN2 = .05
 GN3 = 0
-alpha = .01
+alpha = 0
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -241,15 +241,15 @@ print('blank accuracy: ', blank_acc)
 import matplotlib.pyplot as plt
 plt.subplot(231)
 plt.hist(np.array(middle_pred))
-plt.title('middle (acc: {})'.format(round(mid_acc, 2)))
+plt.title('middle ({})'.format(round(mid_acc, 2)))
 
 plt.subplot(232)
 plt.hist(np.array(side_pred))
-plt.title('side (acc: {})'.format(round(side_acc, 2)))
+plt.title('side ({})'.format(round(side_acc, 2)))
 
 plt.subplot(233)
 plt.hist(np.array(blank_pred))
-plt.title('blank (acc: {})'.format(round(blank_acc, 2)))
+plt.title('blank ({})'.format(round(blank_acc, 2)))
 
 plt.subplot(234)
 plt.hist(np.array(middle_wrong))
