@@ -41,10 +41,10 @@ class_weight={0: 1, 1: 1}
 epochs = 250
 ConvScale=2 
 DenseScale=1 
-GN1 = .03
+GN1 = .04
 GN2 = .1
-GN3 = .1
-alpha = 0.05
+GN3 = .2
+alpha = 0.1
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -162,7 +162,7 @@ model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(0.2))
+model.add(Dropout(0.4))
 
 model.add(Flatten())
 model.add(Dense(int(512*DenseScale)))
