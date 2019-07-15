@@ -111,7 +111,7 @@ print('it has taken {} seconds. It will take {} more seconds, or {} more minutes
 GetRandomFOVs(GlobbedFiles, ValYes)
 DataFile.flush()
 elapsed = time() - starting_time
-print("Whoo! We're done, that took {} minutes".format(round(elapsed, 3))
+print("Whoo! We're done, that took {} minutes".format(round(elapsed / 60, 3))
 
 ### CLEANUP
-DataFile.close()
+#DataFile.close()
