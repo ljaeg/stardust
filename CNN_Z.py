@@ -43,7 +43,7 @@ ConvScale=2
 DenseScale=1 
 GN1 = .03
 GN2 = .1
-GN3 = 0
+GN3 = .1
 alpha = 0.05
 
 # Calculate the F1 score which we use for optimizing the CNN.
@@ -195,8 +195,8 @@ Checkpoint3 = ModelCheckpoint('Foils_CNN_acc.h5', verbose=1, save_best_only=True
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
-TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-#TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July15/tryingonremote/{}'.format(time()))
+#TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July15/tryingonremote/{}'.format(time()))
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
