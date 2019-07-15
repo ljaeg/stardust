@@ -13,7 +13,7 @@ import h5py
 RawDir = '/home/admin/Desktop/Preprocess'
 Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
 FOVSize = 100 # 30 pixels squadwddddare for each image.
-NumFOVs = 3000 # How many FOVs to extract from the raw data.
+NumFOVs = 10000 # How many FOVs to extract from the raw data.
 TrainTestValSplit = [0.33, 0.33, 0.33]
 NumTrain = int(NumFOVs*TrainTestValSplit[0])
 NumTest = int(NumFOVs*TrainTestValSplit[1])
@@ -37,7 +37,7 @@ except IOError as e:
 print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
 ### MAKE HDF TO HOLD OUR IMAGES.
-DataFile = h5py.File('JustMiddleSmall.hdf5', 'w')
+DataFile = h5py.File('FOV100_Num10000.hdf5', 'w')
 DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
 DataFile.attrs['FOVSize'] = FOVSize
 DataFile.attrs['NumFOVs'] = NumFOVs
@@ -46,22 +46,20 @@ DataFile.attrs['Foils'] = ', '.join(Foils)
 # Yes means this image has a crater.
 # No means there is no crater.
 compression_opts = 2
-middle = DataFile.create_dataset('middle_small', (NumTrain, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
-side  = DataFile.create_dataset('side_small',  (NumTrain, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
-blank = DataFile.create_dataset('blanks',  (NumTrain, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
+TrainYes = DataFile.create_dataset('TrainYes', (NumTrain, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
+TrainNo  = DataFile.create_dataset('TrainNo',  (NumTrain, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
 
+TestYes  = DataFile.create_dataset('TestYes', (NumTest, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
+TestNo   = DataFile.create_dataset('TestNo',  (NumTest, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
 
-# TestYes  = DataFile.create_dataset('TestYes', (NumTest, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
-# TestNo   = DataFile.create_dataset('TestNo',  (NumTest, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
-
-# ValYes   = DataFile.create_dataset('ValYes', (NumVal, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
-# ValNo    = DataFile.create_dataset('ValNo',  (NumVal, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
+ValYes   = DataFile.create_dataset('ValYes', (NumVal, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
+ValNo    = DataFile.create_dataset('ValNo',  (NumVal, FOVSize, FOVSize), dtype='f8', chunks=True, compression='gzip', compression_opts=compression_opts)
 
 DataFile.flush()
 
 ### POPULATE TRAIN/TEST/VAL WITH NO CRATER IMAGES
 # Choose random files from which to draw FOVs.
-np.random.seed(5)
+np.random.seed(11321)
 
 def GetRandomFOVs(GlobbedFiles, Data, SpeedupFactor=20):
     # It is slow to read each image.  So we will take SpeedupFactor FOVs from each in order to speed up I/O.
@@ -85,24 +83,35 @@ def GetRandomFOVs(GlobbedFiles, Data, SpeedupFactor=20):
 from time import time
 starting_time = time()
 
-GetRandomFOVs(GlobbedFiles, middle)
+GetRandomFOVs(GlobbedFiles, TrainYes)
 DataFile.flush()
 elapsed = time() - starting_time
-print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, elapsed * 2, (elapsed * 2) / 60))
+print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, elapsed * 5, (elapsed * 5) / 60))
 
-GetRandomFOVs(GlobbedFiles, side)
+GetRandomFOVs(GlobbedFiles, TrainNo)
+DataFile.flush()
+elapsed = time() - starting_time
+print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, (elapsed *2), (elapsed * 2)/ 60))
+
+GetRandomFOVs(GlobbedFiles, TestYes)
+DataFile.flush()
+elapsed = time() - starting_time
+print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, elapsed, elapsed / 60))
+
+GetRandomFOVs(GlobbedFiles, TestNo)
 DataFile.flush()
 elapsed = time() - starting_time
 print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, elapsed / 2, (elapsed / 2) / 60))
 
-GetRandomFOVs(GlobbedFiles, blank)
+GetRandomFOVs(GlobbedFiles, ValNo)
 DataFile.flush()
-# GetRandomFOVs(GlobbedFiles, TestYes)
-# DataFile.flush()
-# GetRandomFOVs(GlobbedFiles, ValNo)
-# DataFile.flush()
-# GetRandomFOVs(GlobbedFiles, ValYes)
-# DataFile.flush()
+elapsed = time() - starting_time
+print('it has taken {} seconds. It will take {} more seconds, or {} more minutes!'.format(elapsed, elapsed / 5, (elapsed / 5) / 60))
+
+GetRandomFOVs(GlobbedFiles, ValYes)
+DataFile.flush()
+elapsed = time() - starting_time
+print("Whoo! We're done, that took {} minutes".format(round(elapsed, 3))
 
 ### CLEANUP
 DataFile.close()
