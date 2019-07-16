@@ -36,11 +36,11 @@ from sklearn.utils import shuffle
 from scipy.misc import imread
 
 # Train/validate/test info
-batch_size=int(512 / 4)
+batch_size=int(512 / 2)
 class_weight={0: 1, 1: 1}
 epochs = 250
-ConvScale=1 
-DenseScale=1 
+ConvScale=.5
+DenseScale=.5
 GN1 = .03
 GN2 = .03
 GN3 = 0
@@ -147,7 +147,7 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(32*ConvScale), (3, 3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
@@ -155,10 +155,10 @@ model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
 
-model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
