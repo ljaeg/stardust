@@ -105,12 +105,12 @@ FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 Foils = DataFile.attrs['Foils'].split(',')
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo']
-TrainYes = DataFile['TrainYes']
-TestNo = DataFile['TestNo']
-TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo']
-ValYes = DataFile['ValYes']
+TrainNo = DataFile['TrainNo'][:500]
+TrainYes = DataFile['TrainYes'][:500]
+TestNo = DataFile['TestNo'][:500]
+TestYes = DataFile['TestYes'][:500]
+ValNo = DataFile['ValNo'][:500]
+ValYes = DataFile['ValYes'][:500]
 
 ####Here i am standardizing the data I don't know if it has already been standardize
 # TrainNo = standardize_exp(TrainNo)
