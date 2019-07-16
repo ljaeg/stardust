@@ -36,7 +36,7 @@ from sklearn.utils import shuffle
 from scipy.misc import imread
 
 # Train/validate/test info
-batch_size=int(512 * 1)
+batch_size=int(512 / 4)
 class_weight={0: 1, 1: 1}
 epochs = 250
 ConvScale=2 
