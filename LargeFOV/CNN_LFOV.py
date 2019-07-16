@@ -41,8 +41,8 @@ class_weight={0: 1, 1: 1}
 epochs = 250
 ConvScale=2
 DenseScale=2
-GN1 = .03
-GN2 = .03
+GN1 = 0
+GN2 = 0
 GN3 = 0
 alpha = 0
 
