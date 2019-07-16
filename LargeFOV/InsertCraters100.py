@@ -41,9 +41,9 @@ for c in CraterNames:
     Craters.append(imread(c)/255)
 np.random.seed(42)
 
-def AddCraters(Data, Craters, st):
+def AddCraters(Data, Craters):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
-    scale = np.random.uniform(low = 0, high = .5, size = Data.shape[0])
+    scale = np.random.uniform(low = 0, high = .3, size = Data.shape[0])
     rotate = np.random.random(Data.shape[0])*360
     shift = np.random.random((Data.shape[0], 2)) - .5
     aspect = np.random.normal(1, 0.1, Data.shape[0])
