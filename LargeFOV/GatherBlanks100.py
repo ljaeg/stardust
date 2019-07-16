@@ -37,7 +37,7 @@ except IOError as e:
 print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
 ### MAKE HDF TO HOLD OUR IMAGES.
-DataFile = h5py.File('/home/admin/Desktop/Preprocess/FOV100_Num10000.hdf5', 'w')
+DataFile = h5py.File('/home/admin/Desktop/Preprocess/FOV100_Num10000_b.hdf5', 'w')
 DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
 DataFile.attrs['FOVSize'] = FOVSize
 DataFile.attrs['NumFOVs'] = NumFOVs
@@ -59,7 +59,7 @@ DataFile.flush()
 
 ### POPULATE TRAIN/TEST/VAL WITH NO CRATER IMAGES
 # Choose random files from which to draw FOVs.
-np.random.seed(11321)
+np.random.seed(1121)
 
 def GetRandomFOVs(GlobbedFiles, Data, SpeedupFactor=20):
     # It is slow to read each image.  So we will take SpeedupFactor FOVs from each in order to speed up I/O.

@@ -41,9 +41,9 @@ for c in CraterNames:
     Craters.append(imread(c)/255)
 np.random.seed(42)
 
-def AddCraters(Data, Craters):
+def AddCraters(Data, Craters, st):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
-    scale = np.random.uniform(size = Data.shape[0])
+    scale = np.random.uniform(low = 0, high = .5, size = Data.shape[0])
     rotate = np.random.random(Data.shape[0])*360
     shift = np.random.random((Data.shape[0], 2)) - .5
     aspect = np.random.normal(1, 0.1, Data.shape[0])
@@ -63,6 +63,7 @@ def AddCraters(Data, Craters):
         if n % 100 == 0:
             print(n)
 
+
 from time import time
 start_time = time()
 print('Creating TRAINING craters.')
@@ -78,7 +79,7 @@ print('It has taken {} minutes up to this point. We have about {} minutes left'.
 print('Creating TESTING craters')
 AddCraters(TestYes, Craters)
 elapsed = time() - start_time
-print('It took {} minutes, my golly that was a trek'.format(elapsed))
+print('It took {} minutes, my golly that was a trek'.format(elapsed / 60))
 
 ### CLEANUP
 DataFile.close()
