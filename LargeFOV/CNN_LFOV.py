@@ -92,6 +92,7 @@ def standardize_exp(dataset):
   print(np.mean(x))
   print(np.std(x))
   print('###### after ^')
+  print(' ')
   return x
 
 
@@ -99,7 +100,7 @@ def standardize_exp(dataset):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'Data_10000_craters.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -175,8 +176,8 @@ model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
-model.save('Foils_CNN.h5')
-model = load_model('Foils_CNN.h5', custom_objects={'f1_acc': f1_acc})
+model.save('Foils_CNN_FOV100.h5')
+model = load_model('Foils_CNN_FOV100.h5', custom_objects={'f1_acc': f1_acc})
 model.summary()
 # plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
 
@@ -184,18 +185,18 @@ model.summary()
 
 # Do the training
 # CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
-Logger = CSVLogger('Foils_CNN_Log.txt', append=True)
+Logger = CSVLogger('Foils_CNN_Log_FOV100.txt', append=True)
 # ModelCheckpoint will save the configuration of the network after each epoch.
 # save_best_only ensures that when the validation score is no longer improving, we don't overwrite
 # the network with a new configuration that is overfitting.
-Checkpoint1 = ModelCheckpoint('Foils_CNN_F1.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
-Checkpoint2 = ModelCheckpoint('Foils_CNN_loss.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
-Checkpoint3 = ModelCheckpoint('Foils_CNN_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
+Checkpoint1 = ModelCheckpoint('Foils_CNN_F1_FOV100.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
+Checkpoint2 = ModelCheckpoint('Foils_CNN_loss_FOV100.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
+Checkpoint3 = ModelCheckpoint('Foils_CNN_acc_FOV100.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July15/tryingonremote/{}'.format(time()))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July16/FOV100/{}'.format(time()))
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
@@ -207,63 +208,63 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 
-testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
-middles = testing_data['middle_small']
-sides = testing_data['side_small']
-blanks = testing_data['blanks']
+# testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
+# middles = testing_data['middle_small']
+# sides = testing_data['side_small']
+# blanks = testing_data['blanks']
 
-#HERE I am standardizing this data. I know for certain this isn't standardized
-middles = standardize_exp(middles)
-sides = standardize_exp(sides)
-blanks = standardize_exp(blanks)
+# #HERE I am standardizing this data. I know for certain this isn't standardized
+# middles = standardize_exp(middles)
+# sides = standardize_exp(sides)
+# blanks = standardize_exp(blanks)
 
-middles = np.reshape(middles, (990, 30, 30, 1))
-sides = np.reshape(sides, (990, 30, 30, 1))
-blanks = np.reshape(blanks, (990, 30, 30, 1))
+# middles = np.reshape(middles, (990, 30, 30, 1))
+# sides = np.reshape(sides, (990, 30, 30, 1))
+# blanks = np.reshape(blanks, (990, 30, 30, 1))
 
-middle_pred = model.predict(middles)
-side_pred = model.predict(sides)
-blank_pred = model.predict(blanks)
+# middle_pred = model.predict(middles)
+# side_pred = model.predict(sides)
+# blank_pred = model.predict(blanks)
 
-middle_wrong = [i for i in middle_pred if i < .5]
-side_wrong = [i for i in side_pred if i < .5]
-blank_wrong = [i for i in blank_pred if i > .5]
+# middle_wrong = [i for i in middle_pred if i < .5]
+# side_wrong = [i for i in side_pred if i < .5]
+# blank_wrong = [i for i in blank_pred if i > .5]
 
-mid_acc = 1 - (len(middle_wrong) / len(middle_pred))
-side_acc = 1 - (len(side_wrong) / len(side_pred))
-blank_acc = 1 - (len(blank_wrong) / len(blank_pred))
+# mid_acc = 1 - (len(middle_wrong) / len(middle_pred))
+# side_acc = 1 - (len(side_wrong) / len(side_pred))
+# blank_acc = 1 - (len(blank_wrong) / len(blank_pred))
 
-print('middle accuracy: ', mid_acc)
-print('side accuracy: ', side_acc)
-print('blank accuracy: ', blank_acc)
-print('overall accuracy: ', (mid_acc+side_acc+blank_acc) / 3)
+# print('middle accuracy: ', mid_acc)
+# print('side accuracy: ', side_acc)
+# print('blank accuracy: ', blank_acc)
+# print('overall accuracy: ', (mid_acc+side_acc+blank_acc) / 3)
 
-import matplotlib.pyplot as plt
-plt.subplot(231)
-plt.hist(np.array(middle_pred))
-plt.title('middle ({})'.format(round(mid_acc, 2)))
+# import matplotlib.pyplot as plt
+# plt.subplot(231)
+# plt.hist(np.array(middle_pred))
+# plt.title('middle ({})'.format(round(mid_acc, 2)))
 
-plt.subplot(232)
-plt.hist(np.array(side_pred))
-plt.title('side ({})'.format(round(side_acc, 2)))
+# plt.subplot(232)
+# plt.hist(np.array(side_pred))
+# plt.title('side ({})'.format(round(side_acc, 2)))
 
-plt.subplot(233)
-plt.hist(np.array(blank_pred))
-plt.title('blank ({})'.format(round(blank_acc, 2)))
+# plt.subplot(233)
+# plt.hist(np.array(blank_pred))
+# plt.title('blank ({})'.format(round(blank_acc, 2)))
 
-plt.subplot(234)
-plt.hist(np.array(middle_wrong))
-plt.title('middle wrong')
+# plt.subplot(234)
+# plt.hist(np.array(middle_wrong))
+# plt.title('middle wrong')
 
-plt.subplot(235)
-plt.hist(np.array(side_wrong))
-plt.title('side wrong')
+# plt.subplot(235)
+# plt.hist(np.array(side_wrong))
+# plt.title('side wrong')
 
-plt.subplot(236)
-plt.hist(np.array(blank_wrong))
-plt.title('blank wrong')
+# plt.subplot(236)
+# plt.hist(np.array(blank_wrong))
+# plt.title('blank wrong')
 
-plt.savefig('MiddleVsSide.png')
+# plt.savefig('MiddleVsSide.png')
 
 
 # predicted = model.predict(np.reshape(TestData, (3300 * 2, 30, 30, 1)))
