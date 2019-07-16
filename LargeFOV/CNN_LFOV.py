@@ -84,10 +84,9 @@ def standardize_exp(dataset):
   min_of_data = np.min(dataset)
   x = []
   for im in dataset:
-    m = np.mean(im)
-    s = np.std(im)
     new_im = (im - min_of_data) / (max_of_data - min_of_data)
-    new_im = (im - m)
+    m = np.mean(new_im)
+    new_im = (new_im - m)
     x.append(new_im)
   print(np.mean(x))
   print(np.std(x))
