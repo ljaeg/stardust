@@ -140,6 +140,8 @@ model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(64*ConvScale), (2,2), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
+model.add(GaussianNoise(GN3))
+model.add(Conv2D(int(64*ConvScale), (2, 2), padding = 'valid', activation = 'relu'))
 model.add(MaxPool2D())
 model.add(Dropout(0.5))
 
