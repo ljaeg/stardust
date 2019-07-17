@@ -89,8 +89,8 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo'][:1000]
-TrainYes = DataFile['TrainYes'][:1000]
+TrainNo = DataFile['TrainNo'][:2000]
+TrainYes = DataFile['TrainYes'][:2000]
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo'][:500]
@@ -135,11 +135,11 @@ model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
 
-model.add(Conv2D(int(64*ConvScale), (5,5), padding='valid'))
+model.add(Conv2D(int(64*ConvScale), (10,10), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-# model.add(Conv2D(int(64*ConvScale), (5,5), padding='valid'))
-# model.add(LeakyReLU(alpha = alpha))
+model.add(Conv2D(int(64*ConvScale), (10,10), padding='valid'))
+model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.5))
 
