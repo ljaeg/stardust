@@ -103,7 +103,10 @@ DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b_normed.hdf5'), 'r+
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
-Foils = DataFile.attrs['Foils'].split(',')
+try:
+  Foils = DataFile.attrs['Foils'].split(',')
+except:
+  Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
 TrainNo = DataFile['TrainNo']
 TrainYes = DataFile['TrainYes']
