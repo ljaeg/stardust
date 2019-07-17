@@ -41,10 +41,10 @@ class_weight={0: 1, 1: 1}
 epochs = 250
 ConvScale=1
 DenseScale=2
-GN1 = .03
-GN2 = .05
-GN3 = 0
-alpha = .05
+GN1 = .05
+GN2 = .1
+GN3 = .1
+alpha = .1
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
