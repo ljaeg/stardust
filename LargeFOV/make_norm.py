@@ -49,6 +49,6 @@ new_ValYes = norm(ValYes)
 normed.create_dataset('ValYes', shape = new_ValYes.shape, dtype = new_ValYes.dtype, data = new_ValYes)
 
 new_ValNo = norm(ValNo)
-normed.create_dataset("ValNo", shape = new_ValNo.shape, dtype = new_ValNo.dtyp, data = new_ValNo)
+normed.create_dataset("ValNo", shape = new_ValNo.shape, dtype = new_ValNo.dtype, data = new_ValNo)
 
 normed.close()
