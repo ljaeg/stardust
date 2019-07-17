@@ -20,9 +20,9 @@ ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
 normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_b_normed.hdf5'), 'w')
-normed['FOVSize'] = FOVSize
-normed['NumFOVS'] = NumFOVs
-normed['Foils'] = not_normed.attrs['Foils']
+normed.attrs.create('FOVSize', FOVSize)
+normed.attrs.create("NumFOVs", NumFOVs)
+normed.attrs.create('Foils', not_normed.attrs['Foils'])
 
 def norm(dataset):
 	print(np.mean(dataset))
