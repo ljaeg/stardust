@@ -99,18 +99,18 @@ def standardize_exp(dataset):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b_normed.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 Foils = DataFile.attrs['Foils'].split(',')
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo'][:500]
-TrainYes = DataFile['TrainYes'][:500]
-TestNo = DataFile['TestNo'][:500]
-TestYes = DataFile['TestYes'][:500]
-ValNo = DataFile['ValNo'][:500]
-ValYes = DataFile['ValYes'][:500]
+TrainNo = DataFile['TrainNo']
+TrainYes = DataFile['TrainYes']
+TestNo = DataFile['TestNo']
+TestYes = DataFile['TestYes']
+ValNo = DataFile['ValNo']
+ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
 # TrainNo = standardize_exp(TrainNo)
