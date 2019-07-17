@@ -39,7 +39,7 @@ from scipy.misc import imread
 batch_size=int(512 / 4)
 class_weight={0: 1, 1: 1}
 epochs = 250
-ConvScale=2
+ConvScale=1
 DenseScale=2
 GN1 = .03
 GN2 = .05
@@ -141,7 +141,7 @@ model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 
 model.add(Flatten())
 model.add(Dense(int(512*DenseScale)))
@@ -151,6 +151,10 @@ model.add(Dropout(0.5))
 model.add(Dense(int(128*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(0.5))
+
+model.add(Dense(int(64 * DenseScale)))
+model.add(LeakyReLU(alpha = alpha))
+model.add(Dropout(.5))
 
 model.add(Dense(1, activation='sigmoid'))
 
