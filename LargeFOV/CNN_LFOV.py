@@ -41,10 +41,10 @@ class_weight={0: 1, 1: 1}
 epochs = 250
 ConvScale=2
 DenseScale=2
-GN1 = 0
-GN2 = 0
+GN1 = .03
+GN2 = .05
 GN3 = 0
-alpha = 0
+alpha = .05
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -75,25 +75,6 @@ def f1_acc(y_true, y_pred):
 
     return f1_score
 
-def standardize_exp(dataset):
-  #per image mean subtraction, divided by std
-  print(np.mean(dataset))
-  print(np.std(dataset))
-  print('###### before ^')
-  max_of_data = np.max(dataset)
-  min_of_data = np.min(dataset)
-  x = []
-  for im in dataset:
-    new_im = (im - min_of_data) / (max_of_data - min_of_data)
-    m = np.mean(new_im)
-    new_im = (new_im - m)
-    x.append(new_im)
-  print(np.mean(x))
-  print(np.std(x))
-  print('###### after ^')
-  print(' ')
-  return x
-
 
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
@@ -115,11 +96,7 @@ TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
-####Here i am standardizing the data I don't know if it has already been standardize
-# TrainNo = standardize_exp(TrainNo)
-# TrainYes = standardize_exp(TrainYes)
-# ValNo = standardize_exp(ValNo)
-# ValYes = standardize_exp(ValYes)
+
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
