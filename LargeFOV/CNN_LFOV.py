@@ -42,7 +42,7 @@ epochs = 250
 ConvScale=1
 DenseScale=2
 GN1 = .05
-GN2 = .1
+GN2 = .05
 GN3 = .1
 alpha = .1
 
