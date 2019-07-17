@@ -89,12 +89,12 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo']
-TrainYes = DataFile['TrainYes']
+TrainNo = DataFile['TrainNo'][:1000]
+TrainYes = DataFile['TrainYes'][:1000]
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo']
-ValYes = DataFile['ValYes']
+ValNo = DataFile['ValNo'][:500]
+ValYes = DataFile['ValYes'][:500]
 
 
 
