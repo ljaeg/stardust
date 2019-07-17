@@ -43,7 +43,7 @@ ConvScale=1
 DenseScale=2
 GN1 = .05
 GN2 = .05
-GN3 = .1
+GN3 = .05
 alpha = .1
 
 # Calculate the F1 score which we use for optimizing the CNN.
