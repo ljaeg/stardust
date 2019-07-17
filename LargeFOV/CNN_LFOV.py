@@ -39,7 +39,7 @@ from scipy.misc import imread
 batch_size=int(512 / 4)
 class_weight={0: 1, 1: 1}
 epochs = 250
-ConvScale=1
+ConvScale=2
 DenseScale=2
 GN1 = .03
 GN2 = .04
