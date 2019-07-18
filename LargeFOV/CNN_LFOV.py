@@ -80,7 +80,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b_normed.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b_normed.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
