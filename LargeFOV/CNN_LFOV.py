@@ -38,13 +38,13 @@ from scipy.misc import imread
 # Train/validate/test info
 batch_size=int(512 / 4)
 class_weight={0: 1, 1: 1}
-epochs = 250
-ConvScale=2
-DenseScale=1
+epochs = 100
+ConvScale=4
+DenseScale=2
 GN1 = .03
-GN2 = .1
+GN2 = .04
 GN3 = .05
-alpha = .05
+alpha = .1
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -179,11 +179,11 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July16/FOV100/{}'.format(time()))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July18/FOV40/{}'.format(time()))
 
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=250,
+                   epochs=epochs,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
