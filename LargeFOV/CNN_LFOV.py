@@ -80,7 +80,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b_normed.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -127,10 +127,10 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(32*ConvScale), (4,4), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(32*ConvScale), (4,4), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
