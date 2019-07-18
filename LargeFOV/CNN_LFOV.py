@@ -89,12 +89,12 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo'][:2000]
-TrainYes = DataFile['TrainYes'][:2000]
+TrainNo = DataFile['TrainNo'][:5000]
+TrainYes = DataFile['TrainYes'][:5000]
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo'][:500]
-ValYes = DataFile['ValYes'][:500]
+ValNo = DataFile['ValNo'][:800]
+ValYes = DataFile['ValYes'][:800]
 
 
 
@@ -152,9 +152,9 @@ model.add(Dense(int(128*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(0.5))
 
-model.add(Dense(int(64 * DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(.5))
+# model.add(Dense(int(64 * DenseScale)))
+# model.add(LeakyReLU(alpha = alpha))
+# model.add(Dropout(.5))
 
 model.add(Dense(1, activation='sigmoid'))
 
