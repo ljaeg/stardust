@@ -44,7 +44,7 @@ DenseScale=2
 GN1 = .03
 GN2 = .04
 GN3 = .05
-alpha = .1
+alpha = .24
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -127,7 +127,9 @@ test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size,
 input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 import optuna
 def objective(trial):
-  alpha = trial.suggest_uniform('alpha', 0, .4)
+  GN1 = trial.suggest_uniform('GN1', 0, .1)
+  GN2 = trial.suggest_uniform('GN2', 0, .2)
+  GN3 = trial.suggest_uniform('GN3', 0, .4)
   model = Sequential()
   model.add(GaussianNoise(GN1, input_shape = input_shape))
   model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
@@ -182,7 +184,7 @@ def objective(trial):
   from time import time
 
   #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-  TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July18/FOV40/{}'.format(time()))
+  TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July18/FOV40/{}/{}/{}'.format(GN1, GN2, GN3))
 
   model.fit_generator(generator=train_generator,
                      steps_per_epoch=train_generator.n//batch_size,
