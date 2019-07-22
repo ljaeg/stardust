@@ -125,6 +125,7 @@ test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size,
 # Now define the neural network.
 
 input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
+import optuna
 def objective(trial):
   alpha = trial.suggest_uniform('alpha', 0, .4)
   model = Sequential()
