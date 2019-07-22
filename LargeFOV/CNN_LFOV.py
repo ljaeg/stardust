@@ -83,9 +83,6 @@ DataDir = '/home/admin/Desktop/Preprocess'
 DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
-print("#####")
-print(FOVSize)
-print('#####')
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
   Foils = DataFile.attrs['Foils'].split(',')
