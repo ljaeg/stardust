@@ -193,9 +193,10 @@ def objective(trial):
                      callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                      class_weight=class_weight
                      )
+  s = TestYes.shape
 
-  yes_answers = model.predict(TestYes)
-  no_answers = model.predict(TestNo)
+  yes_answers = model.predict(np.reshape(TestYes, (s[0], s[1], s[2], 1)))
+  no_answers = model.predict(np.reshape(TestNo, (s[0], s[1], s[2], 1)))
   yes_right = [i for i in yes_answers if i > .5]
   no_right = [i for i in no_answers if i < .5]
   acc = (len(yes_right) + len(no_right)) / (len(no_answers) + len(yes_answers))
