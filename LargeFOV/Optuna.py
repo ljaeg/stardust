@@ -36,7 +36,7 @@ from sklearn.utils import shuffle
 from scipy.misc import imread
 
 # Train/validate/test info
-batch_size=int(512 / 4)
+batch_size=int(512)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=4
@@ -89,12 +89,12 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo'][:6000]
-TrainYes = DataFile['TrainYes'][:6000]
+TrainNo = DataFile['TrainNo'][:1000]
+TrainYes = DataFile['TrainYes'][:1000]
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo'][:1000]
-ValYes = DataFile['ValYes'][:1000]
+ValNo = DataFile['ValNo'][:500]
+ValYes = DataFile['ValYes'][:500]
 
 
 
@@ -200,6 +200,10 @@ def objective(trial):
   no_right = [i for i in no_answers if i < .5]
   acc = (len(yes_right) + len(no_right)) / (len(no_answers) + len(yes_answers))
   return 1 - acc
+
+study = optuna.create_study()
+study.optimize(objective, n_trials = 15)
+print('Best value: {} (params: {})\n'.format(study.best_value, study.best_params))
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 # middles = testing_data['middle_small']
