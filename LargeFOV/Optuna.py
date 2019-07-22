@@ -80,7 +80,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b_normed.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -123,73 +123,82 @@ test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size,
 
 # Define the NN
 # Now define the neural network.
+
 input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
+def objective(trial):
+  alpha = trial.suggest_uniform('alpha', 0, .4)
+  model = Sequential()
+  model.add(GaussianNoise(GN1, input_shape = input_shape))
+  model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(GaussianNoise(GN2))
+  model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(MaxPool2D())
+  model.add(Dropout(0.2))
 
-model = Sequential()
-model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
-model.add(LeakyReLU(alpha = alpha))
-model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
-model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
-model.add(Dropout(0.2))
+  model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(GaussianNoise(GN3))
+  model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(MaxPool2D())
+  model.add(Dropout(0.5))
 
-model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
-model.add(LeakyReLU(alpha = alpha))
-model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
-model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
-model.add(Dropout(0.5))
+  model.add(Flatten())
+  model.add(Dense(int(512*DenseScale)))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(Dropout(0.5))
 
-model.add(Flatten())
-model.add(Dense(int(512*DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(0.5))
+  model.add(Dense(int(128*DenseScale)))
+  model.add(LeakyReLU(alpha = alpha))
+  model.add(Dropout(0.5))
 
-model.add(Dense(int(128*DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(0.5))
+  # model.add(Dense(int(64 * DenseScale)))
+  # model.add(LeakyReLU(alpha = alpha))
+  # model.add(Dropout(.5))
 
-# model.add(Dense(int(64 * DenseScale)))
-# model.add(LeakyReLU(alpha = alpha))
-# model.add(Dropout(.5))
+  model.add(Dense(1, activation='sigmoid'))
 
-model.add(Dense(1, activation='sigmoid'))
-
-model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
-model.save('Foils_CNN_FOV100.h5')
-model = load_model('Foils_CNN_FOV100.h5', custom_objects={'f1_acc': f1_acc})
-model.summary()
-# plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
+  model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
+  model.save('Foils_CNN_FOV100.h5')
+  model = load_model('Foils_CNN_FOV100.h5', custom_objects={'f1_acc': f1_acc})
+  model.summary()
+  # plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
 
 
 
-# Do the training
-# CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
-Logger = CSVLogger('Foils_CNN_Log_FOV100.txt', append=True)
-# ModelCheckpoint will save the configuration of the network after each epoch.
-# save_best_only ensures that when the validation score is no longer improving, we don't overwrite
-# the network with a new configuration that is overfitting.
-Checkpoint1 = ModelCheckpoint('Foils_CNN_F1_FOV100.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
-Checkpoint2 = ModelCheckpoint('Foils_CNN_loss_FOV100.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
-Checkpoint3 = ModelCheckpoint('Foils_CNN_acc_FOV100.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
-EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
-from time import time
+  # Do the training
+  # CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
+  Logger = CSVLogger('Foils_CNN_Log_FOV100.txt', append=True)
+  # ModelCheckpoint will save the configuration of the network after each epoch.
+  # save_best_only ensures that when the validation score is no longer improving, we don't overwrite
+  # the network with a new configuration that is overfitting.
+  Checkpoint1 = ModelCheckpoint('Foils_CNN_F1_FOV100.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
+  Checkpoint2 = ModelCheckpoint('Foils_CNN_loss_FOV100.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
+  Checkpoint3 = ModelCheckpoint('Foils_CNN_acc_FOV100.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
+  EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
+  from time import time
 
-#TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July18/FOV40/{}'.format(time()))
+  #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
+  TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July18/FOV40/{}'.format(time()))
 
-model.fit_generator(generator=train_generator,
-                   steps_per_epoch=train_generator.n//batch_size,
-                   epochs=epochs,
-                   verbose=2,
-                   validation_data=validation_generator,
-                   validation_steps=validation_generator.n//batch_size,
-                   callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
-                   class_weight=class_weight
-                   )
+  model.fit_generator(generator=train_generator,
+                     steps_per_epoch=train_generator.n//batch_size,
+                     epochs=epochs,
+                     verbose=2,
+                     validation_data=validation_generator,
+                     validation_steps=validation_generator.n//batch_size,
+                     callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
+                     class_weight=class_weight
+                     )
+
+  yes_answers = model.predict(TestYes)
+  no_answers = model.predict(TestNo)
+  yes_right = [i for i in yes_answers if i > .5]
+  no_right = [i for i in no_answers if i < .5]
+  acc = (len(yes_right) + len(no_right)) / (len(no_answers) + len(yes_answers))
+  return 1 - acc
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 # middles = testing_data['middle_small']
