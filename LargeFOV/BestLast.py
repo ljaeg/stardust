@@ -35,20 +35,17 @@ from sklearn.utils import shuffle
 
 from scipy.misc import imread
 
-np.random.seed(5)
-tf.random.set_random_seed(3)
-
 # Train/validate/test info
-batch_size=int(512)
+batch_size=int(512 / 4)
 class_weight={0: 1, 1: 1}
 epochs = 100
-ConvScale=32
-DenseScale=32
+ConvScale=1
+DenseScale=2
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
 # alpha = .24
-GN1 = 0
+GN1 = .03
 GN2 = 0
 GN3 = 0
 alpha = 0
@@ -96,12 +93,12 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = DataFile['TrainNo']
-TrainYes = DataFile['TrainYes']
+TrainNo = DataFile['TrainNo'][:6000]
+TrainYes = DataFile['TrainYes'][:6000]
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo']
-ValYes = DataFile['ValYes']
+ValNo = DataFile['ValNo'][:1000]
+ValYes = DataFile['ValYes'][:1000]
 
 
 
@@ -134,34 +131,30 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(32*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(0.2))
 
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(64*ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 
 model.add(Flatten())
-model.add(Dense(int(DenseScale)))
+model.add(Dense(int(512*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(128*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(0.2))
-
-model.add(Dense(int(2*DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 
 # model.add(Dense(int(64 * DenseScale)))
 # model.add(LeakyReLU(alpha = alpha))
@@ -191,6 +184,7 @@ from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July23/{}'.format(time()))
+
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=epochs,

@@ -35,6 +35,9 @@ from sklearn.utils import shuffle
 
 from scipy.misc import imread
 
+np.random.seed(5)
+tf.random.set_random_seed(3)
+
 # Train/validate/test info
 batch_size=int(512)
 class_weight={0: 1, 1: 1}
@@ -80,7 +83,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV40_Num10000_b_normed.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'Data_10000_craters.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
