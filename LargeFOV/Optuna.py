@@ -41,9 +41,9 @@ class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=4
 DenseScale=2
-GN1 = .03
-GN2 = .04
-GN3 = .05
+GN1 = .054
+GN2 = .018
+GN3 = .14
 alpha = .24
 
 # Calculate the F1 score which we use for optimizing the CNN.
