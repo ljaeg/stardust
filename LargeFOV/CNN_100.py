@@ -20,6 +20,7 @@ session = tf.Session(config=config)
 # config = tf.ConfigProto(intra_op_parallelism_threads=2)
 # session = tf.Session(config=config)
 import keras.backend as K
+K.set_floatx('float32')
 # K.set_session(session)
 
 from keras.models import Sequential, load_model
@@ -39,11 +40,11 @@ np.random.seed(5)
 tf.random.set_random_seed(3)
 
 # Train/validate/test info
-batch_size=int(512)
+batch_size=int(512/4)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32
-DenseScale=32
+DenseScale=64
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
@@ -52,7 +53,7 @@ GN1 = 0
 GN2 = 0
 GN3 = 0
 alpha = 0
-dropout_rate = .2
+dropout_rate = .4
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -88,7 +89,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'Data_10000_craters.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_b_normed.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -97,14 +98,27 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = np.concatenate((DataFile['TrainNo'], DataFile['TestNo']), axis = 0)
-TrainYes = np.concatenate((DataFile['TrainYes'], DataFile['TestYes']), axis = 0)
+TrainNo = DataFile['TrainNo']
+TrainYes = DataFile['TrainYes']
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 print(len(TrainNo))
+print(np.max(TrainNo))
+print(np.min(TrainNo))
+print(np.max(TrainYes))
+print(np.min(TrainYes))
+print(' ')
+
+print(np.mean(TrainNo))
+print(np.mean(TrainYes))
+print(np.std(TrainNo))
+print(np.std(TrainYes))
+plt.imshow(TrainNo[2, :, :])
+plt.colorbar()
+plt.show()
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
@@ -136,32 +150,45 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(dropout_rate))
+#model.add(Dropout(dropout_rate))
 
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(dropout_rate))
+#model.add(Dropout(dropout_rate))
+
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(LeakyReLU(alpha = alpha))
+model.add(GaussianNoise(GN3))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(LeakyReLU(alpha = alpha))
+model.add(MaxPool2D())
+#model.add(Dropout(dropout_rate))
+
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(LeakyReLU(alpha = alpha))
+model.add(MaxPool2D())
+#model.add(Dropout(dropout_rate))
 
 model.add(Flatten())
+model.add(Dense(int(4*DenseScale)))
+model.add(LeakyReLU(alpha = alpha))
+model.add(Dropout(dropout_rate))
+
 model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(2*DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(dropout_rate))
-
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
@@ -202,6 +229,8 @@ model.fit_generator(generator=train_generator,
                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                    class_weight=class_weight
                    )
+
+
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 # middles = testing_data['middle_small']
