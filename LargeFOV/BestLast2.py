@@ -192,7 +192,7 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July23/{}'.format(time()))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July23/{}/no_norm'.format(time()))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=60,

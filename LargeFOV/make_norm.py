@@ -4,7 +4,7 @@ import os
 
 ##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 Dir = '/home/admin/Desktop/Preprocess'
-not_normed = h5.File(os.path.join(Dir, 'FOV40_Num10000_b.hdf5'), 'r')
+not_normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_b.hdf5'), 'r')
 # testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 # not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
@@ -19,18 +19,36 @@ TestYes = not_normed['TestYes']
 ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
-normed = h5.File(os.path.join(Dir, 'FOV40_Num10000_b_normed.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_normed_w_std.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
 
 def norm(dataset):
 	print(np.mean(dataset))
+
 	m = np.mean(dataset, axis = (1, 2))
 	s = dataset.shape
 	m = np.repeat(m, np.repeat(s[2]*s[1], s[0]))
 	m = np.reshape(m, s)
-	new = dataset - m
+
+	std = np.std(dataset, axis = (1, 2))
+	for n, i in enumerate(std):
+		if i == 0:
+			std[n] = 1
+	std = np.repeat(std, np.repeat(s[2]*s[1], s[0]))
+	std = np.reshape(std, s)
+
+	new = (dataset - m) / std
+
+	# p = np.min(new, axis = (1, 2))
+	# q = np.max(new, axis = (1, 2))
+	# p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
+	# q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
+	# p = np.reshape(p, s)
+	# q = np.reshape(q, s)
+
+	# new = (new - p) / (q - p)
 	return new
 
 new_TrainYes = norm(TrainYes)
