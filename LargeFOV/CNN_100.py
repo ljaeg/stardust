@@ -30,6 +30,7 @@ from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStoppi
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Nadam
+from keras import regularizers
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
@@ -49,11 +50,12 @@ DenseScale=64
 # GN2 = .018
 # GN3 = .14
 # alpha = .24
-GN1 = 0
+GN1 = 0.02
 GN2 = 0
 GN3 = 0
 alpha = 0
 dropout_rate = .4
+reg_scale = 0.0001
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -89,7 +91,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_normed_w_std.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV100_Num10000_normed_w_std_and_redvar.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -116,9 +118,9 @@ print(np.mean(TrainNo))
 print(np.mean(TrainYes))
 print(np.std(TrainNo))
 print(np.std(TrainYes))
-plt.imshow(TrainNo[2, :, :])
-plt.colorbar()
-plt.show()
+# #plt.imshow(TrainNo[2, :, :])
+# plt.colorbar()
+# plt.show()
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
@@ -150,46 +152,46 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
+#model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
 #model.add(Dropout(dropout_rate))
 
 model.add(Flatten())
-model.add(Dense(int(4*DenseScale)))
+model.add(Dense(int(4*DenseScale), kernel_regularizer = regularizers.l2(10*reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale)))
+model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(10*reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale)))
+model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(10*reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
@@ -223,14 +225,24 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July23/{}'.format(time()))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=60,
+                   epochs=15,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                    class_weight=class_weight
                    )
-
+no_preds = model.predict(np.reshape(TestNo, (3300, 100, 100, 1)))
+yes_preds = model.predict(np.reshape(TestYes, (3300, 100, 100, 1)))
+# plt.subplot(121)
+# #plt.hist(no_preds, bins = 15)
+# plt.subplot(122)
+# plt.hist(yes_preds, bins = 15)
+# plt.show()
+print('no:')
+print(len([i for i in no_preds if i < .5]) / len(no_preds))
+print('yes:')
+print(len([i for i in yes_preds if i > .5]) / len(yes_preds))
 
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')

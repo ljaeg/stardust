@@ -97,8 +97,8 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-TrainNo = np.concatenate((DataFile['TrainNo'], DataFile['TestNo']), axis = 0)
-TrainYes = np.concatenate((DataFile['TrainYes'], DataFile['TestYes']), axis = 0)
+TrainNo = DataFile['TrainNo']
+TrainYes = DataFile['TrainYes']
 TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
@@ -202,6 +202,20 @@ model.fit_generator(generator=train_generator,
                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                    class_weight=class_weight
                    )
+
+s = TestYes.shape
+yes_pred = model.predict(np.reshape(TestYes, (s[0], s[1], s[2], 1)))
+no_pred = model.predict(np.reshape(TestNo, (s[0], s[1], s[2], 1)))
+plt.subplot(121)
+plt.hist(no_pred, bins = 15)
+plt.subplot(122)
+plt.hist(yes_pred, bins =15)
+plt.show()
+
+print('yes:')
+print(len([i for i in yes_pred if i > .5]) / len(yes_pred))
+print('no:')
+print(len([i for i in no_pred if i < .5]) / len(no_pred))
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 # middles = testing_data['middle_small']

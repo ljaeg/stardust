@@ -19,7 +19,7 @@ TestYes = not_normed['TestYes']
 ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
-normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_normed_w_std.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_normed_w_std_and_redvar.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
@@ -41,14 +41,19 @@ def norm(dataset):
 
 	new = (dataset - m) / std
 
-	# p = np.min(new, axis = (1, 2))
-	# q = np.max(new, axis = (1, 2))
-	# p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
-	# q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
-	# p = np.reshape(p, s)
-	# q = np.reshape(q, s)
+	p = np.min(new, axis = (1, 2))
+	q = np.max(new, axis = (1, 2))
+	for i in range(len(p)):
+		if q[i] - p[i] == 0:
+			q[i] = 1
+			p[i] = 0
+	p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
+	q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
+	p = np.reshape(p, s)
+	q = np.reshape(q, s)
 
-	# new = (new - p) / (q - p)
+	new = (new - p) / (q - p)
+	#new = new - .5
 	return new
 
 new_TrainYes = norm(TrainYes)
