@@ -246,7 +246,7 @@ plt.subplot(121)
 plt.hist(no_preds, bins = 15)
 plt.subplot(122)
 plt.hist(yes_preds, bins = 15)
-plt.save('/home/admin/Desktop/GH/CNN_200_hist.png')
+plt.savefig('/home/admin/Desktop/GH/CNN_200_hist.png')
 
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
