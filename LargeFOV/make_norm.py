@@ -1,16 +1,18 @@
 import h5py as h5
 import numpy as np 
 import os
+import matplotlib
+# import matplotlib.pyplot
 
 ##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 Dir = '/home/admin/Desktop/Preprocess'
-not_normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_b.hdf5'), 'r')
+not_normed = h5.File(os.path.join(Dir, 'FOV200_Num10000_prenormed.hdf5'), 'r')
 # testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 # not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
 FOVSize = not_normed.attrs['FOVSize']
 NumFOVs = not_normed.attrs['NumFOVs']
-Foils = not_normed.attrs['Foils'].split(',')
+Foils = not_normed.attrs['Foils']
 # Read the Train/Test/Val datasets.
 TrainNo = not_normed['TrainNo']
 TrainYes = not_normed['TrainYes']
@@ -19,10 +21,24 @@ TestYes = not_normed['TestYes']
 ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
-normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_normed_w_std_and_redvar.hdf5'), 'w')
+
+normed = h5.File(os.path.join(Dir, 'FOV200_Num10000_normed.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
+
+# plt.subplot(231)
+# plt.imshow(TrainYes[23], cmap = 'gray')
+# plt.title('Yes:23')
+# plt.colorbar()
+# plt.subplot(232)
+# plt.imshow(TrainYes[67], cmap = 'gray')
+# plt.title('Yes:67')
+# plt.colorbar()
+# plt.subplot(233)
+# plt.imshow(TrainNo[201], cmap = 'gray')
+# plt.title('No:201')
+# plt.colorbar()
 
 def norm(dataset):
 	print(np.mean(dataset))
@@ -73,5 +89,20 @@ normed.create_dataset('ValYes', shape = new_ValYes.shape, dtype = new_ValYes.dty
 
 new_ValNo = norm(ValNo)
 normed.create_dataset("ValNo", shape = new_ValNo.shape, dtype = new_ValNo.dtype, data = new_ValNo)
+
+# plt.subplot(234)
+# plt.imshow(TrainYes[23], cmap = 'gray')
+# plt.title('Yes:23 .')
+# plt.colorbar()
+# plt.subplot(235)
+# plt.imshow(TrainYes[67], cmap = 'gray')
+# plt.title('Yes:67 .')
+# plt.colorbar()
+# plt.subplot(236)
+# plt.imshow(TrainNo[201], cmap = 'gray')
+# plt.title('No:201 .')
+
+# plt.colorbar()
+# plt.show()
 
 normed.close()

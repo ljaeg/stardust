@@ -20,11 +20,11 @@ RunDir = '/home/admin/Desktop/Preprocess'
 # shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
 ### LOAD THE HDF.
-DataFile = h5py.File(os.path.join(RunDir, 'FOV40_Num10000_b.hdf5'), 'r+')
-TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
+DataFile = h5py.File(os.path.join(RunDir, 'FOV200_Num10000_blanks_normed.hdf5'), 'r+')
+#TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
-Foils = DataFile.attrs['Foils'].split(',')
+#Foils = DataFile.attrs['Foils'].split(',')
 # Read the Train/Test/Val datasets.
 TrainYes = DataFile['TrainYes']
 TrainNo = DataFile['TrainNo']
@@ -35,7 +35,7 @@ ValNo = DataFile['ValNo']
 
 # LOAD CRATER IMAGES AND MAKE AUGMENTED IMAGES
 # The augmented images will be scaled, rotated, stretched a bit (aspect ratio).  We will add noise at the input to the CNN, so we don't do that here.
-CraterNames = glob(pathname=os.path.join('/home/admin/Desktop/ForGit/TestingSmallPerformance', 'Alpha crater images', '*.png'))
+CraterNames = glob(pathname=os.path.join('/home/admin/Desktop/GH', 'Alpha_Craters', '*.png'))
 Craters = []
 for c in CraterNames:
     Craters.append(imread(c)/255)
@@ -43,7 +43,7 @@ np.random.seed(42)
 
 def AddCraters(Data, Craters):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
-    scale = np.random.uniform(low = 0, high = .75, size = Data.shape[0])
+    scale = np.random.uniform(low = 0, high = .15, size = Data.shape[0])
     rotate = np.random.random(Data.shape[0])*360
     shift = np.random.random((Data.shape[0], 2)) - .5
     aspect = np.random.normal(1, 0.1, Data.shape[0])
