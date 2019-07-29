@@ -45,7 +45,7 @@ batch_size=int(512/8)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32 
-DenseScale=64 
+DenseScale=64 / 2
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
@@ -227,7 +227,7 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened'.format(time(), dropout_rate))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened_x'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=80,
