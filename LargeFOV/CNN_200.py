@@ -101,8 +101,9 @@ except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
 num_ims = 850
-TrainNo = DataFile['TrainNo'][:num_ims - 500]
-TrainYes = DataFile['TrainYes'][:num_ims + 500]
+ad_sub = 0
+TrainNo = DataFile['TrainNo'][:num_ims - ad_sub]
+TrainYes = DataFile['TrainYes'][:num_ims + ad_sub]
 TestNo = DataFile['TestNo'][:int(num_ims/2)]
 TestYes = DataFile['TestYes'][:int(num_ims/2)]
 ValNo = DataFile['ValNo'][:int(num_ims/2)]
@@ -153,7 +154,7 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape))
