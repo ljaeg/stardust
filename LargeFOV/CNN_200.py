@@ -1,4 +1,4 @@
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
@@ -242,13 +242,15 @@ no_preds = high_acc.predict(np.reshape(TestNo, (int(num_ims / 2), FOVSize, FOVSi
 yes_preds = high_acc.predict(np.reshape(TestYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 vals_n = high_acc.predict(np.reshape(ValNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
-# plt.subplot(121)
-# #plt.hist(no_preds, bins = 15)
-# plt.subplot(122)
-# plt.hist(yes_preds, bins = 15)
-# plt.show()
+plt.subplot(121)
+plt.hist(no_preds, bins = 15)
+plt.subplot(122)
+plt.hist(yes_preds, bins = 15)
+plt.save('/home/admin/Desktop/GH/CNN_200_hist.png')
+
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+
 print('no:')
 print(x)
 print('yes:')
