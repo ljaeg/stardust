@@ -100,7 +100,7 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-num_ims = 800
+num_ims = 850
 TrainNo = DataFile['TrainNo'][:num_ims]
 TrainYes = DataFile['TrainYes'][:num_ims]
 TestNo = DataFile['TestNo'][:int(num_ims/2)]
