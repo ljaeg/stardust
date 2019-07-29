@@ -169,10 +169,10 @@ model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid'))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
 model.add(Dropout(dropout_rate / 2))
@@ -200,9 +200,9 @@ model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(dropout_rate))
+# model.add(Dense(int(DenseScale)))
+# model.add(LeakyReLU(alpha = alpha))
+# model.add(Dropout(dropout_rate))
 
 model.add(Dense(1, activation='sigmoid'))
 
@@ -227,7 +227,7 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}'.format(time(), dropout_rate))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=80,
