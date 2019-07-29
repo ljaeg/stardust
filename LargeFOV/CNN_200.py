@@ -101,8 +101,8 @@ except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
 num_ims = 850
-TrainNo = DataFile['TrainNo'][:num_ims - 200]
-TrainYes = DataFile['TrainYes'][:num_ims + 200]
+TrainNo = DataFile['TrainNo'][:num_ims - 800]
+TrainYes = DataFile['TrainYes'][:num_ims + 800]
 TestNo = DataFile['TestNo'][:int(num_ims/2)]
 TestYes = DataFile['TestYes'][:int(num_ims/2)]
 ValNo = DataFile['ValNo'][:int(num_ims/2)]
