@@ -101,8 +101,8 @@ except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
 num_ims = 850
-TrainNo = DataFile['TrainNo'][:num_ims - 100]
-TrainYes = DataFile['TrainYes'][:num_ims + 100]
+TrainNo = DataFile['TrainNo'][:num_ims - 200]
+TrainYes = DataFile['TrainYes'][:num_ims + 200]
 TestNo = DataFile['TestNo'][:int(num_ims/2)]
 TestYes = DataFile['TestYes'][:int(num_ims/2)]
 ValNo = DataFile['ValNo'][:int(num_ims/2)]
@@ -244,8 +244,10 @@ vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize
 vals_n = high_acc.predict(np.reshape(ValNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 plt.subplot(121)
 plt.hist(no_preds, bins = 15)
+plt.title('no craters')
 plt.subplot(122)
 plt.hist(yes_preds, bins = 15)
+plt.title('with craters')
 plt.savefig('/home/admin/Desktop/GH/CNN_200_hist.png')
 
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
