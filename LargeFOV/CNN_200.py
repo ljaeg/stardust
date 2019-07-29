@@ -154,7 +154,7 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape))
@@ -185,15 +185,15 @@ model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu')
 model.add(Dropout(dropout_rate / 2))
 
 model.add(Flatten())
-model.add(Dense(int(4*DenseScale)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(dropout_rate))
-
 model.add(Dense(int(2*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(DenseScale)))
+model.add(LeakyReLU(alpha = alpha))
+model.add(Dropout(dropout_rate))
+
+model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
