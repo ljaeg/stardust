@@ -266,7 +266,7 @@ layer_name = 'conv2d_2'
 intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
 intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[0], (1, 200, 200, 1)))
 plt.subplot(121)
-plt.imshow(intermediate_output[:, :, :, 0])
+plt.imshow(np.reshape(intermediate_output[:, :, :, 0], (196, 196)))
 plt.subplot(122)
 plt.imshow(TestYes[0])
 plt.savefig('intermediate_output.png')
