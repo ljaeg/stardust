@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -123,6 +125,7 @@ ValYes = DataFile['ValYes'][:int(num_ims/2)]
 # #plt.imshow(TrainNo[2, :, :])
 # plt.colorbar()
 # plt.show()
+
 plt.subplot(121)
 plt.hist(np.ndarray.flatten(TrainNo))
 plt.title('No')
