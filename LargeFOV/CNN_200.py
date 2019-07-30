@@ -263,6 +263,7 @@ model.fit_generator(generator=train_generator,
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 outputs = [layer.output for layer in high_acc.layers]
 print(len(outputs))
+print(outputs)
 no_preds = high_acc.predict(np.reshape(TestNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
