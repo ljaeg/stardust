@@ -132,7 +132,7 @@ plt.title('No')
 plt.subplot(122)
 plt.hist(np.ndarray.flatten(TrainYes))
 plt.title('Yes')
-plt.show()
+plt.savefig('img distributions')
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
