@@ -106,10 +106,10 @@ num_ims = 2000
 ad_sub = 0
 TrainNo = DataFile['TrainNo'][:num_ims]
 TrainYes = DataFile['TrainYes'][:num_ims]
-TestNo = DataFile['TestNo'][:num_ims/2]
-TestYes = DataFile['TestYes'][:num_ims/2]
-ValNo = DataFile['ValNo'][:num_ims/2]
-ValYes = DataFile['ValYes'][:num_ims/2]
+TestNo = DataFile['TestNo'][:(num_ims/2)]
+TestYes = DataFile['TestYes'][:(num_ims/2)]
+ValNo = DataFile['ValNo'][:(num_ims/2)]
+ValYes = DataFile['ValYes'][:(num_ims/2)]
 
 # print(len(TrainNo))
 # print(np.max(TrainNo))
