@@ -282,7 +282,7 @@ plt.subplot(235)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 20], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(236)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 41], (intermediate_output.shape[1], intermediate_output.shape[2])))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 31], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.savefig('intermediate_output.png')
 
