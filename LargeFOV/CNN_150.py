@@ -93,7 +93,7 @@ def f1_acc(y_true, y_pred):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV200_Num10000_normed.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -102,14 +102,14 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-num_ims = 850
+num_ims = 0
 ad_sub = 0
-TrainNo = DataFile['TrainNo'][:num_ims - ad_sub]
-TrainYes = DataFile['TrainYes'][:num_ims + ad_sub]
-TestNo = DataFile['TestNo'][:int(num_ims/2)]
-TestYes = DataFile['TestYes'][:int(num_ims/2)]
-ValNo = DataFile['ValNo'][:int(num_ims/2)]
-ValYes = DataFile['ValYes'][:int(num_ims/2)]
+TrainNo = DataFile['TrainNo']
+TrainYes = DataFile['TrainYes']
+TestNo = DataFile['TestNo']
+TestYes = DataFile['TestYes']
+ValNo = DataFile['ValNo']
+ValYes = DataFile['ValYes']
 
 # print(len(TrainNo))
 # print(np.max(TrainNo))
@@ -126,25 +126,25 @@ ValYes = DataFile['ValYes'][:int(num_ims/2)]
 # plt.colorbar()
 # plt.show()
 
-plt.subplot(321)
-plt.hist(np.ndarray.flatten(TrainNo))
-plt.title('No')
-plt.subplot(322)
-plt.hist(np.ndarray.flatten(TrainYes))
-plt.title('Yes')
-plt.subplot(323)
-plt.hist(np.ndarray.flatten(TrainNo[0]))
-plt.hist(np.ndarray.flatten(TrainNo[28]))
-plt.subplot(324)
-plt.hist(np.ndarray.flatten(TrainYes[0]))
-plt.hist(np.ndarray.flatten(TrainYes[28]))
-plt.subplot(325)
-plt.imshow(TrainNo[0])
-plt.colorbar()
-plt.subplot(326)
-plt.imshow(TrainYes[0])
-plt.colorbar()
-plt.savefig('img_distributions')
+# plt.subplot(321)
+# plt.hist(np.ndarray.flatten(TrainNo))
+# plt.title('No')
+# plt.subplot(322)
+# plt.hist(np.ndarray.flatten(TrainYes))
+# plt.title('Yes')
+# plt.subplot(323)
+# plt.hist(np.ndarray.flatten(TrainNo[0]))
+# plt.hist(np.ndarray.flatten(TrainNo[28]))
+# plt.subplot(324)
+# plt.hist(np.ndarray.flatten(TrainYes[0]))
+# plt.hist(np.ndarray.flatten(TrainYes[28]))
+# plt.subplot(325)
+# plt.imshow(TrainNo[0])
+# plt.colorbar()
+# plt.subplot(326)
+# plt.imshow(TrainYes[0])
+# plt.colorbar()
+# plt.savefig('img_distributions')
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
@@ -308,13 +308,13 @@ plt.axis('off')
 plt.subplot(4,3,12)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 31], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
-plt.savefig('intermediate_output.png')
+plt.savefig('intermediate_output_{}.png'.format(FOVSize))
 
 
-no_preds = high_acc.predict(np.reshape(TestNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
-yes_preds = high_acc.predict(np.reshape(TestYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
-vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
-vals_n = high_acc.predict(np.reshape(ValNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+vals_y = high_acc.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
+vals_n = high_acc.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
 # plt.subplot(121)
 # plt.hist(no_preds, bins = 15)
 # plt.title('no craters')
