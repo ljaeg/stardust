@@ -124,10 +124,10 @@ ValYes = DataFile['ValYes'][:int(num_ims/2)]
 # plt.colorbar()
 # plt.show()
 plt.subplot(121)
-plt.hist(np.flatten(TrainNo))
+plt.hist(np.ndarray.flatten(TrainNo))
 plt.title('No')
 plt.subplot(122)
-plt.hist(np.flatten(TrainYes))
+plt.hist(np.ndarray.flatten(TrainYes))
 plt.title('Yes')
 plt.show()
 
