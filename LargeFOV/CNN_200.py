@@ -253,7 +253,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened_x'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=30,
+                   epochs=60,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -270,19 +270,19 @@ plt.imshow(TestYes[0])
 plt.title('original')
 plt.axis('off')
 plt.subplot(232)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 0], (196, 196)))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 0], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(233)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 1], (196, 196)))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 1], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(234)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 2], (196, 196)))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 2], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(235)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 30], (196, 196)))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 30], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(236)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 40], (196, 196)))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 40], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.savefig('intermediate_output.png')
 
