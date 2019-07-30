@@ -43,7 +43,7 @@ np.random.seed(5)
 tf.random.set_random_seed(3)
 
 # Train/validate/test info
-batch_size=int(512/4)
+batch_size=int(512/8)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32 
@@ -56,7 +56,7 @@ GN1 = 0.02
 GN2 = 0
 GN3 = 0
 alpha = 0
-dropout_rate = 0.2
+dropout_rate = 0.4
 reg_scale = 0.0001
 
 # Calculate the F1 score which we use for optimizing the CNN.
@@ -104,12 +104,12 @@ except:
 # Read the Train/Test/Val datasets.
 num_ims = 2000
 ad_sub = 0
-TrainNo = DataFile['TrainNo'][:num_ims]
-TrainYes = DataFile['TrainYes'][:num_ims]
-TestNo = DataFile['TestNo'][:int(num_ims/2)]
-TestYes = DataFile['TestYes'][:int(num_ims/2)]
-ValNo = DataFile['ValNo'][:int(num_ims/2)]
-ValYes = DataFile['ValYes'][:int(num_ims/2)]
+TrainNo = DataFile['TrainNo']
+TrainYes = DataFile['TrainYes']
+TestNo = DataFile['TestNo']
+TestYes = DataFile['TestYes']
+ValNo = DataFile['ValNo']
+ValYes = DataFile['ValYes']
 
 # print(len(TrainNo))
 # print(np.max(TrainNo))
@@ -182,7 +182,7 @@ model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(dropout_rate / 2))
+#model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
@@ -190,7 +190,7 @@ model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(dropout_rate / 2))
+#model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
@@ -198,13 +198,13 @@ model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool2D())
-model.add(Dropout(dropout_rate / 2))
+#model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D(pool_size = 4))
-# model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
-# model.add(Dropout(dropout_rate / 2))
+model.add(MaxPool2D(pool_size = 2))
+model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
+model.add(Dropout(dropout_rate / 2))
 
 model.add(Flatten())
 model.add(Dense(int(2*DenseScale)))
@@ -264,7 +264,7 @@ high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.fo
 
 layer_name = 'conv2d_4'
 intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
-intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 200, 200, 1)))
+intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 150, 150, 1)))
 plt.subplot(4,3,1)
 plt.imshow(TestNo[1])
 plt.title('original')
@@ -276,7 +276,7 @@ plt.subplot(4,3,3)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 1], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 
-intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[10], (1, 200, 200, 1)))
+intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[10], (1, 150, 150, 1)))
 plt.subplot(4,3,4)
 plt.imshow(TestNo[10])
 plt.axis('off')
@@ -287,7 +287,7 @@ plt.subplot(4,3,6)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 31], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 
-intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[2], (1, 200, 200, 1)))
+intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[2], (1, 150, 150, 1)))
 plt.subplot(4,3,7)
 plt.imshow(TestYes[2])
 plt.axis('off')
@@ -298,7 +298,7 @@ plt.subplot(4,3,9)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 31], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 
-intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[36], (1, 200, 200, 1)))
+intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[36], (1, 150, 150, 1)))
 plt.subplot(4,3,10)
 plt.imshow(TestYes[36])
 plt.axis('off')
