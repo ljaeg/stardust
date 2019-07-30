@@ -24,7 +24,7 @@ DataFile = h5py.File(os.path.join(RunDir, 'FOV150_Num10000_normed_no_craters.hdf
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
-Foils = DataFile.attrs['Foils'].split(',')
+Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
 TrainYes = DataFile['TrainYes']
 TrainNo = DataFile['TrainNo']
