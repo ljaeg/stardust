@@ -264,7 +264,7 @@ high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.fo
 
 layer_name = 'conv2d_6'
 intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
-intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[0], (1, 200, 200, 1)))
+intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[0], (1, 200, 200, 1)))
 plt.subplot(231)
 plt.imshow(TestYes[0])
 plt.title('original')
