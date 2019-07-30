@@ -253,7 +253,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened_x'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=5,
+                   epochs=30,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -265,21 +265,25 @@ high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.fo
 layer_name = 'conv2d_2'
 intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
 intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[0], (1, 200, 200, 1)))
-plt.subplot(171)
+plt.subplot(231)
 plt.imshow(TestYes[0])
 plt.title('original')
-plt.subplot(172)
+plt.axis('off')
+plt.subplot(232)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 0], (196, 196)))
-plt.subplot(173)
+plt.axis('off')
+plt.subplot(233)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 1], (196, 196)))
-plt.subplot(174)
+plt.axis('off')
+plt.subplot(234)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 2], (196, 196)))
-plt.subplot(175)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 3], (196, 196)))
-plt.subplot(176)
+plt.axis('off')
+plt.subplot(235)
+plt.imshow(np.reshape(intermediate_output[:, :, :, 30], (196, 196)))
+plt.axis('off')
+plt.subplot(236)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 40], (196, 196)))
-plt.subplot(177)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 50], (196, 196)))
+plt.axis('off')
 plt.savefig('intermediate_output.png')
 
 
