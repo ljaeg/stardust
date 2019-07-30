@@ -6,13 +6,14 @@ import matplotlib
 
 ##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 Dir = '/home/admin/Desktop/Preprocess'
-not_normed = h5.File(os.path.join(Dir, 'FOV200_Num10000_prenormed.hdf5'), 'r')
+not_normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_b.hdf5'), 'r')
 # testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 # not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
 FOVSize = not_normed.attrs['FOVSize']
 NumFOVs = not_normed.attrs['NumFOVs']
-Foils = not_normed.attrs['Foils']
+Foils = not_normed.attrs['Foils'].split(',')
+print(Foils)
 # Read the Train/Test/Val datasets.
 TrainNo = not_normed['TrainNo']
 TrainYes = not_normed['TrainYes']
@@ -22,7 +23,7 @@ ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
 
-normed = h5.File(os.path.join(Dir, 'FOV200_Num10000_normed.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_normed_no_craters.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
@@ -69,7 +70,7 @@ def norm(dataset):
 	q = np.reshape(q, s)
 
 	new = (new - p) / (q - p)
-	#new = new - .5
+	new = new - .5
 	return new
 
 new_TrainYes = norm(TrainYes)
