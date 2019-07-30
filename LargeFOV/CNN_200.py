@@ -180,9 +180,9 @@ model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid'))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
-model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
-model.add(Dropout(dropout_rate / 2))
+model.add(MaxPool2D(pool_size = 4))
+# model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu'))
+# model.add(Dropout(dropout_rate / 2))
 
 model.add(Flatten())
 model.add(Dense(int(2*DenseScale)))
