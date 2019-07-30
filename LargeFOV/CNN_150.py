@@ -102,15 +102,14 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-num_ims = 0
+num_ims = 2000
 ad_sub = 0
-TrainNo = DataFile['TrainNo']
-print(len(TrainNo))
-TrainYes = DataFile['TrainYes']
-TestNo = DataFile['TestNo']
-TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo']
-ValYes = DataFile['ValYes']
+TrainNo = DataFile['TrainNo'][:num_ims]
+TrainYes = DataFile['TrainYes'][:num_ims]
+TestNo = DataFile['TestNo'][:num_ims/2]
+TestYes = DataFile['TestYes'][:num_ims/2]
+ValNo = DataFile['ValNo'][:num_ims/2]
+ValYes = DataFile['ValYes'][:num_ims/2]
 
 # print(len(TrainNo))
 # print(np.max(TrainNo))
