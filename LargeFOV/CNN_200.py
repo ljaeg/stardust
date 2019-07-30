@@ -123,6 +123,13 @@ ValYes = DataFile['ValYes'][:int(num_ims/2)]
 # #plt.imshow(TrainNo[2, :, :])
 # plt.colorbar()
 # plt.show()
+plt.subplot(121)
+plt.hist(np.flatten(TrainNo))
+plt.title('No')
+plt.subplot(122)
+plt.hist(np.flatten(TrainYes))
+plt.title('Yes')
+plt.show()
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
