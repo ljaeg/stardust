@@ -25,7 +25,7 @@ import keras.backend as K
 K.set_floatx('float32')
 # K.set_session(session)
 
-from keras.models import Sequential, load_model
+from keras.models import Sequential, load_model, Model
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
@@ -261,9 +261,17 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
-outputs = [layer.output for layer in high_acc.layers]
-print(len(outputs))
-print(outputs)
+
+layer_name = 'conv2d_2'
+intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
+intermediate_output = intermediate_layer_model.predict(TestYes[0])
+plt.subplot(121)
+plt.imshow(intermediate_output)
+plt.subplot(122)
+plt.imshow(TestYes[0])
+plt.savefig('intermediate_output.png')
+
+
 no_preds = high_acc.predict(np.reshape(TestNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
