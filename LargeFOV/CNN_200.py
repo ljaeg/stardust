@@ -253,7 +253,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened_x'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=50,
+                   epochs=5,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -261,6 +261,8 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+outputs = [layer.output for layer in high_acc.layers]
+print(len(outputs))
 no_preds = high_acc.predict(np.reshape(TestNo, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
 vals_y = high_acc.predict(np.reshape(ValYes, (int(num_ims / 2), FOVSize, FOVSize, 1)))
