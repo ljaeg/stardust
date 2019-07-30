@@ -12,7 +12,7 @@ import h5py
 # Raw data is on the Drobo.
 RawDir = '/home/admin/Desktop/Preprocess'
 Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
-FOVSize = 200 # 30 pixels squadwddddare for each image.
+FOVSize = 150 # 30 pixels squadwddddare for each image.
 NumFOVs = 10000 # How many FOVs to extract from the raw data.
 TrainTestValSplit = [0.33, 0.33, 0.33]
 NumTrain = int(NumFOVs*TrainTestValSplit[0])
