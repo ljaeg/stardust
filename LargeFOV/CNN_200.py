@@ -47,7 +47,7 @@ batch_size=int(512/8)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32 
-DenseScale=64 / 2
+DenseScale=64
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
@@ -279,10 +279,10 @@ plt.subplot(234)
 plt.imshow(np.reshape(intermediate_output[:, :, :, 2], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(235)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 30], (intermediate_output.shape[1], intermediate_output.shape[2])))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 20], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.subplot(236)
-plt.imshow(np.reshape(intermediate_output[:, :, :, 40], (intermediate_output.shape[1], intermediate_output.shape[2])))
+plt.imshow(np.reshape(intermediate_output[:, :, :, 41], (intermediate_output.shape[1], intermediate_output.shape[2])))
 plt.axis('off')
 plt.savefig('intermediate_output.png')
 
