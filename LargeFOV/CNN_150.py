@@ -52,11 +52,11 @@ DenseScale=64
 # GN2 = .018
 # GN3 = .14
 # alpha = .24
-GN1 = 0.02
+GN1 = 0.04
 GN2 = 0
 GN3 = 0
 alpha = 0
-dropout_rate = 0.4
+dropout_rate = 0.5
 reg_scale = 0.0001
 
 # Calculate the F1 score which we use for optimizing the CNN.
