@@ -207,11 +207,11 @@ model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu')
 model.add(Dropout(dropout_rate / 2))
 
 model.add(Flatten())
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(4*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
@@ -250,10 +250,10 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/200/{}/dropout:{}/shortened_x'.format(time(), dropout_rate))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July29/150/{}/dropout:{}'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=60,
+                   epochs=50,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
