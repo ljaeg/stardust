@@ -151,7 +151,7 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
