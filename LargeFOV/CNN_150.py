@@ -46,7 +46,7 @@ batch_size=int(512/16)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32 
-DenseScale=64
+DenseScale=64 / 2
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
@@ -151,11 +151,11 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
@@ -189,11 +189,11 @@ model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu',
 model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(Flatten())
-model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
+model.add(Dense(int(4*DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
+model.add(Dense(int(2*DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
