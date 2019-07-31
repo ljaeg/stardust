@@ -51,6 +51,7 @@ DenseScale=64
 # GN2 = .018
 # GN3 = .14
 # alpha = .24
+spatial_d_rate = .1
 GN1 = 0.04
 GN2 = 0
 GN3 = 0
@@ -177,40 +178,40 @@ model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN3))
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
 model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D(pool_size = 2))
 model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l2(.01)))
-model.add(SpatialDropout2D(.2))
+model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(Flatten())
 model.add(Dense(int(2*DenseScale)))
