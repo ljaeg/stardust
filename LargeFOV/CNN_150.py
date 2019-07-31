@@ -214,23 +214,23 @@ model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu',
 model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(Flatten())
-model.add(Dense(int(2*DenseScale, activity_regularizer = regularizers.l2(reg_scale / 10))))
+model.add(Dense(int(2*DenseScale), activity_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(2*DenseScale, activity_regularizer = regularizers.l2(reg_scale / 10))))
+model.add(Dense(int(2*DenseScale), activity_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale, activity_regularizer = regularizers.l2(reg_scale / 10))))
+model.add(Dense(int(DenseScale), activity_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale, activity_regularizer = regularizers.l2(reg_scale / 10))))
+model.add(Dense(int(DenseScale), activity_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(DenseScale, activity_regularizer = regularizers.l2(reg_scale / 10))))
+model.add(Dense(int(DenseScale), activity_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
