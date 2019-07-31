@@ -27,7 +27,7 @@ K.set_floatx('float32')
 
 from keras.models import Sequential, load_model, Model
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool1D, GaussianNoise, BatchNormalization
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
@@ -176,34 +176,34 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
+model.add(MaxPool1D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
+model.add(MaxPool1D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D())
+model.add(MaxPool1D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(.01)))
+model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l1(.01)))
 model.add(LeakyReLU(alpha = alpha))
-model.add(MaxPool2D(pool_size = 2))
-model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l2(.01)))
+model.add(MaxPool1D(pool_size = 2))
+model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l1(.01)))
 model.add(Dropout(dropout_rate / 2))
 
 model.add(Flatten())
@@ -315,13 +315,13 @@ no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1
 yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
 vals_y = high_acc.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
 vals_n = high_acc.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
-# plt.subplot(121)
-# plt.hist(no_preds, bins = 15)
-# plt.title('no craters')
-# plt.subplot(122)
-# plt.hist(yes_preds, bins = 15)
-# plt.title('with craters')
-# plt.savefig('/home/admin/Desktop/GH/CNN_200_hist.png')
+plt.subplot(121)
+plt.hist(no_preds, bins = 15)
+plt.title('no craters')
+plt.subplot(122)
+plt.hist(yes_preds, bins = 15)
+plt.title('with craters')
+plt.savefig('CNN_{}_hist.png'.format(FOVSize))
 
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
