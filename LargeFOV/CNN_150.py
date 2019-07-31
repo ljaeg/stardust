@@ -27,7 +27,7 @@ K.set_floatx('float32')
 
 from keras.models import Sequential, load_model, Model
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool1D, GaussianNoise, BatchNormalization
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
