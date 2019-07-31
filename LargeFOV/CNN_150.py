@@ -176,10 +176,10 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l1(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l1(.01)))
+model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(.01)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(MaxPool1D())
 #model.add(Dropout(dropout_rate / 2))
