@@ -52,12 +52,12 @@ DenseScale=64
 # GN3 = .14
 # alpha = .24
 spatial_d_rate = 0
-GN1 = 0.1
+GN1 = 0.01
 GN2 = 0
 GN3 = 0
 alpha = 0
 dropout_rate = 0.5
-reg_scale = 0.01
+reg_scale = 0.0001
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
