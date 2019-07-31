@@ -22,9 +22,9 @@ session = tf.Session(config=config)
 # config = tf.ConfigProto(intra_op_parallelism_threads=2)
 # session = tf.Session(config=config)
 import keras.backend as K
-dtype = 'float32'
-K.set_floatx('float32')
-# K.set_epsilon(.0001)
+dtype = 'float16'
+K.set_floatx('float16')
+K.set_epsilon(.0001)
 # K.set_session(session)
 
 from keras.models import Sequential, load_model, Model
