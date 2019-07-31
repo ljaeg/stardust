@@ -155,7 +155,7 @@ model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_sha
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
@@ -189,14 +189,6 @@ model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu',
 model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(Flatten())
-model.add(Dense(int(2*DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(dropout_rate))
-
-model.add(Dense(int(2*DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
-model.add(LeakyReLU(alpha = alpha))
-model.add(Dropout(dropout_rate))
-
 model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
@@ -208,6 +200,14 @@ model.add(Dropout(dropout_rate))
 model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
+
+model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
+model.add(LeakyReLU(alpha = alpha))
+model.add(Dropout(dropout_rate))
+
+# model.add(Dense(int(DenseScale), kernel_regularizer = regularizers.l2(reg_scale / 10)))
+# model.add(LeakyReLU(alpha = alpha))
+# model.add(Dropout(dropout_rate))
 
 model.add(Dense(1, activation='sigmoid'))
 
