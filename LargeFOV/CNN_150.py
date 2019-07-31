@@ -22,9 +22,6 @@ session = tf.Session(config=config)
 # config = tf.ConfigProto(intra_op_parallelism_threads=2)
 # session = tf.Session(config=config)
 import keras.backend as K
-dtype = 'float16'
-K.set_floatx('float16')
-K.set_epsilon(.00001)
 # K.set_session(session)
 
 from keras.models import Sequential, load_model, Model
@@ -45,7 +42,7 @@ np.random.seed(5)
 tf.random.set_random_seed(3)
 
 # Train/validate/test info
-batch_size=int(512/8)
+batch_size=int(512/16)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32 
