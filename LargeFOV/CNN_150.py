@@ -110,41 +110,16 @@ TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
+print('before:', len(TrainNo))
 
-# print(len(TrainNo))
-# print(np.max(TrainNo))
-# print(np.min(TrainNo))
-# print(np.max(TrainYes))
-# print(np.min(TrainYes))
-# print(' ')
+TrainNo = TrainNo[:num_ims]
+print('after:', len(TrainNo))
+TrainYes = TrainYes[:num_ims]
+TestNo = TestNo[:num_ims]
+TestYes = TestYes[:num_ims]
+ValNo = ValNo[:num_ims]
+ValYes = ValYes[:num_ims]
 
-# print(np.mean(TrainNo))
-# print(np.mean(TrainYes))
-# print(np.std(TrainNo))
-# print(np.std(TrainYes))
-# #plt.imshow(TrainNo[2, :, :])
-# plt.colorbar()
-# plt.show()
-
-# plt.subplot(321)
-# plt.hist(np.ndarray.flatten(TrainNo))
-# plt.title('No')
-# plt.subplot(322)
-# plt.hist(np.ndarray.flatten(TrainYes))
-# plt.title('Yes')
-# plt.subplot(323)
-# plt.hist(np.ndarray.flatten(TrainNo[0]))
-# plt.hist(np.ndarray.flatten(TrainNo[28]))
-# plt.subplot(324)
-# plt.hist(np.ndarray.flatten(TrainYes[0]))
-# plt.hist(np.ndarray.flatten(TrainYes[28]))
-# plt.subplot(325)
-# plt.imshow(TrainNo[0])
-# plt.colorbar()
-# plt.subplot(326)
-# plt.imshow(TrainYes[0])
-# plt.colorbar()
-# plt.savefig('img_distributions')
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
