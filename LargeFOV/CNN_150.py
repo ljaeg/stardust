@@ -24,7 +24,7 @@ session = tf.Session(config=config)
 import keras.backend as K
 dtype = 'float16'
 K.set_floatx('float16')
-K.set_epsilon(.0001)
+K.set_epsilon(.00001)
 # K.set_session(session)
 
 from keras.models import Sequential, load_model, Model
