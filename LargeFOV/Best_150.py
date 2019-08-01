@@ -232,10 +232,10 @@ EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
-TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July31/150/{}/dropout:{}/test'.format(time(), dropout_rate))
+TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July31/150/{}/dropout:{}/frombest'.format(time(), dropout_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=50,
+                   epochs=10,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
