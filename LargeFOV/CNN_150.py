@@ -56,7 +56,7 @@ GN1 = 0.03
 GN2 = 0
 GN3 = 0
 alpha = 0
-dropout_rate = 0.5
+dropout_rate = 0.50
 reg_scale = 0.0001
 
 # Calculate the F1 score which we use for optimizing the CNN.
