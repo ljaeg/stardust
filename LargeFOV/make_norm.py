@@ -23,7 +23,7 @@ ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
 
-normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_normed.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_normed_01.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
@@ -70,7 +70,7 @@ def norm(dataset):
 	q = np.reshape(q, s)
 
 	new = (new - p) / (q - p)
-	new = new - .5
+	#new = new - .5
 	return new
 
 new_TrainYes = norm(TrainYes)
