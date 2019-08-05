@@ -282,7 +282,7 @@ def make_and_save_filter_img(layer_number):
   intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 150, 150, 1)))
   s = intermediate_output.shape
   first = int(s[3] / 2)
-  sec = int(s[3])
+  sec = int(s[3] - 1)
   plt.subplot(4,3,1)
   plt.imshow(TestNo[1])
   plt.title('original')
