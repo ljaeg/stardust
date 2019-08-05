@@ -280,8 +280,10 @@ model.fit_generator(generator=train_generator,
                    )
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
-def make_and_save_filter_img(layer_number):
+def make_and_save_filter_img(layer_number, pool = None):
   layer_name = 'conv2d_{}'.format(layer_number)
+  if pool:
+    layer_name = pool
   intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
   intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 150, 150, 1)))
   s = intermediate_output.shape
@@ -334,6 +336,8 @@ def make_and_save_filter_img(layer_number):
 make_and_save_filter_img(1)
 make_and_save_filter_img(2)
 make_and_save_filter_img(3)
+make_and_save_filter_img(4, pool = "max_pooling2d_2")
+make_and_save_filter_img(4, pool = "max_pooling2d_3")
 # make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
 # make_and_save_filter_img(6)
