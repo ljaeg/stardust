@@ -35,7 +35,7 @@ from keras import regularizers
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 
-from scipy.misc import imread
+#from scipy.misc import imread
 
 np.random.seed(5)
 tf.random.set_random_seed(3)
