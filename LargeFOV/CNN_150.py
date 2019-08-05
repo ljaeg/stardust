@@ -267,7 +267,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July31/150/{}/dropout:{}/sd:{}/fromreg/0to1'.format(round(time(), 4), dropout_rate, spatial_d_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=100,
+                   epochs=30,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
