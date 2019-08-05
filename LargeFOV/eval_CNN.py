@@ -4,6 +4,26 @@ import tensorflow as tf
 import keras.backend as K
 import h5py 
 from keras.models import Sequential, load_model, Model
+import os
+
+DataDir = '/home/admin/Desktop/Preprocess'
+DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
+#TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
+FOVSize = DataFile.attrs['FOVSize']
+NumFOVs = DataFile.attrs['NumFOVs']
+try:
+  Foils = DataFile.attrs['Foils'].split(',')
+except:
+  Foils = DataFile.attrs['Foils']
+# Read the Train/Test/Val datasets.
+num_ims = int(NumFOVs*.33)
+ad_sub = 0
+TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
+TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
+TestNo = np.array(DataFile['TestNo'])[:num_ims]
+TestYes = np.array(DataFile['TestYes'])[:num_ims]
+ValNo = np.array(DataFile['ValNo'])[:num_ims]
+ValYes = np.array(DataFile['ValYes'])[:num_ims]
 
 FOVSize = 150
 
