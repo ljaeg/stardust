@@ -35,6 +35,7 @@ from sklearn.utils import shuffle
 
 #from scipy.misc import imread
 
+
 # Train/validate/test info
 batch_size=int(512 * 1)
 class_weight={0: 1, 1: 1}

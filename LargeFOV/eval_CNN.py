@@ -119,11 +119,9 @@ def make_and_save_filter_img(layer_number, pool = None):
 make_and_save_filter_img(1)
 make_and_save_filter_img(2)
 make_and_save_filter_img(3)
-make_and_save_filter_img('pool', pool = "max_pooling2d_2")
-#make_and_save_filter_img(4, pool = "max_pooling2d_3")
-# make_and_save_filter_img(4)
-# make_and_save_filter_img(5)
-# make_and_save_filter_img(6)
+make_and_save_filter_img(4)
+make_and_save_filter_img(5)
+make_and_save_filter_img(6)
 
 
 no_preds = model.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
