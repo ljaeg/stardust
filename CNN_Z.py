@@ -33,7 +33,7 @@ from keras.optimizers import Nadam
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 
-from scipy.misc import imread
+#from scipy.misc import imread
 
 # Train/validate/test info
 batch_size=int(512 * 1)
