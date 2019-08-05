@@ -5,6 +5,10 @@ import keras.backend as K
 import h5py 
 from keras.models import Sequential, load_model, Model
 import os
+import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
 
 DataDir = '/home/admin/Desktop/Preprocess'
 DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
