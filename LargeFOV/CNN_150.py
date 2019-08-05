@@ -26,7 +26,7 @@ import keras.backend as K
 
 from keras.models import Sequential, load_model, Model
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D, MaxPool2D
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
@@ -58,6 +58,7 @@ GN3 = 0
 alpha = 0
 dropout_rate = 0.3
 reg_scale = 0.0001
+kernel_size = 3
 
 # Calculate the F1 score which we use for optimizing the CNN.
 def f1_acc(y_true, y_pred):
@@ -102,14 +103,14 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-num_ims = 1000
+num_ims = int(NumFOVs*.33)
 ad_sub = 0
-TrainNo = DataFile['TrainNo']
-TrainYes = DataFile['TrainYes']
-TestNo = DataFile['TestNo']
-TestYes = DataFile['TestYes']
-ValNo = DataFile['ValNo']
-ValYes = DataFile['ValYes']
+TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
+TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
+TestNo = np.array(DataFile['TestNo'])[:num_ims]
+TestYes = np.array(DataFile['TestYes'])[:num_ims]
+ValNo = np.array(DataFile['ValNo'])[:num_ims]
+ValYes = np.array(DataFile['ValYes'])[:num_ims]
 print('before:', len(TrainNo))
 
 y1 = TrainYes[200]
@@ -178,41 +179,41 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(4*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(4*ConvScale), (3,3), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(4*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(2*ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(ConvScale), (3,3), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D(pool_size = 2))
-model.add(Conv2D(int(ConvScale), (3, 3), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(ConvScale), (int(kernel_size), int(kernel_size)), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(Flatten())
@@ -224,7 +225,11 @@ model.add(Dense(int(2*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
-model.add(Dense(int(2*DenseScale)))
+model.add(Dense(int(DenseScale)))
+model.add(LeakyReLU(alpha = alpha))
+model.add(Dropout(dropout_rate))
+
+model.add(Dense(int(DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
@@ -262,7 +267,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July31/150/{}/dropout:{}/sd:{}/fromreg/0to1'.format(round(time(), 4), dropout_rate, spatial_d_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=30,
+                   epochs=100,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
