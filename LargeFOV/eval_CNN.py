@@ -5,6 +5,7 @@ import keras.backend as K
 import h5py 
 from keras.models import Sequential, load_model, Model
 
+FOVsize = 150
 
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
