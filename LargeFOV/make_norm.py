@@ -12,7 +12,7 @@ not_normed = h5.File(os.path.join(Dir, 'FOV100_Num10000_b.hdf5'), 'r')
 
 FOVSize = not_normed.attrs['FOVSize']
 NumFOVs = not_normed.attrs['NumFOVs']
-Foils = not_normed.attrs['Foils']
+Foils = not_normed.attrs['Foils'].split(',')
 print(Foils)
 # Read the Train/Test/Val datasets.
 TrainNo = not_normed['TrainNo']
