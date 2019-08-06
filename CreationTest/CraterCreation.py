@@ -21,7 +21,7 @@ RunDir = '/home/admin/Desktop/Aug6'
 
 ### LOAD THE HDF.
 DataFile = h5py.File(os.path.join(RunDir, 'C_.hdf5'), 'r+')
-TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
+#TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 Foils = DataFile.attrs['Foils'].split(',')
