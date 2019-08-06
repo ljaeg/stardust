@@ -6,7 +6,7 @@ import os
 RD = '/home/admin/Desktop/Aug6'
 
 x = ['A', 'B', 'C', 'D']
-y = ['E']
+y = ['Middle_FOV150_Num10k']
 for letter in y:
 	dataset = h5.File(os.path.join(RD, '{}.hdf5'.format(letter)), 'r')
 	Yes = np.array(dataset['TrainYes'])
