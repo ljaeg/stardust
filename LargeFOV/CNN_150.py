@@ -89,6 +89,12 @@ def f1_acc(y_true, y_pred):
 
     return f1_score
 
+def lr_schedule(epoch):
+  orig = .01
+  mult = .25 
+  e = 2.7
+  return orig*(e**(mult*epoch))
+
 
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
