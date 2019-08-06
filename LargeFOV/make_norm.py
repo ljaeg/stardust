@@ -12,7 +12,10 @@ not_normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_noside.hdf5'), 'r')
 
 FOVSize = not_normed.attrs['FOVSize']
 NumFOVs = not_normed.attrs['NumFOVs']
-Foils = not_normed.attrs['Foils'].split(',')
+try:
+	Foils = not_normed.attrs['Foils'].split(',')
+except:
+	Foils = not_normed.attrs['Foils']
 print(Foils)
 # Read the Train/Test/Val datasets.
 TrainNo = not_normed['TrainNo']
@@ -29,7 +32,7 @@ normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
 
 # plt.subplot(231)
-# plt.imshow(TrainYes[23], cmap = 'gray')
+# plt.imshow(TrainYes[23], cmap = 'gray') 
 # plt.title('Yes:23')
 # plt.colorbar()
 # plt.subplot(232)
