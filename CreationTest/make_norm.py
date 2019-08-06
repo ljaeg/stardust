@@ -6,7 +6,7 @@ import matplotlib
 
 ##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 Dir = '/home/admin/Desktop/Aug6'
-not_normed = h5.File(os.path.join(Dir, 'C.hdf5'), 'r')
+not_normed = h5.File(os.path.join(Dir, 'D.hdf5'), 'r')
 # testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 # not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
@@ -26,7 +26,7 @@ ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
 
-normed = h5.File(os.path.join(Dir, 'C_.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'D_.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
