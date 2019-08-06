@@ -24,7 +24,7 @@ DataFile = h5py.File(os.path.join(RunDir, 'C_.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
-Foils = DataFile.attrs['Foils'].split(',')
+#Foils = DataFile.attrs['Foils'].split(',')
 # Read the Train/Test/Val datasets.
 TrainNo = DataFile['TrainNo']
 TrainYes = DataFile['TrainYes']
