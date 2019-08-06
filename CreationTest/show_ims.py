@@ -1,0 +1,29 @@
+import numpy as np 
+import matplotlib.pyplot as plt 
+import h5py 
+
+RD = '/home/admin/Desktop/Aug6'
+
+for letter in ['A', 'B_', 'C_', 'D']:
+	dataset = h5.File(os.path.join(RD, '{}.hdf5'.format(letter)), 'r')
+	Yes = np.array(dataset['TrainYes'])
+	No = np.array(dataset['TrainNo'])
+	def do_show(data):
+		n = 1
+		for im in data:
+			plt.imshow(im, cmap = 'gray')
+			plt.title('[{}], yes, {}'.format(letter, n))
+			n += 1
+			plt.axis('off')
+			plt.show()
+			plt.waitforbuttonpress(10)
+			plt.close()
+			if n % 10:
+				x = input('stop and move on? ("y" if so)')
+				if x == 'y':
+					break
+
+	do_show(Yes)
+	do_show(No)
+
+
