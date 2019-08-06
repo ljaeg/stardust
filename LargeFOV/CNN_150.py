@@ -100,7 +100,7 @@ def lr_schedule(epoch):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_noside.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -153,7 +153,6 @@ plt.show()
 # TestYes = TestYes[:num_ims]
 # ValNo = ValNo[:num_ims]
 # ValYes = ValYes[:num_ims]
-
 
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
