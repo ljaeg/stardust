@@ -41,7 +41,7 @@ Craters = []
 for c in CraterNames:
     Craters.append(imread(c)/255)
 np.random.seed(42)
-print('len of craters: 'len(Craters))
+print('len of craters: ', len(Craters))
 
 def AddCraters(Data, Craters):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
