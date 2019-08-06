@@ -39,7 +39,7 @@ def f1_acc(y_true, y_pred):
     return f1_score
 
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_noside.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_noside_normed.hdf5'), 'r+')
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
@@ -55,6 +55,12 @@ TestNo = DataFile['TestNo']
 TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
+
+for i in range(20):
+	plt.imshow(np.reshape(TrainYes[i], (FOVSize, FOVSize)), cmap = 'gray')
+	plt.show(block = False)
+	plt.waitforbuttonpress(10)
+	plt.close()
 
 TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 TestAnswers = np.ones(len(TestNo) + len(TestYes))
