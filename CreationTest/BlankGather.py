@@ -15,9 +15,12 @@ Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
 FOVSize = 150 # 30 pixels squadwddddare for each image.
 NumFOVs = 100 # How many FOVs to extract from the raw data.
 TrainTestValSplit = [0.33, 0.33, 0.33]
-NumTrain = int(NumFOVs*TrainTestValSplit[0])
-NumTest = int(NumFOVs*TrainTestValSplit[1])
-NumVal = int(NumFOVs*TrainTestValSplit[2])
+# NumTrain = int(NumFOVs*TrainTestValSplit[0])
+# NumTest = int(NumFOVs*TrainTestValSplit[1])
+# NumVal = int(NumFOVs*TrainTestValSplit[2])
+NumTrain = NumFOVs
+NumTest = NumFOVs
+NumVal = NumFOVs
  
 ### SCAN THE RAW DATA
 # We don't need to redo globbing if we already globbed.
