@@ -99,8 +99,8 @@ def lr_schedule(epoch):
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
-DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_noside_normed.hdf5'), 'r+')
+DataDir = '/home/admin/Desktop/Aug6'
+DataFile = h5py.File(os.path.join(DataDir, 'Middle_FOV150_Num10k.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -109,7 +109,7 @@ try:
 except:
   Foils = DataFile.attrs['Foils']
 # Read the Train/Test/Val datasets.
-num_ims = int(NumFOVs*.33)
+num_ims = int(NumFOVs)
 ad_sub = 0
 TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
 TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
