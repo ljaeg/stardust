@@ -36,7 +36,7 @@ ValYes = DataFile['ValYes']
 # LOAD CRATER IMAGES AND MAKE AUGMENTED IMAGES
 # The augmented images will be scaled, rotated, stretched a bit (aspect ratio).  We will add noise at the input to the CNN, so we don't do that here.
 RD = '/home/admin/Desktop/GH'
-CraterNames = glob(pathname=os.path.join(RD, 'Alpha crater images', '*.png'))
+CraterNames = glob(pathname=os.path.join(RD, 'Alpha_Craters', '*.png'))
 Craters = []
 for c in CraterNames:
     Craters.append(imread(c)/255)
