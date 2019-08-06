@@ -143,7 +143,7 @@ plt.title('all yes')
 plt.subplot(326)
 plt.hist(np.ndarray.flatten(np.array(TrainNo)))
 plt.title('all no')
-plt.save('no_side.png')
+plt.savefig('no_side.png')
 
 
 # TrainNo = TrainNo[:num_ims]
