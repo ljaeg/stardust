@@ -16,7 +16,7 @@ for letter in ['A', 'B', 'C', 'D']:
 			plt.title('[{}], yes, {}'.format(letter, n))
 			n += 1
 			plt.axis('off')
-			plt.show()
+			plt.show(block = False)
 			plt.waitforbuttonpress(10)
 			plt.close()
 			if n % 10:
