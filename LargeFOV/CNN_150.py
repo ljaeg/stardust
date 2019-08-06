@@ -124,7 +124,7 @@ y2 = TrainYes[305]
 n1 = TrainNo[200]
 n2 = TrainNo[305]
 
-"""
+
 plt.subplot(321)
 plt.hist(np.ndarray.flatten(y1))
 plt.title('y1')
@@ -143,8 +143,8 @@ plt.title('all yes')
 plt.subplot(326)
 plt.hist(np.ndarray.flatten(np.array(TrainNo)))
 plt.title('all no')
-plt.show()
-"""
+plt.save('no_side.png')
+
 
 # TrainNo = TrainNo[:num_ims]
 # print('after:', len(TrainNo))
