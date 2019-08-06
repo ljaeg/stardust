@@ -10,7 +10,7 @@ import h5py
 
 ### SETUP PARAMETERS
 # Raw data is on the Drobo.
-RawDir = '/Volumes/MobileData/SAH/Raw Data'
+RawDir = '/home/admin/Desktop/NEW_Images'
 Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
 FOVSize = 30 # 30 pixels squadwddddare for each image.
 NumFOVs = 100000 # How many FOVs to extract from the raw data.
@@ -22,7 +22,7 @@ NumVal = int(NumFOVs*TrainTestValSplit[2])
 ### SCAN THE RAW DATA
 # We don't need to redo globbing if we already globbed.
 try:
-    with open('GlobbedFiles.txt', 'r') as f:
+    with open('GlobbedFiles_Aug6.txt', 'r') as f:
         GlobbedFiles = f.read().splitlines()
 except IOError as e:
     GlobbedFiles = []
@@ -30,12 +30,12 @@ except IOError as e:
         d = os.path.join(RawDir, d, '*.tif')
         g = glob(pathname=d)
         GlobbedFiles += list(g)
-    with open('GlobbedFiles.txt', 'w') as f:
+    with open('GlobbedFiles_Aug6.txt', 'w') as f:
         f.writelines('%s\n' % n for n in GlobbedFiles)
 print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
 ### MAKE HDF TO HOLD OUR IMAGES.
-DataFile = h5py.File('Data.hdf5', 'w')
+DataFile = h5py.File('/home/admin/Desktop/Aug6/A.hdf5', 'w')
 DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
 DataFile.attrs['FOVSize'] = FOVSize
 DataFile.attrs['NumFOVs'] = NumFOVs
