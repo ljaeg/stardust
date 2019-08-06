@@ -5,8 +5,8 @@ import matplotlib
 # import matplotlib.pyplot
 
 ##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
-Dir = '/home/admin/Desktop/Preprocess'
-not_normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_noside.hdf5'), 'r')
+Dir = '/home/admin/Desktop/Aug6'
+not_normed = h5.File(os.path.join(Dir, 'B.hdf5'), 'r')
 # testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 # not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
@@ -73,6 +73,7 @@ def norm(dataset):
 	q = np.reshape(q, s)
 
 	new = (new - p) / (q - p)
+	print(np.mean(new))
 	#new = new - .5
 	return new
 
