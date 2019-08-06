@@ -5,7 +5,9 @@ import os
 
 RD = '/home/admin/Desktop/Aug6'
 
-for letter in ['A', 'B', 'C', 'D']:
+x = ['A', 'B', 'C', 'D']
+y = ['E']
+for letter in y:
 	dataset = h5.File(os.path.join(RD, '{}.hdf5'.format(letter)), 'r')
 	Yes = np.array(dataset['TrainYes'])
 	No = np.array(dataset['TrainNo'])
