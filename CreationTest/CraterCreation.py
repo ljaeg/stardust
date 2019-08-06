@@ -49,7 +49,7 @@ def AddCraters(Data, Craters):
     rotate = np.random.random(Data.shape[0])*360
     shift = np.random.uniform(low = 0, high = 1, size = (Data.shape[0],2))-0.5
     aspect = np.random.normal(1, 0.1, Data.shape[0])
-    CraterIndices = np.random.randint(low=0, high = int(len(Craters)-1), size=Data.shape[0])
+    CraterIndices = np.random.randint(len(Craters), size=Data.shape[0])
 
     # Now make all the transformed craters
     for n, i in enumerate(CraterIndices):
