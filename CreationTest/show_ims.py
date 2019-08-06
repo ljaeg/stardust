@@ -19,7 +19,7 @@ for letter in ['A', 'B', 'C', 'D']:
 			plt.show(block = False)
 			plt.waitforbuttonpress(10)
 			plt.close()
-			if n % 10:
+			if n % 10 == 0:
 				x = input('stop and move on? ("y" if so)')
 				if x == 'y':
 					break
