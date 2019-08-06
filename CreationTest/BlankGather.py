@@ -38,7 +38,7 @@ except IOError as e:
 print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
 ### MAKE HDF TO HOLD OUR IMAGES.
-DataFile = h5py.File('/home/admin/Desktop/Aug6/E.hdf5', 'w')
+DataFile = h5py.File('/home/admin/Desktop/Aug6/Middle_FOV150_Num10k_blanks.hdf5', 'w')
 DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
 DataFile.attrs['FOVSize'] = FOVSize
 DataFile.attrs['NumFOVs'] = NumFOVs
