@@ -18,7 +18,7 @@ TrainTestValSplit = [0.33, 0.33, 0.33]
 NumTrain = int(NumFOVs*TrainTestValSplit[0])
 NumTest = int(NumFOVs*TrainTestValSplit[1])
 NumVal = int(NumFOVs*TrainTestValSplit[2])
-
+ 
 ### SCAN THE RAW DATA
 # We don't need to redo globbing if we already globbed.
 try:

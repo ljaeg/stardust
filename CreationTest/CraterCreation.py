@@ -11,16 +11,16 @@ from scipy import ndimage as ndi
 
 ### SETUP PARAMETERS
 # Raw data is on the Drobo.
-RunDir = '/Users/Zack/Desktop/SAH convnet v2/Data'
+RunDir = '/home/admin/Desktop/Aug6'
 
-try:
-    os.remove(os.path.join(RunDir, 'Data.hdf5'))
-except:
-    pass
-shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
+# try:
+#     os.remove(os.path.join(RunDir, 'Data.hdf5'))
+# except:
+#     pass
+# shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
 ### LOAD THE HDF.
-DataFile = h5py.File(os.path.join(RunDir, 'Data.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(RunDir, 'A.hdf5'), 'r+')
 TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -35,7 +35,8 @@ ValYes = DataFile['ValYes']
 
 # LOAD CRATER IMAGES AND MAKE AUGMENTED IMAGES
 # The augmented images will be scaled, rotated, stretched a bit (aspect ratio).  We will add noise at the input to the CNN, so we don't do that here.
-CraterNames = glob(pathname=os.path.join(RunDir, 'Alpha crater images', '*.png'))
+RD = '/home/admin/Desktop/GH'
+CraterNames = glob(pathname=os.path.join(RD, 'Alpha crater images', '*.png'))
 Craters = []
 for c in CraterNames:
     Craters.append(imread(c)/255)
@@ -45,7 +46,7 @@ def AddCraters(Data, Craters):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
     scale = np.random.random(Data.shape[0])
     rotate = np.random.random(Data.shape[0])*360
-    shift = np.random.random((Data.shape[0],2))-0.5
+    shift = np.random.uniform(low = 0, high = 1, size = (Data.shape[0],2))-0.5
     aspect = np.random.normal(1, 0.1, Data.shape[0])
     CraterIndices = np.random.randint(len(Craters), size=Data.shape[0])
 
