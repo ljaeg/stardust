@@ -24,7 +24,7 @@ TestNo = np.array(not_normed['TestNo'])
 TestYes = np.array(not_normed['TestYes'])
 ValNo = np.array(not_normed['ValNo'])
 ValYes = np.array(not_normed['ValYes'])
-
+not_normed.close()
 
 normed = h5.File(os.path.join(Dir, 'B.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
