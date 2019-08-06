@@ -26,7 +26,7 @@ ValNo = not_normed['ValNo']
 ValYes = not_normed['ValYes']
 
 
-normed = h5.File(os.path.join(Dir, 'FOV150_Num10000_noside_normed.hdf5'), 'w')
+normed = h5.File(os.path.join(Dir, 'B_.hdf5'), 'w')
 normed.attrs.create('FOVSize', FOVSize)
 normed.attrs.create("NumFOVs", NumFOVs)
 normed.attrs.create('Foils', Foils)
