@@ -56,7 +56,7 @@ GN1 = 0
 GN2 = 0
 GN3 = 0
 alpha = 0
-dropout_rate = 0.4
+dropout_rate = 0.3
 reg_scale = 0.0001
 kernel_size = 3
 
