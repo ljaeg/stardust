@@ -99,8 +99,8 @@ def lr_schedule(epoch):
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
-DataDir = '/home/admin/Desktop/Aug6'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed.hdf5'), 'r+')
+DataDir = '/home/admin/Desktop'
+DataFile = h5py.File(os.path.join(DataDir, 'Preprocess','FOV150_Num10000_normed_01.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
@@ -111,12 +111,12 @@ except:
 # Read the Train/Test/Val datasets.
 num_ims = int(NumFOVs)
 ad_sub = 0
-TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
-TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
-TestNo = np.array(DataFile['TestNo'])[:num_ims]
-TestYes = np.array(DataFile['TestYes'])[:num_ims]
-ValNo = np.array(DataFile['ValNo'])[:num_ims]
-ValYes = np.array(DataFile['ValYes'])[:num_ims]
+TrainNo = np.array(DataFile['TrainNo'])
+TrainYes = np.array(DataFile['TrainYes'])
+TestNo = np.array(DataFile['TestNo'])
+TestYes = np.array(DataFile['TestYes'])
+ValNo = np.array(DataFile['ValNo'])
+ValYes = np.array(DataFile['ValYes'])
 print('before:', len(TrainNo))
 
 y1 = TrainYes[200]
@@ -343,6 +343,10 @@ high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.fo
 # # make_and_save_filter_img(4)
 # # make_and_save_filter_img(5)
 # # make_and_save_filter_img(6)
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
+TestNo = DF['TestNo']
+TestYes = DF['TestYes']
 
 
 no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
