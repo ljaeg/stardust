@@ -26,7 +26,7 @@ import keras.backend as K
 
 from keras.models import Sequential, load_model, Model
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D, AveragePooling2D, GlobalAveragePooling2D
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D, GlobalAveragePooling2D, GlobalMaxPooling2D
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
@@ -222,7 +222,7 @@ model.add(MaxPool2D(pool_size = 2))
 model.add(Conv2D(int(ConvScale), (int(kernel_size), int(kernel_size)), padding = 'valid', activation = 'relu', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(SpatialDropout2D(spatial_d_rate))
 
-model.add(GlobalAveragePooling2D())
+model.add(GlobalMaxPooling2D())
 #model.add(Flatten())
 model.add(Dense(int(2*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
