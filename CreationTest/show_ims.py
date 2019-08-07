@@ -36,7 +36,7 @@ b = h5.File(os.path.join(RD, '{}.hdf5'.format(B)), 'r')
 ValY_nb = np.array(nb['ValYes'])
 TestY_nb = np.array(nb['TestYes'])
 
-ValY_b = np.array(b['ValYes'])
+ValY_b = np.array(b['TrainYes'])
 TestY_b = np.array(b['TestYes'])
 
 plt.subplot(231)
