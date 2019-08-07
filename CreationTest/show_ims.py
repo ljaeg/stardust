@@ -29,7 +29,7 @@ y = ['Middle_FOV150_Num10k']
 # 	do_show(Yes)
 # 	do_show(No)
 A = 'Middle_FOV150_Num10k'
-B = 'Middle_FOV150_Num10k_blanks'
+B = 'Middle_FOV150_Num10k_new'
 nb = h5.File(os.path.join(RD, '{}.hdf5'.format(A)), 'r')
 b = h5.File(os.path.join(RD, '{}.hdf5'.format(B)), 'r')
 
