@@ -184,11 +184,11 @@ input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(4*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(4*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
@@ -224,7 +224,7 @@ model.add(SpatialDropout2D(spatial_d_rate))
 
 model.add(GlobalAveragePooling2D())
 #model.add(Flatten())
-model.add(Dense(int(4*DenseScale)))
+model.add(Dense(int(2*DenseScale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(Dropout(dropout_rate))
 
