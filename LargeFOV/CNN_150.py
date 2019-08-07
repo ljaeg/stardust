@@ -100,7 +100,7 @@ def lr_schedule(epoch):
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 DataDir = '/home/admin/Desktop/Aug6'
-DataFile = h5py.File(os.path.join(DataDir, 'Middle_FOV150_Num10k.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'Middle_FOV150_Num10k_new.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
