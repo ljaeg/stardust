@@ -280,7 +280,7 @@ model.fit_generator(generator=train_generator,
                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                    class_weight=class_weight
                    )
-# high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
 # def make_and_save_filter_img(layer_number, pool = None):
 #   layer_name = 'conv2d_{}'.format(layer_number)
