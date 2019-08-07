@@ -144,6 +144,7 @@ plt.subplot(326)
 plt.hist(np.ndarray.flatten(np.array(TrainNo)))
 plt.title('all no')
 plt.savefig('no_side.png')
+plt.close()
 
 
 # TrainNo = TrainNo[:num_ims]
@@ -274,7 +275,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=3,
+                   epochs=20,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -336,14 +337,15 @@ def make_and_save_filter_img(layer_number, model = high_acc, pool = None):
   plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
   plt.axis('off')
   plt.savefig('intermediate_output_{}_layer:{}.png'.format(FOVSize, layer_number))
+  plt.close()
 make_and_save_filter_img(1)
 make_and_save_filter_img(2)
-make_and_save_filter_img(3)
-make_and_save_filter_img(4, pool = "max_pooling2d_2")
-make_and_save_filter_img(4, pool = "max_pooling2d_3")
-# make_and_save_filter_img(4)
+#make_and_save_filter_img(3)
+# make_and_save_filter_img(4, pool = "max_pooling2d_2")
+# make_and_save_filter_img(4, pool = "max_pooling2d_3")
+make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
-# make_and_save_filter_img(6)
+make_and_save_filter_img(6)
 
 DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
 TestNo = DF['TestNo']
