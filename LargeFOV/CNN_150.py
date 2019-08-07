@@ -45,8 +45,8 @@ tf.random.set_random_seed(3)
 batch_size=int(512/16)
 class_weight={0: 1, 1: 1}
 epochs = 100
-ConvScale=32 / 2
-DenseScale=64
+ConvScale=32
+DenseScale=64 / 2
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
