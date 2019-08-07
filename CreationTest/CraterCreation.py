@@ -20,7 +20,7 @@ RunDir = '/home/admin/Desktop/Aug6'
 # shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
 ### LOAD THE HDF.
-DataFile = h5py.File(os.path.join(RunDir, 'Middle_FOV150_Num10k_blanks.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(RunDir, 'Middle_FOV150_Num10k_new.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
