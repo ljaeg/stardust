@@ -273,7 +273,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July31/150/{}/dropout:{}/sd:{}/fromreg/0to1'.format(round(time(), 4), dropout_rate, spatial_d_rate))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=30,
+                   epochs=20,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -345,10 +345,10 @@ model.fit_generator(generator=train_generator,
 # # make_and_save_filter_img(6)
 
 
-# no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-# yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
-# vals_y = high_acc.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
-# vals_n = high_acc.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+vals_y = high_acc.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
+vals_n = high_acc.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
 # plt.subplot(121)
 # plt.hist(no_preds, bins = 15)
 # plt.title('no craters')
@@ -357,17 +357,17 @@ model.fit_generator(generator=train_generator,
 # plt.title('with craters')
 # plt.savefig('CNN_{}_hist.png'.format(FOVSize))
 
-# x = len([i for i in no_preds if i < .5]) / len(no_preds)
-# y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
 
-# print('no:')
-# print(x)
-# print('yes:')
-# print(y)
-# print('total:')
-# print((x + y) / 2)
-# print('val:')
-# print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
+print('no:')
+print(x)
+print('yes:')
+print(y)
+print('total:')
+print((x + y) / 2)
+print('val:')
+print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
 
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
