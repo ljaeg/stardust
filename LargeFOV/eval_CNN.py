@@ -10,7 +10,7 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 
-# DataDir = '/home/admin/Desktop/Preprocess'
+DataDir = '/home/admin/Desktop'
 # DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
 # #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 # FOVSize = DataFile.attrs['FOVSize']
