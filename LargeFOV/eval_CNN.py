@@ -10,24 +10,24 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 
-DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
-#TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
-FOVSize = DataFile.attrs['FOVSize']
-NumFOVs = DataFile.attrs['NumFOVs']
-try:
-  Foils = DataFile.attrs['Foils'].split(',')
-except:
-  Foils = DataFile.attrs['Foils']
-# Read the Train/Test/Val datasets.
-num_ims = int(NumFOVs*.33)
-ad_sub = 0
-TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
-TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
-TestNo = np.array(DataFile['TestNo'])[:num_ims]
-TestYes = np.array(DataFile['TestYes'])[:num_ims]
-ValNo = np.array(DataFile['ValNo'])[:num_ims]
-ValYes = np.array(DataFile['ValYes'])[:num_ims]
+# DataDir = '/home/admin/Desktop/Preprocess'
+# DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
+# #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
+# FOVSize = DataFile.attrs['FOVSize']
+# NumFOVs = DataFile.attrs['NumFOVs']
+# try:
+#   Foils = DataFile.attrs['Foils'].split(',')
+# except:
+#   Foils = DataFile.attrs['Foils']
+# # Read the Train/Test/Val datasets.
+# num_ims = int(NumFOVs*.33)
+# ad_sub = 0
+# TrainNo = np.array(DataFile['TrainNo'])[:num_ims]
+# TrainYes = np.array(DataFile['TrainYes'])[:num_ims]
+# TestNo = np.array(DataFile['TestNo'])[:num_ims]
+# TestYes = np.array(DataFile['TestYes'])[:num_ims]
+# ValNo = np.array(DataFile['ValNo'])[:num_ims]
+# ValYes = np.array(DataFile['ValYes'])[:num_ims]
 
 FOVSize = 150
 
@@ -60,74 +60,78 @@ def f1_acc(y_true, y_pred):
     return f1_score
 
 model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
-model.summary()
+# model.summary()
 
-def make_and_save_filter_img(layer_number, pool = None):
-  layer_name = 'conv2d_{}'.format(layer_number)
-  if pool:
-    layer_name = pool
-  intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
-  intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 150, 150, 1)))
-  s = intermediate_output.shape
-  first = int(s[3] / 2)
-  sec = int(s[3] - 1)
-  plt.subplot(4,3,1)
-  plt.imshow(TestNo[1])
-  plt.title('original')
-  plt.axis('off')
-  plt.subplot(4,3,2)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
-  plt.subplot(4,3,3)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
+# def make_and_save_filter_img(layer_number, pool = None):
+#   layer_name = 'conv2d_{}'.format(layer_number)
+#   if pool:
+#     layer_name = pool
+#   intermediate_layer_model = Model(inputs=model.input, outputs=model.get_layer(layer_name).output)
+#   intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[1], (1, 150, 150, 1)))
+#   s = intermediate_output.shape
+#   first = int(s[3] / 2)
+#   sec = int(s[3] - 1)
+#   plt.subplot(4,3,1)
+#   plt.imshow(TestNo[1])
+#   plt.title('original')
+#   plt.axis('off')
+#   plt.subplot(4,3,2)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
+#   plt.subplot(4,3,3)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
 
-  intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[10], (1, 150, 150, 1)))
-  plt.subplot(4,3,4)
-  plt.imshow(TestNo[10])
-  plt.axis('off')
-  plt.subplot(4,3,5)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
-  plt.subplot(4,3,6)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
+#   intermediate_output = intermediate_layer_model.predict(np.reshape(TestNo[10], (1, 150, 150, 1)))
+#   plt.subplot(4,3,4)
+#   plt.imshow(TestNo[10])
+#   plt.axis('off')
+#   plt.subplot(4,3,5)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
+#   plt.subplot(4,3,6)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
 
-  intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[25], (1, 150, 150, 1)))
-  plt.subplot(4,3,7)
-  plt.imshow(TestYes[25])
-  plt.axis('off')
-  plt.subplot(4,3,8)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
-  plt.subplot(4,3,9)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
+#   intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[25], (1, 150, 150, 1)))
+#   plt.subplot(4,3,7)
+#   plt.imshow(TestYes[25])
+#   plt.axis('off')
+#   plt.subplot(4,3,8)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
+#   plt.subplot(4,3,9)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
 
-  intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[36], (1, 150, 150, 1)))
-  plt.subplot(4,3,10)
-  plt.imshow(TestYes[36])
-  plt.axis('off')
-  plt.subplot(4,3,11)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
-  plt.subplot(4,3,12)
-  plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
-  plt.axis('off')
-  plt.savefig('intermediate_output_{}_layer{}.png'.format(FOVSize, layer_number))
-  plt.close()
-make_and_save_filter_img(1)
-make_and_save_filter_img(2)
-make_and_save_filter_img(3)
-make_and_save_filter_img(4)
-make_and_save_filter_img(5)
-make_and_save_filter_img(6)
+#   intermediate_output = intermediate_layer_model.predict(np.reshape(TestYes[36], (1, 150, 150, 1)))
+#   plt.subplot(4,3,10)
+#   plt.imshow(TestYes[36])
+#   plt.axis('off')
+#   plt.subplot(4,3,11)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, first], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
+#   plt.subplot(4,3,12)
+#   plt.imshow(np.reshape(intermediate_output[:, :, :, sec], (intermediate_output.shape[1], intermediate_output.shape[2])))
+#   plt.axis('off')
+#   plt.savefig('intermediate_output_{}_layer{}.png'.format(FOVSize, layer_number))
+#   plt.close()
+# make_and_save_filter_img(1)
+# make_and_save_filter_img(2)
+# make_and_save_filter_img(3)
+# make_and_save_filter_img(4)
+# make_and_save_filter_img(5)
+# make_and_save_filter_img(6)
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
+TestNo = DF['TestNo']
+TestYes = DF['TestYes']
 
 
 no_preds = model.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = model.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
-vals_y = model.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
-vals_n = model.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
+#vals_y = model.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
+#vals_n = model.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
 plt.subplot(121)
 plt.hist(no_preds, bins = 15)
 plt.title('no craters')
