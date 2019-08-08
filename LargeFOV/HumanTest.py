@@ -39,7 +39,7 @@ def f1_acc(y_true, y_pred):
     return f1_score
 
 DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_noside_normed.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
