@@ -12,8 +12,8 @@ import h5py
 # Raw data is on the Drobo.
 RawDir = '/home/admin/Desktop/NEW_Images'
 Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
-FOVSize = 150 # 30 pixels squadwddddare for each image.
-NumFOVs = 3000 # How many FOVs to extract from the raw data.
+FOVSize = 200 # 30 pixels squadwddddare for each image.
+NumFOVs = 500 # How many FOVs to extract from the raw data.
 TrainTestValSplit = [0.33, 0.33, 0.33]
 # NumTrain = int(NumFOVs*TrainTestValSplit[0])
 # NumTest = int(NumFOVs*TrainTestValSplit[1])
@@ -38,7 +38,7 @@ except IOError as e:
 print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
 ### MAKE HDF TO HOLD OUR IMAGES.
-DataFile = h5py.File('/home/admin/Desktop/Aug6/Middle_FOV150_Num10k_new.hdf5', 'w')
+DataFile = h5py.File('/home/admin/Desktop/Aug6/dif_size_200.hdf5', 'w')
 DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
 DataFile.attrs['FOVSize'] = FOVSize
 DataFile.attrs['NumFOVs'] = NumFOVs

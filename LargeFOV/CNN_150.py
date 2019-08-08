@@ -46,7 +46,7 @@ batch_size=int(512/16)
 class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32
-DenseScale=64 / 2
+DenseScale=64 / 4
 # GN1 = .054
 # GN2 = .018
 # GN3 = .14
@@ -184,12 +184,12 @@ test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size,
 input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
 
 model = Sequential()
-model.add(GaussianNoise(GN1, input_shape = input_shape))
-model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(GaussianNoise(GN1, input_shape = (None, None, 1)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN2))
-model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', input_shape=input_shape, kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
@@ -206,11 +206,11 @@ model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
 #model.add(Dropout(dropout_rate / 2))
 
-model.add(Conv2D(int(ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 # model.add(GaussianNoise(GN3))
-model.add(Conv2D(int(ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
+model.add(Conv2D(int(2*ConvScale), (kernel_size, kernel_size), padding='valid', kernel_regularizer = regularizers.l2(reg_scale)))
 model.add(LeakyReLU(alpha = alpha))
 model.add(SpatialDropout2D(spatial_d_rate))
 model.add(MaxPool2D())
@@ -275,7 +275,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=20,
+                   epochs=35,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -347,10 +347,38 @@ make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
 make_and_save_filter_img(6)
 
-DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
-TestNo = DF['TestNo']
-TestYes = DF['TestYes']
+DF = h5py.File(os.path.join(DataDir, 'Aug6','side_test.hdf5'), 'r+')
+TrainYes_side = DF['TrainYes']
+TestYes_side = DF['TestYes']
+side_pred_1 = high_acc.predict(np.reshape(TrainYes_side, (len(TrainYes_side), FOVSize, FOVSize, 1)))
+side_pred_2 = high_acc.predict(np.reshape(TestYes_side, (len(TestYes_side), FOVSize, FOVSize, 1)))
+print('side prediction #1:')
+print(len([i for i in side_pred_1 if i > .5]) / len(side_pred_1))
+print('side prediction #2:')
+print(len([i for i in side_pred_2 if i > .5]) / len(side_pred_2))
+print(' ')
 
+DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_100.hdf5'), 'r+')
+TestYes_100 = DF['TestYes']
+TestNo_100 = DF['TestNo']
+y_100 = high_acc.predict(np.reshape(TestYes_100, (len(TestYes_100), 100, 100, 1)))
+n_100 = high_acc.predict(np.reshape(TestNo_100, (len(TestNo_100), 100, 100, 1)))
+print('100x100 w craters:')
+print(len([i for i in y_100 if i > .5]) / len(y_100))
+print('100x100 no craters:')
+print(len([i for i in n_100 if i < .5]) / len(n_100))
+print(' ')
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_200.hdf5'), 'r+')
+TestYes_200 = DF['TestYes']
+TestNo_200 = DF['TestNo']
+y_200 = high_acc.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
+n_200 = high_acc.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
+print('200x200 w craters:')
+print(len([i for i in y_200 if i > .5]) / len(y_200))
+print('200x200 no craters:')
+print(len([i for i in n_200 if i < .5]) / len(n_200))
+print(' ')
 
 no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))

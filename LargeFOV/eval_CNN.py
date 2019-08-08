@@ -59,7 +59,40 @@ def f1_acc(y_true, y_pred):
 
     return f1_score
 
-model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_100.hdf5'), 'r+')
+TestYes_100 = DF['TestYes']
+TestNo_100 = DF['TestNo']
+y_100 = high_acc.predict(np.reshape(TestYes_100, (len(TestYes_100), 100, 100, 1)))
+n_100 = high_acc.predict(np.reshape(TestNo_100, (len(TestNo_100), 100, 100, 1)))
+print('100x100 w craters:')
+print(len([i for i in y_100 if i > .5]) / len(y_100))
+print('100x100 no craters:')
+print(len([i for i in n_100 if i < .5]) / len(n_100))
+print(' ')
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_200.hdf5'), 'r+')
+TestYes_200 = DF['TestYes']
+TestNo_200 = DF['TestNo']
+y_200 = high_acc.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
+n_200 = high_acc.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
+print('200x200 w craters:')
+print(len([i for i in y_200 if i > .5]) / len(y_200))
+print('200x200 no craters:')
+print(len([i for i in n_200 if i < .5]) / len(n_200))
+print(' ')
+
+DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_150.hdf5'), 'r+')
+TestYes_150 = DF['TestYes']
+TestNo_150 = DF['TestNo']
+y_150 = high_acc.predict(np.reshape(TestYes_150, (len(TestYes_150), 150, 150, 1)))
+n_150 = high_acc.predict(np.reshape(TestNo_150, (len(TestNo_150), 150, 150, 1)))
+print('150x150 w craters:')
+print(len([i for i in y_150 if i > .5]) / len(y_150))
+print('150x150 no craters:')
+print(len([i for i in n_150 if i < .5]) / len(n_150))
+print(' ')
 # model.summary()
 
 # def make_and_save_filter_img(layer_number, pool = None):
@@ -122,7 +155,7 @@ model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.forma
 # make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
 # make_and_save_filter_img(6)
-
+"""
 DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
 TestNo = DF['TestNo']
 TestYes = DF['TestYes']
@@ -151,3 +184,4 @@ print('total:')
 print((x + y) / 2)
 print('val:')
 print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
+"""

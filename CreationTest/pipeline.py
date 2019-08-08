@@ -1,6 +1,6 @@
-import BlankGather.py 
-import CraterCreation.py
-import make_norm.py
+import BlankGather
+import CraterCreation
+import make_norm
 print('!!!!!!!!!!!!!!!!!!!')
 print('all done')
 print('!!!!!!!!!!!!!!!!!!!')

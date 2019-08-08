@@ -20,9 +20,10 @@ RunDir = '/home/admin/Desktop/Aug6'
 # shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
 ### LOAD THE HDF.
-DataFile = h5py.File(os.path.join(RunDir, 'Middle_FOV150_Num10k_new.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(RunDir, 'dif_size_200.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
+print(FOVSize)
 NumFOVs = DataFile.attrs['NumFOVs']
 #Foils = DataFile.attrs['Foils'].split(',')
 # Read the Train/Test/Val datasets.
@@ -43,11 +44,26 @@ for c in CraterNames:
 np.random.seed(42)
 print('len of craters: ', len(Craters))
 
+def make_shift_for_side(size):
+    arr = []
+    for i in range(size):
+        pos = np.random.choice(('right/left', 'up/down'))
+        rl = np.random.uniform(low = .4, high = .5) * np.random.choice((1, -1))
+        ud = np.random.uniform(low = 0, high = 1) - .5
+        if pos == 'right/left':
+            a = [rl, ud]
+            arr.append(a)
+        else:
+            a = [ud, rl]
+            arr.append(a)
+    return np.array(arr)
+
 def AddCraters(Data, Craters):
     # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
-    scale = np.random.uniform(low = 0, high = 30 / 150, size = Data.shape[0])
+    scale = np.random.uniform(low = 0, high = 30 / FOVSize, size = Data.shape[0])
     rotate = np.random.random(Data.shape[0])*360
-    shift = np.random.uniform(low = .1, high = .9, size = (Data.shape[0],2))-0.5
+    shift = np.random.uniform(low = .1, high = .9, size = (Data.shape[0],2)) - .5
+    #shift = make_shift_for_side(Data.shape[0])
     aspect = np.random.normal(1, 0.1, Data.shape[0])
     CraterIndices = np.random.randint(len(Craters), size=Data.shape[0])
 
@@ -85,3 +101,4 @@ print('Done.')
 # imshow(g)
 # g, a = ImageTools.TransformImage(grayscale, alpha, scale=1.0, rotate=180, shift=(0.5,0.5), FOVSize=FOVSize)
 # plt.imshow(g)
+
