@@ -3,111 +3,112 @@ import numpy as np
 import os
 import matplotlib
 # import matplotlib.pyplot
+fovsize = 500
+def norm_do():
+	##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
+	Dir = '/home/admin/Desktop/Aug6'
+	not_normed = h5.File(os.path.join(Dir, 'transfer_{}.hdf5'.format(fovsize)), 'r')
+	# testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
+	# not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
-##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
-Dir = '/home/admin/Desktop/Aug6'
-not_normed = h5.File(os.path.join(Dir, 'dif_size_200.hdf5'), 'r')
-# testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
-# not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
+	FOVSize = not_normed.attrs['FOVSize']
+	NumFOVs = not_normed.attrs['NumFOVs']
+	try:
+		Foils = not_normed.attrs['Foils'].split(',')
+	except:
+		Foils = not_normed.attrs['Foils']
+	print(Foils)
+	# Read the Train/Test/Val datasets.
+	TrainNo = np.array(not_normed['TrainNo'])
+	TrainYes = np.array(not_normed['TrainYes'])
+	TestNo = np.array(not_normed['TestNo'])
+	TestYes = np.array(not_normed['TestYes'])
+	ValNo = np.array(not_normed['ValNo'])
+	ValYes = np.array(not_normed['ValYes'])
+	not_normed.close()
 
-FOVSize = not_normed.attrs['FOVSize']
-NumFOVs = not_normed.attrs['NumFOVs']
-try:
-	Foils = not_normed.attrs['Foils'].split(',')
-except:
-	Foils = not_normed.attrs['Foils']
-print(Foils)
-# Read the Train/Test/Val datasets.
-TrainNo = np.array(not_normed['TrainNo'])
-TrainYes = np.array(not_normed['TrainYes'])
-TestNo = np.array(not_normed['TestNo'])
-TestYes = np.array(not_normed['TestYes'])
-ValNo = np.array(not_normed['ValNo'])
-ValYes = np.array(not_normed['ValYes'])
-not_normed.close()
+	normed = h5.File(os.path.join(Dir, 'transfer_{}.hdf5'.format(fovsize)), 'w')
+	normed.attrs.create('FOVSize', FOVSize)
+	normed.attrs.create("NumFOVs", NumFOVs)
+	normed.attrs.create('Foils', Foils)
 
-normed = h5.File(os.path.join(Dir, 'dif_size_200.hdf5'), 'w')
-normed.attrs.create('FOVSize', FOVSize)
-normed.attrs.create("NumFOVs", NumFOVs)
-normed.attrs.create('Foils', Foils)
+	# plt.subplot(231)
+	# plt.imshow(TrainYes[23], cmap = 'gray') 
+	# plt.title('Yes:23')
+	# plt.colorbar()
+	# plt.subplot(232)
+	# plt.imshow(TrainYes[67], cmap = 'gray')
+	# plt.title('Yes:67')
+	# plt.colorbar()
+	# plt.subplot(233)
+	# plt.imshow(TrainNo[201], cmap = 'gray')
+	# plt.title('No:201')
+	# plt.colorbar()
 
-# plt.subplot(231)
-# plt.imshow(TrainYes[23], cmap = 'gray') 
-# plt.title('Yes:23')
-# plt.colorbar()
-# plt.subplot(232)
-# plt.imshow(TrainYes[67], cmap = 'gray')
-# plt.title('Yes:67')
-# plt.colorbar()
-# plt.subplot(233)
-# plt.imshow(TrainNo[201], cmap = 'gray')
-# plt.title('No:201')
-# plt.colorbar()
+	def norm(dataset):
+		print(np.mean(dataset))
 
-def norm(dataset):
-	print(np.mean(dataset))
+		m = np.mean(dataset, axis = (1, 2))
+		s = dataset.shape
+		m = np.repeat(m, np.repeat(s[2]*s[1], s[0]))
+		m = np.reshape(m, s)
 
-	m = np.mean(dataset, axis = (1, 2))
-	s = dataset.shape
-	m = np.repeat(m, np.repeat(s[2]*s[1], s[0]))
-	m = np.reshape(m, s)
+		std = np.std(dataset, axis = (1, 2))
+		for n, i in enumerate(std):
+			if i == 0:
+				std[n] = 1
+		std = np.repeat(std, np.repeat(s[2]*s[1], s[0]))
+		std = np.reshape(std, s)
 
-	std = np.std(dataset, axis = (1, 2))
-	for n, i in enumerate(std):
-		if i == 0:
-			std[n] = 1
-	std = np.repeat(std, np.repeat(s[2]*s[1], s[0]))
-	std = np.reshape(std, s)
+		new = (dataset - m) / std
 
-	new = (dataset - m) / std
+		p = np.min(new, axis = (1, 2))
+		q = np.max(new, axis = (1, 2))
+		for i in range(len(p)):
+			if q[i] - p[i] == 0:
+				q[i] = 1
+				p[i] = 0
+		p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
+		q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
+		p = np.reshape(p, s)
+		q = np.reshape(q, s)
 
-	p = np.min(new, axis = (1, 2))
-	q = np.max(new, axis = (1, 2))
-	for i in range(len(p)):
-		if q[i] - p[i] == 0:
-			q[i] = 1
-			p[i] = 0
-	p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
-	q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
-	p = np.reshape(p, s)
-	q = np.reshape(q, s)
+		new = (new - p) / (q - p)
+		print(np.mean(new))
+		#new = new - .5
+		return new
 
-	new = (new - p) / (q - p)
-	print(np.mean(new))
-	#new = new - .5
-	return new
+	new_TrainYes = norm(TrainYes)
+	normed.create_dataset('TrainYes', shape = new_TrainYes.shape, dtype = new_TrainYes.dtype, data = new_TrainYes)
 
-new_TrainYes = norm(TrainYes)
-normed.create_dataset('TrainYes', shape = new_TrainYes.shape, dtype = new_TrainYes.dtype, data = new_TrainYes)
+	new_TrainNo = norm(TrainNo)
+	normed.create_dataset("TrainNo", shape = new_TrainNo.shape, dtype = new_TrainNo.dtype, data = new_TrainNo)
 
-new_TrainNo = norm(TrainNo)
-normed.create_dataset("TrainNo", shape = new_TrainNo.shape, dtype = new_TrainNo.dtype, data = new_TrainNo)
+	new_TestYes = norm(TestYes)
+	normed.create_dataset('TestYes', shape = new_TestYes.shape, dtype = new_TrainNo.dtype, data= new_TestYes)
 
-new_TestYes = norm(TestYes)
-normed.create_dataset('TestYes', shape = new_TestYes.shape, dtype = new_TrainNo.dtype, data= new_TestYes)
+	new_TestNo = norm(TestNo)
+	normed.create_dataset('TestNo', shape = new_TestNo.shape, dtype = new_TestNo.dtype, data = new_TestNo)
 
-new_TestNo = norm(TestNo)
-normed.create_dataset('TestNo', shape = new_TestNo.shape, dtype = new_TestNo.dtype, data = new_TestNo)
+	new_ValYes = norm(ValYes)
+	normed.create_dataset('ValYes', shape = new_ValYes.shape, dtype = new_ValYes.dtype, data = new_ValYes)
 
-new_ValYes = norm(ValYes)
-normed.create_dataset('ValYes', shape = new_ValYes.shape, dtype = new_ValYes.dtype, data = new_ValYes)
+	new_ValNo = norm(ValNo)
+	normed.create_dataset("ValNo", shape = new_ValNo.shape, dtype = new_ValNo.dtype, data = new_ValNo)
 
-new_ValNo = norm(ValNo)
-normed.create_dataset("ValNo", shape = new_ValNo.shape, dtype = new_ValNo.dtype, data = new_ValNo)
+	# plt.subplot(234)
+	# plt.imshow(TrainYes[23], cmap = 'gray')
+	# plt.title('Yes:23 .')
+	# plt.colorbar()
+	# plt.subplot(235)
+	# plt.imshow(TrainYes[67], cmap = 'gray')
+	# plt.title('Yes:67 .')
+	# plt.colorbar()
+	# plt.subplot(236)
+	# plt.imshow(TrainNo[201], cmap = 'gray')
+	# plt.title('No:201 .')
 
-# plt.subplot(234)
-# plt.imshow(TrainYes[23], cmap = 'gray')
-# plt.title('Yes:23 .')
-# plt.colorbar()
-# plt.subplot(235)
-# plt.imshow(TrainYes[67], cmap = 'gray')
-# plt.title('Yes:67 .')
-# plt.colorbar()
-# plt.subplot(236)
-# plt.imshow(TrainNo[201], cmap = 'gray')
-# plt.title('No:201 .')
+	# plt.colorbar()
+	# plt.show()
 
-# plt.colorbar()
-# plt.show()
-
-normed.close()
+	normed.close()
