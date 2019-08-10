@@ -4,10 +4,10 @@ import os
 import matplotlib
 # import matplotlib.pyplot
 fovsize = 500
-def norm_do():
+def norm_do(size):
 	##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 	Dir = '/home/admin/Desktop/Aug6'
-	not_normed = h5.File(os.path.join(Dir, 'transfer_{}.hdf5'.format(fovsize)), 'r')
+	not_normed = h5.File(os.path.join(Dir, 'to_train_{}.hdf5'.format(size)), 'r')
 	# testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 	# not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
@@ -27,7 +27,7 @@ def norm_do():
 	ValYes = np.array(not_normed['ValYes'])
 	not_normed.close()
 
-	normed = h5.File(os.path.join(Dir, 'transfer_{}.hdf5'.format(fovsize)), 'w')
+	normed = h5.File(os.path.join(Dir, 'to_train_{}.hdf5'.format(size)), 'w')
 	normed.attrs.create('FOVSize', FOVSize)
 	normed.attrs.create("NumFOVs", NumFOVs)
 	normed.attrs.create('Foils', Foils)

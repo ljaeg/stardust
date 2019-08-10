@@ -8,11 +8,11 @@ import ImageTools
 import h5py
 from scipy.ndimage import measurements as meas
 from scipy import ndimage as ndi
-def crater_do():
+def crater_do(FOVSize):
     ### SETUP PARAMETERS
     # Raw data is on the Drobo.
     RunDir = '/home/admin/Desktop/Aug6'
-    FOVSize = 500
+    #FOVSize = 500
 
     # try:
     #     os.remove(os.path.join(RunDir, 'Data.hdf5'))
@@ -21,7 +21,7 @@ def crater_do():
     # shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
     ### LOAD THE HDF.
-    DataFile = h5py.File(os.path.join(RunDir, 'transfer_{}.hdf5'.format(FOVSize)), 'r+')
+    DataFile = h5py.File(os.path.join(RunDir, 'to_train_{}.hdf5'.format(FOVSize)), 'r+')
     #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
     FOVSize = DataFile.attrs['FOVSize']
     print(FOVSize)
