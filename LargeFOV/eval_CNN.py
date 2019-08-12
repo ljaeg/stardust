@@ -63,15 +63,17 @@ def f1_acc(y_true, y_pred):
 
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
-DF1 = h5py.File(os.path.join(DataDir, 'Aug6','transfer_500.hdf5'), 'r+')
-TestYes_500 = DF1['TrainYes']
-TestNo_500 = DF1['TrainNo']
+DF1 = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
+TestYes_500 = DF1['TestYes']
+TestNo_500 = DF1['TestNo']
 y_500 = high_acc.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
 n_500 = high_acc.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
+b4_y = len([i for i in y_500 if i > .5]) / len(y_500)
+b4_n = len([i for i in n_500 if i < .5]) / len(n_500)
 print('500x500 w craters:')
-print(len([i for i in y_500 if i > .5]) / len(y_500))
+print(b4_y)
 print('500x500 no craters:')
-print(len([i for i in n_500 if i < .5]) / len(n_500))
+print(b4_n)
 print(' ')
 
 DF2 = h5py.File(os.path.join(DataDir, 'Aug6','for_cont_training200.hdf5'), 'r+')
@@ -79,12 +81,12 @@ TestYes_200 = DF2['TestYes']
 TestNo_200 = DF2['TestNo']
 y_200 = high_acc.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
 n_200 = high_acc.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
-b4_y = len([i for i in y_200 if i > .5]) / len(y_200)
-b4_n = len([i for i in n_200 if i < .5]) / len(n_200)
+b4_y_200 = len([i for i in y_200 if i > .5]) / len(y_200)
+b4_n_200 = len([i for i in n_200 if i < .5]) / len(n_200)
 print('200x200 w craters:')
-print(b4_y)
+print(b4_y_200)
 print('200x200 no craters:')
-print(b4_n)
+print(b4_n_200)
 print(' ')
 
 DF3 = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_150.hdf5'), 'r+')
@@ -99,10 +101,10 @@ print(len([i for i in n_150 if i < .5]) / len(n_150))
 print(' ')
 
 #These are 200x200 pixel data
-TrainYes = DF2['TrainYes']
-TrainNo = DF2['TrainNo']
-ValYes = DF2['ValYes']
-ValNo = DF2['ValNo']
+TrainYes = DF1['TrainYes']
+TrainNo = DF1['TrainNo']
+ValYes = DF1['ValYes']
+ValNo = DF1['ValNo']
 
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
 ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
@@ -126,7 +128,7 @@ Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_loss_ext
 Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_extra.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
-"""
+
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}/second_train_w_200'.format(round(time(), 4)))
 high_acc.fit_generator(generator=train_generator,
@@ -141,13 +143,13 @@ high_acc.fit_generator(generator=train_generator,
 
 x = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_extra.h5', custom_objects={'f1_acc': f1_acc})
 
-y_200 = x.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
-n_200 = x.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
-after_y = len([i for i in y_200 if i > .5]) / len(y_200)
-after_n = len([i for i in n_200 if i < .5]) / len(n_200)
-print('200x200 w craters:')
+y_500 = x.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
+n_500 = x.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
+after_y = len([i for i in y_500 if i > .5]) / len(y_500)
+after_n = len([i for i in n_500 if i < .5]) / len(n_500)
+print('500x500 w craters:')
 print(after_y)
-print('200x200 no craters:')
+print('500x500 no craters:')
 print(after_n)
 print(' ')
 print('change for yes:')
@@ -155,7 +157,7 @@ print(after_y - b4_y)
 print('change for no:')
 print(after_n - b4_n)
 
-"""
+
 # model.summary()
 
 # def make_and_save_filter_img(layer_number, pool = None):
