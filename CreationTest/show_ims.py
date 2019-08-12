@@ -12,7 +12,7 @@ z = ['dif_size_150', 'to_train_150', 'transfer_150']
 n = 1
 for i in z:
 	ds = h5.File(os.path.join(RD, '{}.hdf5'.format(i)), 'r')
-	im = np.array(ds['TestYes'])[89]
+	im = np.array(ds['TestYes'])[23]
 	plt.subplot(1, 3, n)
 	plt.imshow(im, cmap = 'gray')
 	plt.axis('off')
