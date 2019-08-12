@@ -34,12 +34,12 @@ from keras.applications.resnet50 import ResNet50
 
 model = ResNet50(classes = 1, input_shape = (500, 500, 1), pooling = 'max', weights = None)
 
-TrainNo = np.array(DataFile['TrainNo'])
-TrainYes = np.array(DataFile['TrainYes'])
-TestNo = np.array(DataFile['TestNo'])
-TestYes = np.array(DataFile['TestYes'])
-ValNo = np.array(DataFile['ValNo'])
-ValYes = np.array(DataFile['ValYes'])
+# TrainNo = np.array(DataFile['TrainNo'])
+# TrainYes = np.array(DataFile['TrainYes'])
+# TestNo = np.array(DataFile['TestNo'])
+# TestYes = np.array(DataFile['TestYes'])
+# ValNo = np.array(DataFile['ValNo'])
+# ValYes = np.array(DataFile['ValYes'])
 
 DataDir = '/home/admin/Desktop'
 DataFile = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
