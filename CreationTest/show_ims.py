@@ -10,7 +10,7 @@ y = ['dif_size_100', 'dif_size_150', 'dif_size_200', 'transfer_500', 'Middle_FOV
 z = ['dif_size_150', 'to_train_150', 'transfer_150']
 
 n = 1
-for i in y:
+for i in z:
 	ds = h5.File(os.path.join(RD, '{}.hdf5'.format(i)), 'r')
 	im = np.array(ds['TestYes'])[89]
 	plt.subplot(1, 3, n)
