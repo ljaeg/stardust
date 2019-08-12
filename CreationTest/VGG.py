@@ -30,4 +30,20 @@ from keras import regularizers
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
-from keras.applications import 
+from keras.application.resnet50 import ResNet50 
+
+model = ResNet50(classes = 1, input_shape = (None, None, 1), weights = 'imagenet', pooling = 'max')
+
+DataDir = '/home/admin/Desktop'
+DF1 = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
+TestYes_500 = DF1['TestYes']
+TestNo_500 = DF1['TestNo']
+y_500 = model.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
+n_500 = model.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
+b4_y = len([i for i in y_500 if i > .5]) / len(y_500)
+b4_n = len([i for i in n_500 if i < .5]) / len(n_500)
+print('500x500 w craters:')
+print(b4_y)
+print('500x500 no craters:')
+print(b4_n)
+print(' ')
