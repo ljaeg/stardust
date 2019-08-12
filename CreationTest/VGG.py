@@ -34,16 +34,70 @@ from keras.applications.resnet50 import ResNet50
 
 model = ResNet50(classes = 1, input_shape = (500, 500, 1), pooling = 'max', weights = None)
 
+TrainNo = np.array(DataFile['TrainNo'])
+TrainYes = np.array(DataFile['TrainYes'])
+TestNo = np.array(DataFile['TestNo'])
+TestYes = np.array(DataFile['TestYes'])
+ValNo = np.array(DataFile['ValNo'])
+ValYes = np.array(DataFile['ValYes'])
+
 DataDir = '/home/admin/Desktop'
-DF1 = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
-TestYes_500 = DF1['TestYes']
-TestNo_500 = DF1['TestNo']
-y_500 = model.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
-n_500 = model.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
-b4_y = len([i for i in y_500 if i > .5]) / len(y_500)
-b4_n = len([i for i in n_500 if i < .5]) / len(n_500)
-print('500x500 w craters:')
-print(b4_y)
-print('500x500 no craters:')
-print(b4_n)
-print(' ')
+DataFile = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
+# TestYes_500 = DF1['TestYes']
+# TestNo_500 = DF1['TestNo']
+# y_500 = model.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
+# n_500 = model.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
+# b4_y = len([i for i in y_500 if i > .5]) / len(y_500)
+# b4_n = len([i for i in n_500 if i < .5]) / len(n_500)
+# print('500x500 w craters:')
+# print(b4_y)
+# print('500x500 no craters:')
+# print(b4_n)
+# print(' ')
+
+TrainNo = np.array(DataFile['TrainNo'])
+TrainYes = np.array(DataFile['TrainYes'])
+TestNo = np.array(DataFile['TestNo'])
+TestYes = np.array(DataFile['TestYes'])
+ValNo = np.array(DataFile['ValNo'])
+ValYes = np.array(DataFile['ValYes'])
+
+batch_size = 16
+
+# Concatenate the no,yes crater chunks together to make cohesive training sets.
+TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
+TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
+ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
+
+
+# And make answer vectors
+TrainAnswers = np.ones(len(TrainNo) + len(TrainYes))
+TrainAnswers[:len(TrainNo)] = 0
+TestAnswers = np.ones(len(TestNo) + len(TestYes))
+TestAnswers[:len(TestNo)] = 0
+ValAnswers = np.ones(len(ValNo) + len(ValYes))
+ValAnswers[:len(ValNo)] = 0
+
+# Make generators to stream them.
+train_datagen = ImageDataGenerator(zca_whitening = True)
+validation_datagen = ImageDataGenerator()
+test_datagen = ImageDataGenerator()
+
+train_generator = train_datagen.flow(TrainData, TrainAnswers, batch_size=batch_size, seed=3)#, save_to_dir=os.path.join(RunDir, 'Train_genimages'))
+validation_generator = validation_datagen.flow(ValData, ValAnswers, batch_size=batch_size, seed=4)
+test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size, seed=5)
+
+#model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc'])
+model.summary()
+model.fit_generator(generator=train_generator,
+                   steps_per_epoch=train_generator.n//batch_size,
+                   epochs=30,
+                   verbose=2,
+                   validation_data=validation_generator,
+                   validation_steps=validation_generator.n//batch_size,
+                   )
+
+
+
+
+
