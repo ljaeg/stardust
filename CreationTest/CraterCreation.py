@@ -63,7 +63,7 @@ def crater_do(FOVSize):
         # We want to randomize the properies of the augmented images.  All the transformation parameters are uniformly distributed except aspect ratio which should hew close to 1 so we use Gaussian.
         scale = np.random.uniform(low = 0, high = 30 / FOVSize, size = Data.shape[0])
         rotate = np.random.random(Data.shape[0])*360
-        shift = np.random.uniform(low = .05, high = .95, size = (Data.shape[0],2)) - .5
+        shift = np.random.uniform(low = .1, high = .9, size = (Data.shape[0],2)) - .5
         #shift = make_shift_for_side(Data.shape[0])
         aspect = np.random.normal(1, 0.1, Data.shape[0])
         CraterIndices = np.random.randint(len(Craters), size=Data.shape[0])
