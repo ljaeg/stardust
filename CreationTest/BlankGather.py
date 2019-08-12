@@ -13,7 +13,7 @@ def blanks_do(FOVSize):
     RawDir = '/home/admin/Desktop/NEW_Images'
     Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
     #FOVSize = 500 # 30 pixels squadwddddare for each image.
-    NumFOVs = 1500 # How many FOVs to extract from the raw data.
+    NumFOVs = 200 # How many FOVs to extract from the raw data.
     TrainTestValSplit = [0.33, 0.33, 0.33]
     # NumTrain = int(NumFOVs*TrainTestValSplit[0])
     # NumTest = int(NumFOVs*TrainTestValSplit[1])
