@@ -7,17 +7,18 @@ RD = '/home/admin/Desktop/Aug6'
 
 x = ['A', 'B', 'C', 'D']
 y = ['dif_size_100', 'dif_size_150', 'dif_size_200', 'transfer_500', 'Middle_FOV150_Num10k_new']
+z = ['dif_size_150', 'to_train_150', 'transfer_150']
 
 n = 1
 for i in y:
 	ds = h5.File(os.path.join(RD, '{}.hdf5'.format(i)), 'r')
 	im = np.array(ds['TestYes'])[89]
-	plt.subplot(1, 5, n)
+	plt.subplot(1, 3, n)
 	plt.imshow(im, cmap = 'gray')
 	plt.axis('off')
 	plt.title(i)
 	n += 1
-plt.show()
+plt.savefig('Dif150s.png')
 
 
 # for letter in y:
