@@ -30,7 +30,7 @@ from keras import regularizers
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
-from keras.application.resnet50 import ResNet50 
+from keras.applications.resnet50 import ResNet50 
 
 model = ResNet50(classes = 1, input_shape = (None, None, 1), weights = 'imagenet', pooling = 'max')
 
