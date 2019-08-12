@@ -32,7 +32,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 from keras.applications.resnet50 import ResNet50 
 
-model = ResNet50(classes = 1, input_shape = (None, None, 1), weights = 'imagenet', pooling = 'max')
+model = ResNet50(classes = 1, input_shape = (None, None, 1), pooling = 'max')
 
 DataDir = '/home/admin/Desktop'
 DF1 = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
