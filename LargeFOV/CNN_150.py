@@ -171,7 +171,7 @@ ValAnswers = np.ones(len(ValNo) + len(ValYes))
 ValAnswers[:len(ValNo)] = 0
 
 # Make generators to stream them.
-train_datagen = ImageDataGenerator(zca_whitening = True)
+train_datagen = ImageDataGenerator()
 validation_datagen = ImageDataGenerator()
 test_datagen = ImageDataGenerator()
 
