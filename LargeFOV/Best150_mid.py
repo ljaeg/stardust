@@ -181,7 +181,7 @@ test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size,
 # Define the NN
 # Now define the neural network.
 #input_shape = (FOVSize, FOVSize, 1) # Only one channel since these are B&W.
-input_shape = (None, None, 1)
+input_shape = (FOVSize, FOVSize, 1)
 
 model = Sequential()
 model.add(GaussianNoise(GN1, input_shape = input_shape))
