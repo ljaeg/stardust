@@ -36,8 +36,6 @@ from keras import regularizers
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 
-from Reduce import reduce_whole_ds
-
 #from scipy.misc import imread
 
 np.random.seed(5)
@@ -103,15 +101,12 @@ def lr_schedule(epoch):
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
 
 DataDir = '/home/admin/Desktop'
-DataFile = h5py.File(os.path.join(DataDir, 'Aug6','new_to_train_200.hdf5'), 'r+')
+DataFile = h5py.File(os.path.join(DataDir, 'Aug6','new_to_train_150.hdf5'), 'r+')
 
-DataDir = '/home/admin/Desktop'
-DataFile = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
+# DataDir = '/home/admin/Desktop'
+# DataFile = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
-print(' ')
-print('FOVSize: ', FOVSize)
-print(' ')
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
   Foils = DataFile.attrs['Foils'].split(',')
@@ -126,14 +121,7 @@ TestNo = np.array(DataFile['TestNo'])
 TestYes = np.array(DataFile['TestYes'])
 ValNo = np.array(DataFile['ValNo'])
 ValYes = np.array(DataFile['ValYes'])
-print('size of training set:', '2 * ', len(TrainNo))
-
-# TrainNo = reduce_whole_ds(TrainNo)
-# TrainYes = reduce_whole_ds(TrainYes)
-# TestNo = reduce_whole_ds(TestNo)
-# TestYes = reduce_whole_ds(TestYes)
-# ValNo = reduce_whole_ds(ValNo)
-# ValYes = reduce_whole_ds(ValYes)
+print('before:', len(TrainNo))
 
 y1 = TrainYes[200]
 y2 = TrainYes[305]
@@ -291,7 +279,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=60,
+                   epochs=25,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -363,65 +351,41 @@ make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
 make_and_save_filter_img(6)
 
-DF = h5py.File(os.path.join(DataDir, 'Aug6','side_test.hdf5'), 'r+')
-TrainYes_side = DF['TrainYes']
-TestYes_side = DF['TestYes']
-side_pred_1 = high_acc.predict(np.reshape(TrainYes_side, (len(TrainYes_side), FOVSize, FOVSize, 1)))
-side_pred_2 = high_acc.predict(np.reshape(TestYes_side, (len(TestYes_side), FOVSize, FOVSize, 1)))
-print('side prediction #1:')
-print(len([i for i in side_pred_1 if i > .5]) / len(side_pred_1))
-print('side prediction #2:')
-print(len([i for i in side_pred_2 if i > .5]) / len(side_pred_2))
-print(' ')
+# x = len([i for i in no_preds if i < .5]) / len(no_preds)
+# y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
 
-DF = h5py.File(os.path.join(DataDir, 'Aug6','new_to_train_500.hdf5'), 'r+')
-TestYes_500 = DF['TrainYes']
-TestNo_500 = DF['TrainNo']
-y_500 = high_acc.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
-n_500 = high_acc.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
-print('500x500 w craters:')
-print(len([i for i in y_500 if i > .5]) / len(y_500))
-print('500x500 no craters:')
-print(len([i for i in n_500 if i < .5]) / len(n_500))
-print('500x500 total acc:')
-print(((len([i for i in y_500 if i > .5]) / len(y_500)) + (len([i for i in n_500 if i < .5]) / len(n_500))) / 2 )
-print(' ')
+# print('no:')
+# print(x)
+# print('yes:')
+# print(y)
+# print('total:')
+# print((x + y) / 2)
+# print('val:')
+# print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
 
-DF = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_200.hdf5'), 'r+')
-TestYes_200 = DF['TestYes']
-TestNo_200 = DF['TestNo']
-y_200 = high_acc.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
-n_200 = high_acc.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
-print('200x200 w craters:')
-print(len([i for i in y_200 if i > .5]) / len(y_200))
-print('200x200 no craters:')
-print(len([i for i in n_200 if i < .5]) / len(n_200))
-print(' ')
+def calc_test_acc(name):
+  DF = h5py.File(os.path.join(DataDir, 'Aug6','{}.hdf5'.format(name)), 'r+')
+  TestYes = DF['TestYes']
+  TestNo = DF['TestNo']
+  FOVSize = DF.attrs['FOVSize']
+  y = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+  n = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+  cp = len([i for i in y if i > .5]) / len(y)
+  cn = len([i for i in n if i < .5]) / len(n)
+  print(FOVSize,' w craters:')
+  print(cp)
+  print(FOVSize,' no craters:')
+  print(cn)
+  print(FOVSize, ' total acc:')
+  print((cp + cn) / 2)
+  print(' ')
 
-no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
-vals_y = high_acc.predict(np.reshape(ValYes, (len(ValYes), FOVSize, FOVSize, 1)))
-vals_n = high_acc.predict(np.reshape(ValNo, (len(ValNo), FOVSize, FOVSize, 1)))
-plt.subplot(121)
-plt.hist(no_preds, bins = 15)
-plt.title('no craters')
-plt.subplot(122)
-plt.hist(yes_preds, bins = 15)
-plt.title('with craters')
-plt.savefig('CNN_{}_hist.png'.format(FOVSize))
-plt.close()
+calc_test_acc('new_to_train_200')
+calc_test_acc('new_to_train_300')
+calc_test_acc('new_to_train_450')
+calc_test_acc('new_to_train_500')
+calc_test_acc('new_to_train_700')
 
-x = len([i for i in no_preds if i < .5]) / len(no_preds)
-y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
-
-print('no:')
-print(x)
-print('yes:')
-print(y)
-print('total:')
-print((x + y) / 2)
-print('val:')
-print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
 
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')

@@ -19,8 +19,8 @@ def blanks_do(FOVSize):
     # NumTest = int(NumFOVs*TrainTestValSplit[1])
     # NumVal = int(NumFOVs*TrainTestValSplit[2])
     NumTrain = NumFOVs
-    NumTest = int(NumFOVs / 4)
-    NumVal = int(NumFOVs / 4)
+    NumTest = int(NumFOVs / 5)
+    NumVal = int(NumFOVs / 5)
      
     ### SCAN THE RAW DATA
     # We don't need to redo globbing if we already globbed.
@@ -38,7 +38,7 @@ def blanks_do(FOVSize):
     print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
     ### MAKE HDF TO HOLD OUR IMAGES.
-    DataFile = h5py.File('/home/admin/Desktop/Aug6/to_train_{}.hdf5'.format(FOVSize), 'w')
+    DataFile = h5py.File('/home/admin/Desktop/Aug6/new_to_train_{}.hdf5'.format(FOVSize), 'w')
     DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
     DataFile.attrs['FOVSize'] = FOVSize
     DataFile.attrs['NumFOVs'] = NumFOVs

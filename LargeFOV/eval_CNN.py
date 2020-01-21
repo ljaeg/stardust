@@ -63,44 +63,29 @@ def f1_acc(y_true, y_pred):
 
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
-DF1 = h5py.File(os.path.join(DataDir, 'Aug6','to_train_500.hdf5'), 'r+')
-TestYes_500 = DF1['TestYes']
-TestNo_500 = DF1['TestNo']
-y_500 = high_acc.predict(np.reshape(TestYes_500, (len(TestYes_500), 500, 500, 1)))
-n_500 = high_acc.predict(np.reshape(TestNo_500, (len(TestNo_500), 500, 500, 1)))
-b4_y = len([i for i in y_500 if i > .5]) / len(y_500)
-b4_n = len([i for i in n_500 if i < .5]) / len(n_500)
-print('500x500 w craters:')
-print(b4_y)
-print('500x500 no craters:')
-print(b4_n)
-print(' ')
+def calc_test_acc(name):
+  DF = h5py.File(os.path.join(DataDir, 'Aug6','{}.hdf5'.format(name)), 'r+')
+  TestYes = DF['TestYes']
+  TestNo = DF['TestNo']
+  FOVSize = DF.attrs['FOVSize']
+  y = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+  n = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+  cp = len([i for i in y if i > .5]) / len(y)
+  cn = len([i for i in n if i < .5]) / len(n)
+  print(FOVSize,' w craters:')
+  print(cp)
+  print(FOVSize,' no craters:')
+  print(cn)
+  print(FOVSize, ' total acc:')
+  print((cp + cn) / 2)
+  print(' ')
 
-DF2 = h5py.File(os.path.join(DataDir, 'Aug6','for_cont_training200.hdf5'), 'r+')
-TestYes_200 = DF2['TestYes']
-TestNo_200 = DF2['TestNo']
-y_200 = high_acc.predict(np.reshape(TestYes_200, (len(TestYes_200), 200, 200, 1)))
-n_200 = high_acc.predict(np.reshape(TestNo_200, (len(TestNo_200), 200, 200, 1)))
-b4_y_200 = len([i for i in y_200 if i > .5]) / len(y_200)
-b4_n_200 = len([i for i in n_200 if i < .5]) / len(n_200)
-print('200x200 w craters:')
-print(b4_y_200)
-print('200x200 no craters:')
-print(b4_n_200)
-print(' ')
+#calc_test_acc('new_to_train_700')
+calc_test_acc('new_to_train_500')
+calc_test_acc('new_to_train_200')
 
-DF3 = h5py.File(os.path.join(DataDir, 'Aug6','dif_size_150.hdf5'), 'r+')
-TestYes_150 = DF3['TestYes']
-TestNo_150 = DF3['TestNo']
-y_150 = high_acc.predict(np.reshape(TestYes_150, (len(TestYes_150), 150, 150, 1)))
-n_150 = high_acc.predict(np.reshape(TestNo_150, (len(TestNo_150), 150, 150, 1)))
-print('150x150 w craters:')
-print(len([i for i in y_150 if i > .5]) / len(y_150))
-print('150x150 no craters:')
-print(len([i for i in n_150 if i < .5]) / len(n_150))
-print(' ')
-
-#These are 200x200 pixel data
+DF1 = h5py.File(os.path.join(DataDir, 'Aug6','new_to_train_500.hdf5'), 'r+')
+#These are 500x500 pixel data
 TrainYes = DF1['TrainYes']
 TrainNo = DF1['TrainNo']
 ValYes = DF1['ValYes']
@@ -119,7 +104,7 @@ ValAnswers[:len(ValNo)] = 0
 # Make generators to stream them.
 train_datagen = ImageDataGenerator()
 validation_datagen = ImageDataGenerator()
-batch_size = 8
+batch_size = 4
 train_generator = train_datagen.flow(TrainData, TrainAnswers, batch_size=batch_size, seed=3)#, save_to_dir=os.path.join(RunDir, 'Train_genimages'))
 validation_generator = validation_datagen.flow(ValData, ValAnswers, batch_size=batch_size, seed=4)
 
@@ -133,12 +118,12 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}/second_train_w_200'.format(round(time(), 4)))
 high_acc.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=45,
+                   epochs=35,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
                    callbacks=[TBLog, Checkpoint1, Checkpoint2, Checkpoint3],
-                   initial_epoch = 30
+                   initial_epoch = 25
                    )
 
 x = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_extra.h5', custom_objects={'f1_acc': f1_acc})
@@ -153,10 +138,15 @@ print('500x500 no craters:')
 print(after_n)
 print(' ')
 print('change for yes:')
-print(after_y - b4_y)
+change1 = round((after_y - b4_y) * 100, 4)
+print(change1, '%')
 print('change for no:')
-print(after_n - b4_n)
+change2 = round((after_n - b4_n) * 100, 4)
+print(change2, '%')
 
+def Bayes(P_cp, P_fp, P_crater):
+    return (P_cp * P_crater) / ((P_cp * P_crater) + (P_fp * (1 - P_crater)))
+print(Bayes(after_y, (1 - after_n), 1 / 100000))
 
 # model.summary()
 

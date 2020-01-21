@@ -21,7 +21,7 @@ def crater_do(FOVSize):
     # shutil.copy(os.path.join(RunDir, 'Data_10000.hdf5'), os.path.join(RunDir, 'Data.hdf5'))
 
     ### LOAD THE HDF.
-    DataFile = h5py.File(os.path.join(RunDir, 'to_train_{}.hdf5'.format(FOVSize)), 'r+')
+    DataFile = h5py.File(os.path.join(RunDir, 'new_to_train_{}.hdf5'.format(FOVSize)), 'r+')
     #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
     FOVSize = DataFile.attrs['FOVSize']
     print(FOVSize)

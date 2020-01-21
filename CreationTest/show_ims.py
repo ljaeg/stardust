@@ -8,40 +8,40 @@ RD = '/home/admin/Desktop/Aug6'
 x = ['A', 'B', 'C', 'D']
 y = ['dif_size_100', 'dif_size_150', 'dif_size_200', 'transfer_500', 'Middle_FOV150_Num10k_new']
 z = ['dif_size_150', 'to_train_150', 'transfer_150']
+w = ['new_to_train_700']
 
 n = 1
-for i in z:
-	ds = h5.File(os.path.join(RD, '{}.hdf5'.format(i)), 'r')
-	im = np.array(ds['TestYes'])[23]
-	plt.subplot(1, 3, n)
-	plt.imshow(im, cmap = 'gray')
-	plt.axis('off')
-	plt.title(i)
-	n += 1
-plt.savefig('Dif150s.png')
+# for i in z:
+# 	ds = h5.File(os.path.join(RD, '{}.hdf5'.format(i)), 'r')
+# 	im = np.array(ds['TestYes'])[23]
+# 	plt.subplot(1, 3, n)
+# 	plt.imshow(im, cmap = 'gray')
+# 	plt.axis('off')
+# 	plt.title(i)
+# 	n += 1
+# plt.savefig('Dif150s.png')
 
 
-# for letter in y:
-# 	dataset = h5.File(os.path.join(RD, '{}.hdf5'.format(letter)), 'r')
-# 	Yes = np.array(dataset['TrainYes'])
-# 	No = np.array(dataset['TrainNo'])
-# 	def do_show(data):
-# 		n = 1
-# 		for im in data:
-# 			plt.imshow(im, cmap = 'gray')
-# 			plt.title('[{}], {}, {}'.format(letter, y, n))
-# 			n += 1
-# 			plt.axis('off')
-# 			plt.show(block = False)
-# 			plt.waitforbuttonpress(10)
-# 			plt.close()
-# 			if n % 10 == 0:
-# 				x = input('stop and move on? ("y" if so)')
-# 				if x == 'y':
-# 					break
-
-# 	do_show(Yes)
-# 	do_show(No)
+for letter in w:
+	dataset = h5.File(os.path.join(RD, '{}.hdf5'.format(letter)), 'r')
+	Yes = np.array(dataset['TrainYes'])
+	No = np.array(dataset['TrainNo'])
+	def do_show(data):
+		n = 1
+		for im in data:
+			plt.imshow(im, cmap = 'gray')
+			plt.title('[{}], {}, {}'.format(letter, y, n))
+			n += 1
+			plt.axis('off')
+			plt.show(block = False)
+			plt.waitforbuttonpress(10)
+			plt.close()
+			if n % 10 == 0:
+				x = input('stop and move on? ("y" if so)')
+				if x == 'y':
+					break
+	do_show(Yes)
+	do_show(No)
 # A = 'Middle_FOV150_Num10k'
 # B = 'Middle_FOV150_Num10k_new'
 # nb = h5.File(os.path.join(RD, '{}.hdf5'.format(A)), 'r')

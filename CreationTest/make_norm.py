@@ -3,11 +3,11 @@ import numpy as np
 import os
 import matplotlib
 # import matplotlib.pyplot
-fovsize = 500
+
 def norm_do(size):
 	##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
 	Dir = '/home/admin/Desktop/Aug6'
-	not_normed = h5.File(os.path.join(Dir, 'to_train_{}.hdf5'.format(size)), 'r')
+	not_normed = h5.File(os.path.join(Dir, 'new_to_train_{}.hdf5'.format(size)), 'r+')
 	# testdir = '/users/loganjaeger/Desktop/SAH/Code/Current'
 	# not_normed = h5.File(os.path.join(testdir, 'Data_1000_craters.hdf5'), 'r')
 
@@ -27,7 +27,7 @@ def norm_do(size):
 	ValYes = np.array(not_normed['ValYes'])
 	not_normed.close()
 
-	normed = h5.File(os.path.join(Dir, 'to_train_{}.hdf5'.format(size)), 'w')
+	normed = h5.File(os.path.join(Dir, 'new_to_train_{}.hdf5'.format(size)), 'w')
 	normed.attrs.create('FOVSize', FOVSize)
 	normed.attrs.create("NumFOVs", NumFOVs)
 	normed.attrs.create('Foils', Foils)
@@ -112,3 +112,41 @@ def norm_do(size):
 	# plt.show()
 
 	normed.close()
+
+def norm_do_large(size):
+	##We're going to norm the images by per image mean subtraction, and save them to a DIFFERENT directory so that we compare performance
+	Dir = '/home/admin/Desktop/Aug6'
+	not_normed = h5.File(os.path.join(Dir, 'new_to_train_{}.hdf5'.format(size)), 'r+')
+
+	FOVSize = not_normed.attrs['FOVSize']
+	NumFOVs = not_normed.attrs['NumFOVs']
+	try:
+		Foils = not_normed.attrs['Foils'].split(',')
+	except:
+		Foils = not_normed.attrs['Foils']
+	print(Foils)
+	# Read the Train/Test/Val datasets.
+	TrainNo = not_normed['TrainNo']
+	TrainYes = not_normed['TrainYes']
+	TestNo = not_normed['TestNo']
+	TestYes = not_normed['TestYes']
+	ValNo = not_normed['ValNo']
+	ValYes = not_normed['ValYes']
+
+	def norm(dataset):
+		for n, im in enumerate(dataset):
+			m = np.mean(im)
+			s = np.std(im)
+			if not(s):
+				s = 1
+			new = (im - m) / s
+			dataset[n] =  new
+			if not(n % 50):
+				print(n)
+	norm(TrainYes)
+	norm(TrainNo)
+	norm(TestYes)
+	norm(TestNo)
+	norm(ValYes)
+	norm(ValNo)
+	not_normed.close()

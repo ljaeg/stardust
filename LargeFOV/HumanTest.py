@@ -38,8 +38,10 @@ def f1_acc(y_true, y_pred):
 
     return f1_score
 
-DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
+# DataDir = '/home/admin/Desktop/Preprocess'
+# DataFile = h5py.File(os.path.join(DataDir, 'FOV150_Num10000_normed_01.hdf5'), 'r+')
+DataDir = '/home/admin/Desktop/Aug6'
+DataFile = h5py.File(os.path.join(DataDir, 'new_to_train_500.hdf5'), 'r+')
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
@@ -56,16 +58,22 @@ TestYes = DataFile['TestYes']
 ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
-for i in range(20):
-	plt.imshow(np.reshape(TrainYes[i], (FOVSize, FOVSize)), cmap = 'gray')
-	plt.show(block = False)
-	plt.waitforbuttonpress(10)
-	plt.close()
+import Reduce
+TestNo = Reduce.reduce_whole_ds(TestNo, block_size = (3, 3))
+TestYes = Reduce.reduce_whole_ds(TestYes, block_size = (3, 3))
+FOVSize = TestYes.shape[1]
+print(TestYes.shape)
+
+# for i in range(20):
+# 	plt.imshow(np.reshape(TrainYes[i], (FOVSize, FOVSize)), cmap = 'gray')
+# 	plt.show(block = False)
+# 	plt.waitforbuttonpress(10)
+# 	plt.close()
 
 TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
 TestAnswers = np.ones(len(TestNo) + len(TestYes))
 TestAnswers[:len(TestNo)] = 0
-inds = np.random.randint(low = 0, high = len(TestAnswers), size = 50)
+inds = np.random.randint(low = 0, high = len(TestAnswers), size = 25)
 
 # ims = np.array([TestData[i] for i in inds])
 # s = ims.shape
