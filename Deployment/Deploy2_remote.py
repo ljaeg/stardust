@@ -107,12 +107,12 @@ for i in range(X_ims):
 	negatives = 0
 	if pred > .5:
 		positives += 1
-		print(i, " ***POSITIVE*** ", round(pred, 3))
+		print(i, " ***POSITIVE*** ", pred)
 		img.save(img_path + "/positive/" + movie_id + ".png")
 		img_element.click()
 	else:
 		negatives += 1
-		print(i, " negative ", round(pred, 3))
+		print(i, " negative ", pred)
 		img.save(img_path + "/negative/" +movie_id+ ".png")
 		no_crater = driver.find_element_by_xpath("//img[@alt='No Good']/..")
 		no_crater.click()
