@@ -30,7 +30,6 @@ session = tf.Session(config=config)
 
 #Paths
 chrome_path = "/home/admin/Downloads/chromedriver"
-#chrome_path = "/home/admin/Desktop/forChromeDriver/chromedriver"
 img_path = "/home/admin/Desktop/GH/Deployment/Answers"
 
 
@@ -63,6 +62,15 @@ def f1_acc(y_true, y_pred):
 X_ims = 100
 model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV150.h5', custom_objects={'f1_acc': f1_acc})
 
+#normalize a single image
+def norm(im):
+	mean = np.mean(im)
+	std = np.std(im)
+	if std == 0:
+		return im - mean
+	else:
+		return (im - mean) / std 
+
 #this is how to evaluate a single image
 def split_image_and_pred(image):
 	a = [0, 100, 200, 234]
@@ -73,7 +81,8 @@ def split_image_and_pred(image):
 		for j in b:
 			z = j + 150
 			sub_img = (image[i:w, j:z]).reshape(1, 150, 150, 1)
-			pred = model.predict(sub_img)
+			sub_img_norm = norm(sub_img)
+			pred = model.predict(sub_img_norm)
 			all_preds.append(pred)
 	return max(all_preds)
 
@@ -87,24 +96,32 @@ microscope = driver.find_element_by_partial_link_text("Virtual")
 microscope.click()
 
 #predict X_ims number of images
-for _ in range(X_ims):
+for i in range(X_ims):
 	img_element = driver.find_element_by_name("movieframe")
 	img_url = img_element.get_attribute("src")
 	movie_id = driver.find_element_by_xpath("//table[@class='body_12']/tbody/tr[1]/td[3]").text
 	img = Image.open(urllib.request.urlopen(img_url))
 	img_array = np.array(img) / 255
-	print(img_array.shape)
-	if split_image_and_pred(img_array) > .5:
+	pred = split_image_and_pred(img_array)
+	positives = 0
+	negatives = 0
+	if pred > .5:
+		positives += 1
+		print(i, " ***POSITIVE*** ", round(pred, 3))
 		img.save(img_path + "/positive/" + movie_id + ".png")
 		img_element.click()
 	else:
+		negatives += 1
+		print(i, " negative ", round(pred, 3))
 		img.save(img_path + "/negative/" +movie_id+ ".png")
 		no_crater = driver.find_element_by_xpath("//img[@alt='No Good']/..")
 		no_crater.click()
 
 
-
-
+print("done! Stats:")
+print("positives: ", positives)
+print("negatives: ", negatives)
+print("{} percent of those seen were classified as positive".format((positives / (positives + negatives)) * 100))
 driver.close()
 
 
