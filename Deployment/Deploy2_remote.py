@@ -38,6 +38,9 @@ img_path = "/home/admin/Desktop/GH/Deployment/Answers"
 from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+from pyvirtualdisplay import Display
+display = Display(visible=0, size=(800, 800))  
+display.start()
 driver = Chrome(executable_path = chrome_path)
 
 # Calculate the F1 score which we use for optimizing the CNN.
