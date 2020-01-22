@@ -29,8 +29,8 @@ config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
 
 #Paths
-#chrome_path = "/home/admin/Downloads/chromedriver"
-chrome_path = "/home/admin/Desktop/forChromeDriver/chromedriver"
+chrome_path = "/home/admin/Downloads/chromedriver"
+#chrome_path = "/home/admin/Desktop/forChromeDriver/chromedriver"
 img_path = "/home/admin/Desktop/GH/Deployment/Answers"
 
 
