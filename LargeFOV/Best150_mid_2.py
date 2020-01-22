@@ -107,6 +107,7 @@ DataFile = h5py.File(os.path.join(DataDir, 'Aug6','new_to_train_150.hdf5'), 'r+'
 # DataFile = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
+print("FOVSize: ",  FOVSize)
 NumFOVs = DataFile.attrs['NumFOVs']
 try:
   Foils = DataFile.attrs['Foils'].split(',')
@@ -279,7 +280,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=25,
+                   epochs=60,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -342,14 +343,14 @@ def make_and_save_filter_img(layer_number, model = high_acc, pool = None):
   plt.axis('off')
   plt.savefig('intermediate_output_{}_layer:{}.png'.format(FOVSize, layer_number))
   plt.close()
-make_and_save_filter_img(1)
-make_and_save_filter_img(2)
-#make_and_save_filter_img(3)
-# make_and_save_filter_img(4, pool = "max_pooling2d_2")
-# make_and_save_filter_img(4, pool = "max_pooling2d_3")
-make_and_save_filter_img(4)
-# make_and_save_filter_img(5)
-make_and_save_filter_img(6)
+# make_and_save_filter_img(1)
+# make_and_save_filter_img(2)
+# #make_and_save_filter_img(3)
+# # make_and_save_filter_img(4, pool = "max_pooling2d_2")
+# # make_and_save_filter_img(4, pool = "max_pooling2d_3")
+# make_and_save_filter_img(4)
+# # make_and_save_filter_img(5)
+# make_and_save_filter_img(6)
 
 # x = len([i for i in no_preds if i < .5]) / len(no_preds)
 # y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
@@ -380,11 +381,11 @@ def calc_test_acc(name):
   print((cp + cn) / 2)
   print(' ')
 
-calc_test_acc('new_to_train_200')
-calc_test_acc('new_to_train_300')
-calc_test_acc('new_to_train_450')
-calc_test_acc('new_to_train_500')
-calc_test_acc('new_to_train_700')
+# calc_test_acc('new_to_train_200')
+# calc_test_acc('new_to_train_300')
+# calc_test_acc('new_to_train_450')
+# calc_test_acc('new_to_train_500')
+# calc_test_acc('new_to_train_700')
 
 
 
