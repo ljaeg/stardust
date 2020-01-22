@@ -80,7 +80,9 @@ def calc_test_acc(name):
   print((cp + cn) / 2)
   print(' ')
 
-#calc_test_acc('new_to_train_700')
+calc_test_acc('new_to_train_150')
+
+"""
 calc_test_acc('new_to_train_500')
 calc_test_acc('new_to_train_200')
 
@@ -210,7 +212,7 @@ print(Bayes(after_y, (1 - after_n), 1 / 100000))
 # make_and_save_filter_img(4)
 # make_and_save_filter_img(5)
 # make_and_save_filter_img(6)
-"""
+
 DF = h5py.File(os.path.join(DataDir, 'Aug6','Middle_FOV150_Num10k_new.hdf5'), 'r+')
 TestNo = DF['TestNo']
 TestYes = DF['TestYes']
