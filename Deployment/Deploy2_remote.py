@@ -69,7 +69,10 @@ def norm(im):
 	if std == 0:
 		return im - mean
 	else:
-		return (im - mean) / std 
+		x = (im - mean) / std 
+		min_v = np.min(x)
+		max_v = np.max(x)
+		return (x - min_v) / (max_v - min_v)
 
 #this is how to evaluate a single image
 def split_image_and_pred(image):
