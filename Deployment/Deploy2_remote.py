@@ -92,7 +92,7 @@ for _ in range(X_ims):
 	img_url = img_element.get_attribute("src")
 	movie_id = driver.find_element_by_xpath("//table[@class='body_12']/tbody/tr[1]/td[3]").text
 	img = Image.open(urllib.request.urlopen(img_url))
-	img_array = np.array(img) / 255
+	img_array = (np.array(img) / 255).reshape(1, 150, 150, 1)
 	if split_image_and_pred(img_array) > .5:
 		img.save(img_path + "/positive/" + movie_id + ".png")
 		img_element.click()
