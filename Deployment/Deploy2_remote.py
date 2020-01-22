@@ -69,10 +69,9 @@ def norm(im):
 	if std == 0:
 		return im - mean
 	else:
-		x = (im - mean) / std 
-		min_v = np.min(x)
-		max_v = np.max(x)
-		return (x - min_v) / (max_v - min_v)
+		min_v = np.min(im)
+		max_v = np.max(im)
+		return (im - min_v) / (im- min_v)
 
 #this is how to evaluate a single image
 def split_image_and_pred(image):
@@ -108,7 +107,7 @@ for i in range(X_ims):
 	img = Image.open(urllib.request.urlopen(img_url))
 	img_array = np.array(img) / 255
 	pred = split_image_and_pred(img_array)[0][0]
-	if pred > .5:
+	if pred > .95:
 		positives += 1
 		print(i, " ***POSITIVE*** ", pred)
 		img.save(img_path + "/positive/" + movie_id + ".png")
