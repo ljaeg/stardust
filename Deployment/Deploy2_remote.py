@@ -65,8 +65,8 @@ model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV150.h5', cus
 
 #this is how to evaluate a single image
 def split_image_and_pred(image):
-	a = [0, 100, 200, 235]
-	b = [0, 100, 200, 300, 363]
+	a = [0, 100, 200, 234]
+	b = [0, 100, 200, 300, 362]
 	all_preds = []
 	for i in a:
 		w = i + 150
