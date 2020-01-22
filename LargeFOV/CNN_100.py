@@ -20,7 +20,7 @@ session = tf.Session(config=config)
 # config = tf.ConfigProto(intra_op_parallelism_threads=2)
 # session = tf.Session(config=config)
 import keras.backend as K
-K.set_floatx('float32')
+#K.set_floatx('float32')
 # K.set_session(session)
 
 from keras.models import Sequential, load_model

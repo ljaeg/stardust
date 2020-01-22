@@ -38,7 +38,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from pyvirtualdisplay import Display
-display = Display(visible=0, size=(800, 800))  
+display = Display(visible=800, size=(800, 800))  
 display.start()
 driver = Chrome(executable_path = chrome_path)
 
@@ -95,6 +95,8 @@ password.send_keys("23Na35Cl"+Keys.ENTER)
 microscope = driver.find_element_by_partial_link_text("Virtual")
 microscope.click()
 
+positives = 0
+negatives = 0
 #predict X_ims number of images
 for i in range(X_ims):
 	img_element = driver.find_element_by_name("movieframe")
@@ -103,8 +105,6 @@ for i in range(X_ims):
 	img = Image.open(urllib.request.urlopen(img_url))
 	img_array = np.array(img) / 255
 	pred = split_image_and_pred(img_array)[0][0]
-	positives = 0
-	negatives = 0
 	if pred > .5:
 		positives += 1
 		print(i, " ***POSITIVE*** ", pred)
