@@ -64,14 +64,21 @@ model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV150.h5', cus
 
 #normalize a single image
 def norm(im):
-	mean = np.mean(im)
-	std = np.std(im)
-	if std == 0:
-		return im - mean
+	# mean = np.mean(im)
+	# std = np.std(im)
+	# if std == 0:
+	# 	return im - mean
+	# else:
+	# 	x = (im - mean) / std 
+	# 	min_v = np.min(im)
+	# 	max_v = np.max(im)
+	# 	return (x - min_v) / (max_v - min_v)
+	mn = np.min(im)
+	mx = np.max(im)
+	if mx == mn:
+		return im 
 	else:
-		min_v = np.min(im)
-		max_v = np.max(im)
-		return (im - min_v) / (im- min_v)
+		return (im - mn) / (mx - mn)
 
 #this is how to evaluate a single image
 def split_image_and_pred(image):
