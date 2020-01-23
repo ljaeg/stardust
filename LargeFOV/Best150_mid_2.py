@@ -44,7 +44,7 @@ tf.random.set_random_seed(3)
 # Train/validate/test info
 batch_size=int(512/16)
 #NOTE: THE CLASS WEIGHTS ARE NOT EVEN
-class_weight={0: 2, 1: 1}
+class_weight={0: 1, 1: 1}
 epochs = 100
 ConvScale=32
 DenseScale=64 / 4
