@@ -43,7 +43,8 @@ tf.random.set_random_seed(3)
 
 # Train/validate/test info
 batch_size=int(512/16)
-class_weight={0: 1, 1: 1}
+#NOTE: THE CLASS WEIGHTS ARE NOT EVEN
+class_weight={0: 20, 1: 1}
 epochs = 100
 ConvScale=32
 DenseScale=64 / 4
@@ -380,6 +381,14 @@ def calc_test_acc(name):
   print(FOVSize, ' total acc:')
   print((cp + cn) / 2)
   print(' ')
+
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print(FOVSize)
+print("no: ", x)
+print("yes: ", y)
 
 # calc_test_acc('new_to_train_200')
 # calc_test_acc('new_to_train_300')
