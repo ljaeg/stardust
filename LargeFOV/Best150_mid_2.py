@@ -44,7 +44,7 @@ tf.random.set_random_seed(3)
 # Train/validate/test info
 batch_size=int(512/16)
 #NOTE: THE CLASS WEIGHTS ARE NOT EVEN
-class_weight={0: 1, 1: 1}
+class_weight={0: 10, 1: 1}
 epochs = 100
 ConvScale=32
 DenseScale=64 / 4
@@ -279,6 +279,9 @@ from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
+preload_weights = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+preload_weights = preload_weights.get_weights()
+model.set_weights(preload_weights)
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=25,
