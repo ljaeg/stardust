@@ -59,7 +59,7 @@ def f1_acc(y_true, y_pred):
     f1_score = 2 * (precision * recall) / (precision + recall)
     return f1_score
 
-X_ims = 100
+X_ims = 1000
 model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV150.h5', custom_objects={'f1_acc': f1_acc})
 
 #normalize a single image
@@ -114,7 +114,7 @@ for i in range(X_ims):
 	img = Image.open(urllib.request.urlopen(img_url))
 	img_array = np.array(img) / 255
 	pred = split_image_and_pred(img_array)[0][0]
-	if pred > .95:
+	if pred > .98:
 		positives += 1
 		print(i, " ***POSITIVE*** ", pred)
 		img.save(img_path + "/positive/" + movie_id + ".png")
@@ -122,7 +122,7 @@ for i in range(X_ims):
 	else:
 		negatives += 1
 		print(i, " negative ", pred)
-		img.save(img_path + "/negative/" +movie_id+ ".png")
+		#img.save(img_path + "/negative/" +movie_id+ ".png")
 		no_crater = driver.find_element_by_xpath("//img[@alt='No Good']/..")
 		no_crater.click()
 
