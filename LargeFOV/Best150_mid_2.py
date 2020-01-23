@@ -281,7 +281,7 @@ from time import time
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=35,
+                   epochs=25,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -289,6 +289,8 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_F1_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+low_loss = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_loss_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
 def make_and_save_filter_img(layer_number, model = high_acc, pool = None):
   layer_name = 'conv2d_{}'.format(layer_number)
@@ -382,11 +384,30 @@ def calc_test_acc(name):
   print((cp + cn) / 2)
   print(' ')
 
+
 no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
-print(FOVSize)
+print("high acc:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+no_preds = high_f1.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_f1.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("high f1:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("low loss:")
 print("no: ", x)
 print("yes: ", y)
 
