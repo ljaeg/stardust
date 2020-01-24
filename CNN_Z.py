@@ -39,7 +39,7 @@ from sklearn.utils import shuffle
 # Train/validate/test info
 batch_size=int(512 * 1)
 #NOTE: CLASS WEIGHTS ARE UNEVEN
-class_weight={0: 20, 1: 1}
+class_weight={0: 10, 1: 1}
 epochs = 250
 ConvScale=2 
 DenseScale=1 
@@ -220,6 +220,25 @@ print("no: ", x)
 print("yes: ", y)
 print(' ')
 
+low_loss = load_model("Foils_CNN_loss.h5", custom_objects={'f1_acc': f1_acc})
+no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("low loss:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+F1 = load_model("Foils_CNN_F1.h5", custom_objects={'f1_acc': f1_acc})
+no_preds = F1.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = F1.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("high acc:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
 """
 testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 middles = testing_data['middle_small']
