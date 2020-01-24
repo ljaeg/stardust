@@ -209,6 +209,18 @@ model.fit_generator(generator=train_generator,
                    class_weight=class_weight
                    )
 
+
+high_acc = load_model("Foils_CNN_acc.h5", custom_objects={'f1_acc': f1_acc})
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("high acc:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+"""
 testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
 middles = testing_data['middle_small']
 sides = testing_data['side_small']
@@ -266,7 +278,7 @@ plt.hist(np.array(blank_wrong))
 plt.title('blank wrong')
 
 plt.savefig('MiddleVsSide.png')
-
+"""
 
 # predicted = model.predict(np.reshape(TestData, (3300 * 2, 30, 30, 1)))
 # no_tags = []
