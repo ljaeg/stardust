@@ -12,7 +12,7 @@ import time
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
 
-Dir = "/home/admin/Desktop/GH"
+Dir = "/home/admin/Desktop/GH/"
 number_to_do = 100
 
 """
