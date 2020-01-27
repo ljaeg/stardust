@@ -7,6 +7,7 @@ import urllib.request
 import h5py
 import requests
 from io import BytesIO
+import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
@@ -31,6 +32,7 @@ def get_img_array(fname):
 	codes = []
 	with open(path) as f:
 		i = 0
+		start_t = time.time()
 		for line in f.read().splitlines():
 			code = str(line)
 			codes.append(code)
@@ -38,7 +40,8 @@ def get_img_array(fname):
 			ims.append(im)
 			i += 1
 			if i % 50 == 0:
-				print(i)
+				print("Number so far: ", i)
+				time_til_done(411968, i, time.time() - start_t)
 	ims = np.array(ims)
 	codes = np.array(codes)
 	return arr, codes
@@ -50,6 +53,13 @@ def make_dataset(dataset_name, directory, codes_fname):
 	codes_set = datafile.create_dataset("codes", codes.shape, data = codes)
 	datafile.close()
 
+def time_til_done(total_N, current_N, current_time):
+	total_t = (total_N * current_time) / current_N
+	remaining_t = total_t - current_time
+	print("seconds left: ", remaining_t)
+	print("minutes left: ", remaining_t / 60)
+	print("hours left: ", remaining_t / (60*60))
+	print(" ")
 
 make_dataset("20181207", Dir, fname)
 
