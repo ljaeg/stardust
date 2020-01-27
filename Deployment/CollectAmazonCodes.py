@@ -16,15 +16,16 @@ fname = "20181207"
 #note that I'm mirroring the data labeling system used in the SQL file for the variable fname
 #double check that the fname and the database name match
 
-if os.path.isfile(Dir + fname):
-	print("file already exists")
-else:
-	file = open(Dir + fname, "w")
-	query = "SELECT amazon_key FROM `real_movie` WHERE tech = 0 LIMIT 100"
-	cursor = mydb.cursor()
-	cursor.execute(query)
-	result = cursor.fetchall()
-	for key in result:
-		file.write(key)
-	file.close()
+# if os.path.isfile(Dir + fname):
+# 	print("file already exists")
+# else:
+file = open(Dir + fname, "w")
+query = "SELECT amazon_key FROM `real_movie` WHERE tech = 0 LIMIT 100"
+cursor = mydb.cursor()
+cursor.execute(query)
+result = cursor.fetchall()
+for key in result:
+	print(key)
+	file.write(key)
+file.close()
 
