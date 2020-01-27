@@ -45,9 +45,9 @@ def get_img_array(fname):
 				time_til_done(number_to_do, i, time.time() - start_t)
 			if i == number_to_do - 1:
 				break
-	ims = np.array(ims)
+	ims = np.array(ims, dtype = "f8")
 	codes = np.array(codes, dtype = "U29")
-	return codes, codes
+	return ims, codes
 
 def make_dataset(dataset_name, directory, codes_fname):
 	ims, codes = get_img_array(codes_fname)
