@@ -12,7 +12,7 @@ import time
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
 
-Dir = "/home/admin/Desktop/GH/"
+Save_to_Dir = "/home/admin/Desktop/GH/"
 number_to_do = 100
 
 """
@@ -67,5 +67,5 @@ def time_til_done(total_N, current_N, current_time):
 	print("hours left: ", remaining_t / (60*60))
 	print(" ")
 
-make_dataset("20181207", Dir, fname)
+make_dataset("20181207", Save_to_Dir, fname)
 
