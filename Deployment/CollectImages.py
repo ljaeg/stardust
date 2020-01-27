@@ -19,7 +19,7 @@ def get_image(code):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
 	#r = urllib.request.urlopen(url)
 	r = requests.get(url)
-	img = Image.open(r)
+	img = Image.open(BytesIO(r.content))
 	img = np.array(img) / 255.0
 	return np.reshape(img, (384, 512, 1))
 
