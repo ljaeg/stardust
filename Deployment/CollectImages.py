@@ -11,6 +11,7 @@ import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
+number_to_do = 10000
 
 """
 I'd like to store the images in an hdf5 file for more compact storage.
@@ -41,7 +42,9 @@ def get_img_array(fname):
 			i += 1
 			if i % 50 == 0:
 				print("Number so far: ", i)
-				time_til_done(10000, i, time.time() - start_t)
+				time_til_done(number_to_do, i, time.time() - start_t)
+			if i == number_to_do - 1:
+				break
 	ims = np.array(ims)
 	codes = np.array(codes)
 	return arr, codes
