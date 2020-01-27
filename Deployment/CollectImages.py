@@ -54,7 +54,7 @@ def make_dataset(dataset_name, directory, codes_fname):
 	ims, codes = get_img_array(codes_fname)
 	datafile = h5py.File(directory + dataset_name + ".hdf5", "w")
 	image_set = datafile.create_dataset("images", ims.shape, data = ims)
-	codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
+	#codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
 	datafile.attrs["codes"] = np.string_(codes)
 	datafile.close()
 
