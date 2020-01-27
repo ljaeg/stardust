@@ -11,6 +11,8 @@ import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
+
+Dir = "/home/admin/Desktop/GH"
 number_to_do = 100
 
 """
@@ -30,13 +32,13 @@ def get_img_array(fname):
 	#(N, 384, 512, 1) image array
 	path = Dir + fname
 	ims = []
-	codes = np.chararray((number_to_do,))
+	codes = []
 	with open(path) as f:
 		i = 0
 		start_t = time.time()
 		for line in f.read().splitlines():
 			code = str(line)
-			codes[i] = code
+			codes.append(code)
 			im = get_image(code)
 			ims.append(im)
 			i += 1
@@ -46,7 +48,6 @@ def get_img_array(fname):
 			if i == number_to_do - 1:
 				break
 	ims = np.array(ims, dtype = "f8")
-	codes = np.array(codes, dtype = "U29")
 	return ims, codes
 
 def make_dataset(dataset_name, directory, codes_fname):
@@ -55,6 +56,7 @@ def make_dataset(dataset_name, directory, codes_fname):
 	datafile = h5py.File(directory + dataset_name + ".hdf5", "w")
 	image_set = datafile.create_dataset("images", ims.shape, data = ims)
 	codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
+	datafile.attrs["codes"] = np.string_(codes)
 	datafile.close()
 
 def time_til_done(total_N, current_N, current_time):
