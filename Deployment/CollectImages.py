@@ -41,7 +41,7 @@ def get_img_array(fname):
 			i += 1
 			if i % 50 == 0:
 				print("Number so far: ", i)
-				time_til_done(100000, i, time.time() - start_t)
+				time_til_done(10000, i, time.time() - start_t)
 	ims = np.array(ims)
 	codes = np.array(codes)
 	return arr, codes
