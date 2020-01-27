@@ -25,7 +25,7 @@ cursor = mydb.cursor()
 cursor.execute(query)
 result = cursor.fetchall()
 for key in result:
-	print(key)
+	print(key[0])
 	file.write(key)
 file.close()
 
