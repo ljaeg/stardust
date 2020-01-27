@@ -51,9 +51,10 @@ def get_img_array(fname):
 
 def make_dataset(dataset_name, directory, codes_fname):
 	ims, codes = get_img_array(codes_fname)
+	print(codes.dtype)
 	datafile = h5py.File(directory + dataset_name + ".hdf5", "w")
 	image_set = datafile.create_dataset("images", ims.shape, data = ims)
-	codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = h5py.string_dtype())
+	codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
 	datafile.close()
 
 def time_til_done(total_N, current_N, current_time):
