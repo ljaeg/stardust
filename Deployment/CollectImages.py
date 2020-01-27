@@ -18,6 +18,7 @@ The metadata will be stored on a different datasite in the same hdf5 file
 
 def get_image(code):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
+	print(url)
 	#r = urllib.request.urlopen(url)
 	r = requests.get(url)
 	img = Image.open(BytesIO(r.content))
