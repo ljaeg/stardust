@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np 
 import urllib.request
 import h5py
+import requests
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
@@ -16,7 +17,9 @@ The metadata will be stored on a different datasite in the same hdf5 file
 
 def get_image(code):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
-	img = Image.open(urllib.request.urlopen(url))
+	#r = urllib.request.urlopen(url)
+	r = requests.get(url)
+	img = Image.open()
 	img = np.array(img) / 255.0
 	return np.reshape(img, (384, 512, 1))
 
