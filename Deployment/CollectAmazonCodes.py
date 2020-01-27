@@ -19,7 +19,7 @@ fname = "20181207"
 # if os.path.isfile(Dir + fname):
 # 	print("file already exists")
 # else:
-file = open(Dir + fname, "w")
+file = open(Dir + fname + ".txt", "w")
 query = "SELECT amazon_key FROM `real_movie` WHERE tech = 0 LIMIT 100"
 cursor = mydb.cursor()
 cursor.execute(query)
