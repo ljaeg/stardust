@@ -6,6 +6,7 @@ import numpy as np
 import urllib.request
 import h5py
 import requests
+from io import BytesIO
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
@@ -29,11 +30,15 @@ def get_img_array(fname):
 	ims = []
 	codes = []
 	with open(path) as f:
+		i = 0
 		for line in f:
 			code = str(line)
 			codes.append(code)
 			im = get_image(code)
 			ims.append(im)
+			i += 1
+			if i % 50 == 0:
+				print(i)
 	ims = np.array(ims)
 	codes = np.array(codes)
 	return arr, codes
