@@ -30,13 +30,13 @@ def get_img_array(fname):
 	#(N, 384, 512, 1) image array
 	path = Dir + fname
 	ims = []
-	codes = []
+	codes = np.chararray((1, number_to_do))
 	with open(path) as f:
 		i = 0
 		start_t = time.time()
 		for line in f.read().splitlines():
 			code = str(line)
-			codes.append(code)
+			codes[i] = code
 			im = get_image(code)
 			ims.append(im)
 			i += 1
