@@ -11,7 +11,7 @@ import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
-number_to_do = 10000
+number_to_do = 5000
 
 """
 I'd like to store the images in an hdf5 file for more compact storage.
@@ -47,7 +47,7 @@ def get_img_array(fname):
 				break
 	ims = np.array(ims)
 	codes = np.array(codes)
-	return arr, codes
+	return codes, codes
 
 def make_dataset(dataset_name, directory, codes_fname):
 	ims, codes = get_img_array(codes_fname)
