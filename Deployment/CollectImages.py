@@ -13,7 +13,7 @@ Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
 
 Save_to_Dir = "/home/admin/Desktop/GH/"
-number_to_do = 100
+number_to_do = 20
 
 """
 I'd like to store the images in an hdf5 file for more compact storage.
