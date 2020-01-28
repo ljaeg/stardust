@@ -134,7 +134,7 @@ def split_predict_30(im):
 			pred = model30.predict(sin)
 			if pred > th_30:
 				#early cutoff
-				plt.imsave(str(pred[0][0]) + ".png", np.reshape(sin, (30, 30)), cmap = "gray")
+				#plt.imsave(str(pred[0][0]) + ".png", np.reshape(sin, (30, 30)), cmap = "gray")
 				return 1
 	return 0
 
