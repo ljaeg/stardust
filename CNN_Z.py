@@ -152,10 +152,10 @@ ValYes = DataFile['ValYes']
 # ValNo = standardize_exp(ValNo)
 # ValYes = standardize_exp(ValYes)
 
-TrainNo = norm__reg(TrainNo)
-TrainYes = norm__reg(TrainYes)
-ValNo = norm__reg(ValNo)
-ValYes = norm__reg(ValYes)
+# TrainNo = norm__reg(TrainNo)
+# TrainYes = norm__reg(TrainYes)
+# ValNo = norm__reg(ValNo)
+# ValYes = norm__reg(ValYes)
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
