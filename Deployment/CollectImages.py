@@ -32,8 +32,8 @@ def get_image(code):
 		img = np.array(img) / 255.0
 	except OSError:
 		print("got error from URL")
-		img = np.ones((384, 512, 1))
-	return np.reshape(img, (384, 512, 1))
+		img = np.ones((385, 513, 1))
+	return np.reshape(img, (385, 513, 1))
 
 def get_img_array(fname, start, step_size):
 	#(N, 384, 512, 1) image array
