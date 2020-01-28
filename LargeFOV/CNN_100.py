@@ -203,27 +203,30 @@ model.add(Dropout(dropout_rate))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
-model.save('/home/admin/Desktop/Saved_CNNs/Foils_CNN_FOV{}.h5'.format(FOVSize))
-model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+model.save('/home/admin/Desktop/Saved_CNNs/NFP_FOV{}.h5'.format(FOVSize))
+model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 model.summary()
-# plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
+# plot_model(model, to_file='NFP.png', show_shapes=True)
 
 
 
 # Do the training
 # CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
-Logger = CSVLogger('/home/admin/Desktop/Saved_CNNs/Foils_CNN_Log_FOV{}.txt'.format(FOVSize), append=True)
+Logger = CSVLogger('/home/admin/Desktop/Saved_CNNs/NFP_Log_FOV{}.txt'.format(FOVSize), append=True)
 # ModelCheckpoint will save the configuration of the network after each epoch.
 # save_best_only ensures that when the validation score is no longer improving, we don't overwrite
 # the network with a new configuration that is overfitting.
-Checkpoint1 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_F1_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
-Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_loss_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
-Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
+Checkpoint1 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_F1_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
+Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
+Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/July23/{}'.format(time()))
+preload_weights = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+preload_weights = preload_weights.get_weights()
+model.set_weights(preload_weights)
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
                    epochs=40,
@@ -240,10 +243,43 @@ yes_preds = model.predict(np.reshape(TestYes, (3300, 100, 100, 1)))
 # plt.subplot(122)
 # plt.hist(yes_preds, bins = 15)
 # plt.show()
+
+
 print('no:')
 print(len([i for i in no_preds if i < .5]) / len(no_preds))
 print('yes:')
 print(len([i for i in yes_preds if i > .5]) / len(yes_preds))
+print(" ")
+
+high_acc = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_F1_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+low_loss = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("high acc:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+no_preds = high_f1.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = high_f1.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("high f1:")
+print("no: ", x)
+print("yes: ", y)
+print(' ')
+
+no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+x = len([i for i in no_preds if i < .5]) / len(no_preds)
+y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
+print("low loss:")
+print("no: ", x)
+print("yes: ", y)
 
 
 # testing_data = h5py.File('/home/admin/Desktop/ForGit/TestingSmallPerformance/JustMiddleSmall.hdf5')
@@ -347,7 +383,7 @@ print(len([i for i in yes_preds if i > .5]) / len(yes_preds))
 # plt.savefig('answer_space.png')
 
 # Plot the learning curve.
-# logresult = pd.read_csv('Foils_CNN_Log.txt', delimiter=',', index_col='epoch')
+# logresult = pd.read_csv('NFP_Log.txt', delimiter=',', index_col='epoch')
 # logresult.reset_index(inplace=True)
 # ax1 = logresult.plot(ylim=(0.995,1))
 # ax2 = logresult.plot(ylim=(0,0.005))
@@ -438,7 +474,7 @@ print(len([i for i in yes_preds if i > .5]) / len(yes_preds))
 #     print(CraterImages, ' out of ', SumImages, ' have craters.')
 #
 #
-# model = load_model('Foils_CNN_F1.h5', custom_objects={'f1_acc': f1_acc})
+# model = load_model('NFP_F1.h5', custom_objects={'f1_acc': f1_acc})
 # print('Compute Stats based on F1 score')
 # print('No Craters:')
 # HowManyCratersInDir(os.path.join(RawDataDir,'NoCraters'))
