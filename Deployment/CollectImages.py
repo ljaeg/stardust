@@ -11,52 +11,68 @@ import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
+save_f_base = "20181207"
 
 Save_to_Dir = Dir
-number_to_do = 110000
+step_size = 1000
+steps = 10
+start_number = 0
 
 """
 I'd like to store the images in an hdf5 file for more compact storage.
-The metadata will be stored on a different datasite in the same hdf5 file
+The metadata will be stored on a different dataset in the same hdf5 file
 """
 
 def get_image(code):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
 	#r = urllib.request.urlopen(url)
 	r = requests.get(url)
-	img = Image.open(BytesIO(r.content))
-	img = np.array(img) / 255.0
+	try:
+		img = Image.open(BytesIO(r.content))
+		img = np.array(img) / 255.0
+	except OSError:
+		print("got error from URL")
+		img = np.ones((384, 512, 1))
 	return np.reshape(img, (384, 512, 1))
 
-def get_img_array(fname):
+def get_img_array(fname, start, step_size):
 	#(N, 384, 512, 1) image array
 	path = Dir + fname
 	ims = []
 	codes = []
 	with open(path) as f:
-		i = 0
-		start_t = time.time()
-		for line in f.read().splitlines():
+		for line in f.read().splitlines()[start:start+step_size]:
 			code = str(line)
 			codes.append(code)
 			im = get_image(code)
 			ims.append(im)
-			i += 1
-			if i % 50 == 0:
-				print("Number so far: ", i)
-				time_til_done(number_to_do, i, time.time() - start_t)
-			if i == number_to_do:
-				break
 	ims = np.array(ims, dtype = "f8")
 	return ims, codes
 
-def make_dataset(dataset_name, directory, codes_fname):
-	ims, codes = get_img_array(codes_fname)
+def make_dataset(dataset_name, save_dir, codes_fname, start, step_size):
+	ims, codes = get_img_array(codes_fname, start, step_size)
 	datafile = h5py.File(directory + dataset_name + ".hdf5", "w")
 	image_set = datafile.create_dataset("images", ims.shape, data = ims)
 	#codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
 	datafile.attrs["codes"] = np.string_(codes)
 	datafile.close()
+
+
+def do_incrimentally(step_size, start, number_of_steps, save_dir, save_f_base, codes_fname):
+	print("you are doing {} images in {} parts".format(step_size*number_of_steps, number_of_steps))
+	print("I predict a total time of something like {} minutes".format(step_size * number_of_steps))
+	s = start 
+	step = 0
+	t = time.time()
+	while step < number_of_steps:
+		ds_name = save_f_base + "_" + step
+		make_dataset(ds_name, save_dir, codes_fname, s, step_size)
+		s += step_size
+		step += 1
+		time_til_done(step_size*number_of_steps, step*step_size, time.time() - t)
+
+def predict_total_t(total):
+	return (total * 11.5) / (50 * 60)
 
 def time_til_done(total_N, current_N, current_time):
 	total_t = (total_N * current_time) / current_N
@@ -66,5 +82,26 @@ def time_til_done(total_N, current_N, current_time):
 	print("hours left: ", remaining_t / (60*60))
 	print(" ")
 
-make_dataset("20181207", Save_to_Dir, fname)
+do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
 print("DONE!")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
