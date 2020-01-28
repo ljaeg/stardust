@@ -60,13 +60,14 @@ def make_dataset(dataset_name, save_dir, codes_fname, start, step_size):
 
 def do_incrimentally(step_size, start, number_of_steps, save_dir, save_f_base, codes_fname):
 	print("you are doing {} images in {} parts".format(step_size*number_of_steps, number_of_steps))
-	print("I predict a total time of something like {} minutes".format(step_size * number_of_steps))
+	print("I predict a total time of something like {} minutes".format(predict_total_t(step_size * number_of_steps)))
 	s = start 
 	step = 0
 	t = time.time()
 	while step < number_of_steps:
 		ds_name = save_f_base + "_" + str(step)
 		make_dataset(ds_name, save_dir, codes_fname, s, step_size)
+		print("saved " + ds_name)
 		s += step_size
 		step += 1
 		time_til_done(step_size*number_of_steps, step*step_size, time.time() - t)
