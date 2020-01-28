@@ -10,12 +10,12 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "20181207.txt"
-save_f_base = "20181207"
+fname = "testing.txt"
+save_f_base = "testing"
 
 Save_to_Dir = Dir
 step_size = 1500
-steps = 12
+steps = 2
 start_number = 0
 
 """
