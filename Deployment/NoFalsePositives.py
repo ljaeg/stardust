@@ -115,7 +115,7 @@ def split_predict_100(im):
 			#sin = sub_img
 			pred = model100.predict(sin)
 			if pred > th_100:
-				pred30 = split_predict_30(sin)
+				pred30 = split_predict_30(np.reshape(sin, (30, 30)))
 				pred_30s.append(pred30)
 	return max(pred_30s)
 
