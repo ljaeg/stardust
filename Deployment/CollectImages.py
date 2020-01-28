@@ -10,8 +10,8 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "likely.txt"
-save_f_base = "likely"
+fname = "likely_2.txt"
+save_f_base = "likely_two"
 
 Save_to_Dir = Dir
 step_size = 623
