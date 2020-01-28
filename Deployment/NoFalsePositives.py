@@ -135,7 +135,7 @@ def split_predict_30(im):
 			if pred > th_30:
 				#early cutoff
 				plt.imshow(np.reshape(sin, (30, 30)), cmap = "gray")
-				plt.save(str(pred[0][0]) + ".png")
+				plt.imsave(str(pred[0][0]) + ".png")
 				return 1
 	return 0
 
