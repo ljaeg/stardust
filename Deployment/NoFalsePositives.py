@@ -182,7 +182,7 @@ def find_codes(ims, codes):
 # 		file.write(code.decode('UTF-8'))
 # 		file.write("\n")
 
-
+import requests
 for code in ["fc_WzByX4LnSOS9v3GPmJvw.21333", "fc_pU8P3Zq38hR5j1YOWrfS.21333", "fc_lgKIRUgGC4bkjq5yF7jY.21333"]:
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
 	r = requests.get(url)
