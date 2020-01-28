@@ -132,8 +132,8 @@ def norm__reg(dataset):
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
 # DataDir = '/home/zack/Data/SAH/Code/Gen002/Data'
-DataDir = '/home/admin/Desktop/Preprocess'
-DataFile = h5py.File(os.path.join(DataDir, 'Data_10000_craters.hdf5'), 'r+')
+DataDir = '/home/admin/Desktop/Aug6'
+DataFile = h5py.File(os.path.join(DataDir, 'new_to_train_30.hdf5'), 'r+')
 #TrainTestValSplit = DataFile.attrs['TrainTestValSplit']
 FOVSize = DataFile.attrs['FOVSize']
 NumFOVs = DataFile.attrs['NumFOVs']
