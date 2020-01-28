@@ -2,8 +2,8 @@
 #This will HOPEFULLY give me a few false positives and a couple of true positives
 
 #load the models for the different sizes
-model150 = ...
-model100 = ...
+model150 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV150.h5', custom_objects={'f1_acc': f1_acc})
+model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custom_objects={'f1_acc': f1_acc})
 model30 = ...
 
 #specify the thresholds for the different sizes

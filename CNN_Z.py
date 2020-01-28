@@ -96,6 +96,38 @@ def standardize_exp(dataset):
   print('###### after ^')
   return x
 
+def norm__reg(dataset):
+  print(np.mean(dataset))
+
+  m = np.mean(dataset, axis = (1, 2))
+  s = dataset.shape
+  m = np.repeat(m, np.repeat(s[2]*s[1], s[0]))
+  m = np.reshape(m, s)
+
+  std = np.std(dataset, axis = (1, 2))
+  for n, i in enumerate(std):
+    if i == 0:
+      std[n] = 1
+  std = np.repeat(std, np.repeat(s[2]*s[1], s[0]))
+  std = np.reshape(std, s)
+
+  new = (dataset - m) / std
+
+  p = np.min(new, axis = (1, 2))
+  q = np.max(new, axis = (1, 2))
+  for i in range(len(p)):
+    if q[i] - p[i] == 0:
+      q[i] = 1
+      p[i] = 0
+  p = np.repeat(p, np.repeat(s[2]*s[1], s[0]))
+  q = np.repeat(q, np.repeat(s[2]*s[1], s[0]))
+  p = np.reshape(p, s)
+  q = np.reshape(q, s)
+
+  new = (new - p) / (q - p)
+  print(np.mean(new))
+  #new = new - .5
+  return new
 
 # Load the image datasets from the HDF.
 # RunDir = '/home/zack/Data/SAH/Code/Gen002/001 - CNN'
@@ -115,10 +147,15 @@ ValNo = DataFile['ValNo']
 ValYes = DataFile['ValYes']
 
 ####Here i am standardizing the data I don't know if it has already been standardize
-TrainNo = standardize_exp(TrainNo)
-TrainYes = standardize_exp(TrainYes)
-ValNo = standardize_exp(ValNo)
-ValYes = standardize_exp(ValYes)
+# TrainNo = standardize_exp(TrainNo)
+# TrainYes = standardize_exp(TrainYes)
+# ValNo = standardize_exp(ValNo)
+# ValYes = standardize_exp(ValYes)
+
+TrainNo = norm__reg(TrainNo)
+TrainYes = norm__reg(TrainYes)
+ValNo = norm__reg(ValNo)
+ValYes = norm__reg(ValYes)
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
@@ -177,22 +214,22 @@ model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
-model.save('Foils_CNN.h5')
-model = load_model('Foils_CNN.h5', custom_objects={'f1_acc': f1_acc})
+model.save('NFP30.h5')
+model = load_model('NFP30.h5', custom_objects={'f1_acc': f1_acc})
 model.summary()
-# plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
+# plot_model(model, to_file='NFP30.png', show_shapes=True)
 
 
 
 # Do the training
 # CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
-Logger = CSVLogger('Foils_CNN_Log.txt', append=True)
+Logger = CSVLogger('NFP30_Log.txt', append=True)
 # ModelCheckpoint will save the configuration of the network after each epoch.
 # save_best_only ensures that when the validation score is no longer improving, we don't overwrite
 # the network with a new configuration that is overfitting.
-Checkpoint1 = ModelCheckpoint('Foils_CNN_F1.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
-Checkpoint2 = ModelCheckpoint('Foils_CNN_loss.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
-Checkpoint3 = ModelCheckpoint('Foils_CNN_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
+Checkpoint1 = ModelCheckpoint('NFP30_F1.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
+Checkpoint2 = ModelCheckpoint('NFP30_loss.h5', verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
+Checkpoint3 = ModelCheckpoint('NFP30_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
@@ -210,7 +247,7 @@ model.fit_generator(generator=train_generator,
                    )
 
 
-high_acc = load_model("Foils_CNN_acc.h5", custom_objects={'f1_acc': f1_acc})
+high_acc = load_model("NFP30_acc.h5", custom_objects={'f1_acc': f1_acc})
 no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
@@ -220,7 +257,7 @@ print("no: ", x)
 print("yes: ", y)
 print(' ')
 
-low_loss = load_model("Foils_CNN_loss.h5", custom_objects={'f1_acc': f1_acc})
+low_loss = load_model("NFP30_loss.h5", custom_objects={'f1_acc': f1_acc})
 no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
@@ -230,7 +267,7 @@ print("no: ", x)
 print("yes: ", y)
 print(' ')
 
-F1 = load_model("Foils_CNN_F1.h5", custom_objects={'f1_acc': f1_acc})
+F1 = load_model("NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 no_preds = F1.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
 yes_preds = F1.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
@@ -341,7 +378,7 @@ plt.savefig('MiddleVsSide.png')
 # plt.savefig('answer_space.png')
 
 # Plot the learning curve.
-# logresult = pd.read_csv('Foils_CNN_Log.txt', delimiter=',', index_col='epoch')
+# logresult = pd.read_csv('NFP30_Log.txt', delimiter=',', index_col='epoch')
 # logresult.reset_index(inplace=True)
 # ax1 = logresult.plot(ylim=(0.995,1))
 # ax2 = logresult.plot(ylim=(0,0.005))
@@ -432,7 +469,7 @@ plt.savefig('MiddleVsSide.png')
 #     print(CraterImages, ' out of ', SumImages, ' have craters.')
 #
 #
-# model = load_model('Foils_CNN_F1.h5', custom_objects={'f1_acc': f1_acc})
+# model = load_model('NFP30_F1.h5', custom_objects={'f1_acc': f1_acc})
 # print('Compute Stats based on F1 score')
 # print('No Craters:')
 # HowManyCratersInDir(os.path.join(RawDataDir,'NoCraters'))
