@@ -45,9 +45,9 @@ model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custo
 model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 
 #specify the thresholds for the different sizes
-th_150 = .8
-th_100 = .8
-th_30 = .9
+th_150 = .85
+th_100 = .9
+th_30 = .95
 
 NumImages = 10000 #number of images to look through
 
@@ -172,7 +172,7 @@ def find_codes(ims, codes):
 	return yes_codes
 
 file = open("yesCodes.txt", "w")
-for i in range(3):
+for i in range(12):
 	name = "20181207_" + str(i)
 	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 	codes = f.attrs["codes"]
