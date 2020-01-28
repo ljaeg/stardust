@@ -95,6 +95,7 @@ def split_predict_150(im):
 
 def split_predict_100(im):
 	#takes a 150x150 img and predicts on it using 100x100 imgs
+	print("here")
 	im = im.reshape(150, 150)
 	a = [0, 50]
 	pred_30s = [0]
@@ -118,6 +119,7 @@ def split_predict_100(im):
 	return max(pred_30s)
 
 def split_predict_30(im):
+	print("here")
 	a = [0, 15, 30, 45, 60, 70]
 	im = im.reshape(100, 100)
 	preds = []
