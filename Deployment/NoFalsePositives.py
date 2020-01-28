@@ -45,9 +45,9 @@ model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custo
 model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 
 #specify the thresholds for the different sizes
-th_150 = .85
-th_100 = .9
-th_30 = .95
+th_150 = .5
+th_100 = .5
+th_30 = .5
 
 NumImages = 10000 #number of images to look through
 
@@ -119,7 +119,7 @@ def split_predict_100(im):
 	return max(pred_30s)
 
 def split_predict_30(im):
-	print("here")
+	print("there")
 	a = [0, 15, 30, 45, 60, 70]
 	im = im.reshape(100, 100)
 	preds = []
