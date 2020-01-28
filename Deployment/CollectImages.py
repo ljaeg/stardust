@@ -14,8 +14,8 @@ fname = "20181207.txt"
 save_f_base = "20181207"
 
 Save_to_Dir = Dir
-step_size = 1000
-steps = 10
+step_size = 1500
+steps = 12
 start_number = 0
 
 """
@@ -51,7 +51,7 @@ def get_img_array(fname, start, step_size):
 
 def make_dataset(dataset_name, save_dir, codes_fname, start, step_size):
 	ims, codes = get_img_array(codes_fname, start, step_size)
-	datafile = h5py.File(directory + dataset_name + ".hdf5", "w")
+	datafile = h5py.File(save_dir + dataset_name + ".hdf5", "w")
 	image_set = datafile.create_dataset("images", ims.shape, data = ims)
 	#codes_set = datafile.create_dataset("codes", codes.shape, data = codes, dtype = "U29")
 	datafile.attrs["codes"] = np.string_(codes)
@@ -59,7 +59,7 @@ def make_dataset(dataset_name, save_dir, codes_fname, start, step_size):
 
 
 def do_incrimentally(step_size, start, number_of_steps, save_dir, save_f_base, codes_fname):
-	print("you are doing {} images in {} parts".format(step_size*number_of_steps, number_of_steps))
+	print("you are doing a total of {} images in {} parts".format(step_size*number_of_steps, number_of_steps))
 	print("I predict a total time of something like {} minutes".format(predict_total_t(step_size * number_of_steps)))
 	s = start 
 	step = 0
