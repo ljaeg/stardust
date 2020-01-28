@@ -115,7 +115,7 @@ def split_predict_100(im):
 			#sin = sub_img
 			pred = model100.predict(sin)
 			if pred > th_100:
-				pred30 = split_predict_30(np.reshape(sin, (30, 30)))
+				pred30 = split_predict_30(sin)
 				pred_30s.append(pred30)
 	return max(pred_30s)
 
@@ -134,7 +134,7 @@ def split_predict_30(im):
 			pred = model30.predict(sin)
 			if pred > th_30:
 				#early cutoff
-				plt.imshow(sin, cmap = "gray")
+				plt.imshow(np.reshape(sin, (30, 30)), cmap = "gray")
 				plt.save(str(pred[0][0]) + ".png")
 				return 1
 	return 0
