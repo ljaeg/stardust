@@ -97,6 +97,13 @@ def split_predict_100(im):
 		w = i + 100
 		for j in a:
 			z = j + 100
+			print(im.shape)
+			print(im[i:w, j:z].shape)
+			print(i)
+			print(w)
+			print(j)
+			print(z)
+			print(' ')
 			sub_img = (im[i:w, j:z]).reshape(1, 100, 100, 1)
 			sin = norm1(sub_img)
 			pred = model100.predict(sin)
