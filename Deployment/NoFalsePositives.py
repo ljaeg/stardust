@@ -79,7 +79,7 @@ def split_predict_150(im):
 			z = j + 150
 			sub_img = (im[i:w, j:z]).reshape(1, 150, 150, 1)
 			sin = norm1(sub_img)
-			pred = model.predict(sin)
+			pred = model150.predict(sin)
 			if pred > th_150:
 				new_pred = split_predict_100(sin)
 				lower_preds.append(new_pred)
