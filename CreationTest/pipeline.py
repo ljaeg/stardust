@@ -1,7 +1,7 @@
 import BlankGather
 import CraterCreation
 import make_norm
-FOVSize = 700
+FOVSize = 30
 
 BlankGather.blanks_do(FOVSize)
 print('blanks created')
