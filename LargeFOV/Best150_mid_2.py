@@ -258,22 +258,22 @@ model.add(Dropout(dropout_rate))
 model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer=Nadam(lr=0.0002), loss='binary_crossentropy', metrics=['acc', f1_acc])
-model.save('/home/admin/Desktop/Saved_CNNs/Foils_CNN_FOV{}.h5'.format(FOVSize))
-model = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+model.save('/home/admin/Desktop/Saved_CNNs/NFP_FOV{}.h5'.format(FOVSize))
+model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 model.summary()
-# plot_model(model, to_file='Foils_CNN.png', show_shapes=True)
+# plot_model(model, to_file='NFP.png', show_shapes=True)
 
 
 
 # Do the training
 # CSVLogger is a checkpoint function.  After each epoch, it will write the stats from that epoch to a csv file.
-Logger = CSVLogger('/home/admin/Desktop/Saved_CNNs/Foils_CNN_Log_FOV{}.txt'.format(FOVSize), append=True)
+Logger = CSVLogger('/home/admin/Desktop/Saved_CNNs/NFP_Log_FOV{}.txt'.format(FOVSize), append=True)
 # ModelCheckpoint will save the configuration of the network after each epoch.
 # save_best_only ensures that when the validation score is no longer improving, we don't overwrite
 # the network with a new configuration that is overfitting.
-Checkpoint1 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_F1_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
-Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_loss_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
-Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
+Checkpoint1 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_F1_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_f1_acc')#'val_acc')
+Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_loss')#'val_acc')
+Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), verbose=1, save_best_only=True, monitor='val_acc')#'val_acc')
 EarlyStop = EarlyStopping(monitor='val_loss', patience=20)
 from time import time
 
@@ -291,9 +291,9 @@ model.fit_generator(generator=train_generator,
                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3, Logger, TBLog],
                    class_weight=class_weight
                    )
-high_acc = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
-high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_F1_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
-low_loss = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_loss_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_acc = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_F1_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+low_loss = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 
 def make_and_save_filter_img(layer_number, model = high_acc, pool = None):
   layer_name = 'conv2d_{}'.format(layer_number)
@@ -523,7 +523,7 @@ print("yes: ", y)
 # plt.savefig('answer_space.png')
 
 # Plot the learning curve.
-# logresult = pd.read_csv('Foils_CNN_Log.txt', delimiter=',', index_col='epoch')
+# logresult = pd.read_csv('NFP_Log.txt', delimiter=',', index_col='epoch')
 # logresult.reset_index(inplace=True)
 # ax1 = logresult.plot(ylim=(0.995,1))
 # ax2 = logresult.plot(ylim=(0,0.005))
@@ -614,7 +614,7 @@ print("yes: ", y)
 #     print(CraterImages, ' out of ', SumImages, ' have craters.')
 #
 #
-# model = load_model('Foils_CNN_F1.h5', custom_objects={'f1_acc': f1_acc})
+# model = load_model('NFP_F1.h5', custom_objects={'f1_acc': f1_acc})
 # print('Compute Stats based on F1 score')
 # print('No Craters:')
 # HowManyCratersInDir(os.path.join(RawDataDir,'NoCraters'))
