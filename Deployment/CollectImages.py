@@ -13,7 +13,7 @@ Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "20181207.txt"
 
 Save_to_Dir = Dir
-number_to_do = 30000
+number_to_do = 110000
 
 """
 I'd like to store the images in an hdf5 file for more compact storage.
@@ -67,4 +67,4 @@ def time_til_done(total_N, current_N, current_time):
 	print(" ")
 
 make_dataset("20181207", Save_to_Dir, fname)
-
+print("DONE!")
