@@ -172,7 +172,7 @@ def find_codes(ims, codes):
 	return yes_codes
 
 file = open("yesCodes.txt", "w")
-for i in range(5):
+for i in range(3):
 	name = "20181207_" + str(i)
 	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 	codes = f.attrs["codes"]
