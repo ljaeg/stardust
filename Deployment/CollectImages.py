@@ -65,7 +65,7 @@ def do_incrimentally(step_size, start, number_of_steps, save_dir, save_f_base, c
 	step = 0
 	t = time.time()
 	while step < number_of_steps:
-		ds_name = save_f_base + "_" + step
+		ds_name = save_f_base + "_" + str(step)
 		make_dataset(ds_name, save_dir, codes_fname, s, step_size)
 		s += step_size
 		step += 1
