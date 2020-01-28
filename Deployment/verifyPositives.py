@@ -23,6 +23,9 @@ def test(code, f):
 	plt.waitforbuttonpress(15)
 	plt.close()
 	human_answer = input('Y or N: ')
+	while not (human_answer == 'y' or human_answer == 'n' or human_answer == 'Y' or human_answer == 'N'):
+		print('please enter valid answer')
+		human_answer = input('Y or N: ')
 	if human_answer == "Y" or human_answer == "y":
 		f.write(code)
 		f.write("\n")
