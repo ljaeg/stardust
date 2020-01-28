@@ -10,12 +10,12 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "testing.txt"
-save_f_base = "testing"
+fname = "likely.txt"
+save_f_base = "likely"
 
 Save_to_Dir = Dir
-step_size = 1500
-steps = 2
+step_size = 623
+steps = 1
 start_number = 0
 
 """
@@ -32,8 +32,8 @@ def get_image(code):
 		img = np.array(img) / 255.0
 	except OSError:
 		print("got error from URL")
-		img = np.ones((385, 513, 1))
-	return np.reshape(img, (385, 513, 1))
+		img = np.ones((384, 512, 1))
+	return np.reshape(img, (384, 512, 1))
 
 def get_img_array(fname, start, step_size):
 	#(N, 384, 512, 1) image array

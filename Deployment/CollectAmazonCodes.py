@@ -12,7 +12,7 @@ mydb = mysql.connector.connect(
 )
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "testing"
+fname = "likely"
 #note that I'm mirroring the data labeling system used in the SQL file for the variable fname
 #double check that the fname and the database name match
 
@@ -20,7 +20,7 @@ fname = "testing"
 # 	print("file already exists")
 # else:
 file = open(Dir + fname + ".txt", "w")
-query = "SELECT amazon_key FROM `real_movie` WHERE tech =1 AND clickfraction > .8 AND conf > 8 LIMIT 3000"
+query = "SELECT amazon_key FROM `real_movie` WHERE tech =0 AND clickfraction > .5 AND conf >= 2"
 cursor = mydb.cursor()
 cursor.execute(query)
 result = cursor.fetchall()
