@@ -46,8 +46,8 @@ model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_a
 
 #specify the thresholds for the different sizes
 th_150 = .5
-th_100 = .5
-th_30 = .5
+th_100 = .6
+th_30 = .7
 
 NumImages = 10000 #number of images to look through
 
@@ -95,7 +95,7 @@ def split_predict_150(im):
 
 def split_predict_100(im):
 	#takes a 150x150 img and predicts on it using 100x100 imgs
-	print("here")
+	#print("here")
 	im = im.reshape(150, 150)
 	a = [0, 50]
 	pred_30s = [0]
@@ -120,7 +120,7 @@ def split_predict_100(im):
 	return max(pred_30s)
 
 def split_predict_30(im):
-	print("there")
+	#print("there")
 	a = [0, 15, 30, 45, 60, 70]
 	im = im.reshape(100, 100)
 	preds = []
@@ -176,30 +176,31 @@ def find_codes(ims, codes):
 	print(" ")
 	return yes_codes
 
-# file = open("yesCodes.txt", "w")
-# for i in range(12):
-# 	name = "20181207_" + str(i)
-# 	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
-# 	codes = f.attrs["codes"]
-# 	ims = f["images"]
-# 	codes = find_codes(ims, codes)
-# 	for code in codes:
-# 		file.write(code.decode('UTF-8'))
-# 		file.write("\n")
+file = open("yesCodes.txt", "w")
+for i in ["likely_two_0", "likely_0"]
+	#name = "20181207_" + str(i)
+	name = i
+	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
+	codes = f.attrs["codes"]
+	ims = f["images"]
+	codes = find_codes(ims, codes)
+	for code in codes:
+		file.write(code.decode('UTF-8'))
+		file.write("\n")
 
-from PIL import Image 
-import numpy as np 
-import urllib.request
-import h5py
-import requests
-from io import BytesIO
-for code in ["fc_WzByX4LnSOS9v3GPmJvw.21333", "fc_pU8P3Zq38hR5j1YOWrfS.21333", "fc_lgKIRUgGC4bkjq5yF7jY.21333"]:
-	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
-	r = requests.get(url)
-	img = Image.open(BytesIO(r.content))
-	img = np.array(img) / 255.0
-	a = split_predict_150(img)
-	print(a)
+# from PIL import Image 
+# import numpy as np 
+# import urllib.request
+# import h5py
+# import requests
+# from io import BytesIO
+# for code in ["fc_WzByX4LnSOS9v3GPmJvw.21333", "fc_pU8P3Zq38hR5j1YOWrfS.21333", "fc_lgKIRUgGC4bkjq5yF7jY.21333"]:
+# 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
+# 	r = requests.get(url)
+# 	img = Image.open(BytesIO(r.content))
+# 	img = np.array(img) / 255.0
+# 	a = split_predict_150(img)
+# 	print(a)
 
 
 
