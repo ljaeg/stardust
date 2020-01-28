@@ -56,6 +56,8 @@ def norm1(im):
 	#just put between 0 and 1
 	mn = np.min(im)
 	mx = np.max(im)
+	if mx == mn:
+		return im - mn
 	return (im - mn) / (mx - mn)
 
 def norm2(im):
@@ -67,6 +69,8 @@ def norm3(im):
 	#mean subtraction and std of 1
 	mean = np.mean(im)
 	std = np.std(im)
+	if std == 0:
+		return im - mean
 	return (im - mean) / std 
 
 def split_predict_150(im):
