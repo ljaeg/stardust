@@ -179,7 +179,7 @@ for i in range(3):
 	ims = f["images"]
 	codes = find_codes(ims, codes)
 	for code in codes:
-		file.write(code)
+		file.write(code.decode('UTF-8'))
 		file.write("\n")
 
 
