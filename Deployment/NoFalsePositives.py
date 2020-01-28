@@ -1,15 +1,37 @@
 #This is a deployment method biased against false positives. As Zack says, instant science
 #This will HOPEFULLY give me a few false positives and a couple of true positives
 
+#imports
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import os
+import h5py
+import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
+import keras.backend as K
+from keras.models import Sequential, load_model
+from keras.layers.advanced_activations import LeakyReLU
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization
+from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
+from keras.utils import plot_model
+from keras.preprocessing.image import ImageDataGenerator
+from keras.optimizers import Nadam
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.utils import shuffle
+
+
 #load the models for the different sizes
 model150 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV150.h5', custom_objects={'f1_acc': f1_acc})
 model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custom_objects={'f1_acc': f1_acc})
-model30 = ...
+model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 
 #specify the thresholds for the different sizes
 th_150 = .5
-th_100 = .7
-th_30 = .8
+th_100 = .5
+th_30 = .5
 
 NumImages = 10000 #number of images to look through
 
@@ -86,23 +108,43 @@ def is_control(im):
 		return 0
 	
 
-for i in range(NumImages):
-	#load image
-	#get image ID, maybe URL
-	img = ...
-	if is_control(im):
-		#do the same thing but add to a control group
-		#go to next iteration
-	pred = split_predict_150(img)
-	if pred == 1:
-		#add url to txt file
-		"""
-		then I'll have a program that goes thru the txt file,
-		shows me, a human, the image, and I'll determine if it 
-		has a crater or not. Boo ya
-		"""
+# for i in range(NumImages):
+# 	#load image
+# 	#get image ID, maybe URL
+# 	img = ...
+# 	if is_control(im):
+# 		#do the same thing but add to a control group
+# 		#go to next iteration
+# 	pred = split_predict_150(img)
+# 	if pred == 1:
+# 		#add url to txt file
+# 		"""
+# 		then I'll have a program that goes thru the txt file,
+# 		shows me, a human, the image, and I'll determine if it 
+# 		has a crater or not. Boo ya
+# 		"""
+
+def find_codes(ims, codes):
+	yes_codes = []
+	i = 0
+	for im in ims:
+		x = split_predict_150(im)
+		if x == 1:
+			yes_codes.append(codes[i])
+		i += 1
+	print("We got {} positives here".format(len(yes_codes)))
+	for code in yes_codes:
+		print(code)
+	print(" ")
+	return yes_codes
 
 
+for i in range(12):
+	name = "20181207_" + str(i)
+	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
+	codes = f.attrs["codes"]
+	ims = f["images"]
+	find_codes(ims, codes)
 
 
 
