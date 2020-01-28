@@ -24,7 +24,7 @@ from sklearn.utils import shuffle
 
 
 #load the models for the different sizes
-model150 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV150.h5', custom_objects={'f1_acc': f1_acc})
+model150 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV150.h5')
 model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custom_objects={'f1_acc': f1_acc})
 model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 
