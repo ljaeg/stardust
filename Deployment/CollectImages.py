@@ -14,7 +14,7 @@ fname = "likely_2.txt"
 save_f_base = "likely_two"
 
 Save_to_Dir = Dir
-step_size = 623
+step_size = 527
 steps = 1
 start_number = 0
 
