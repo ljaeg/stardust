@@ -45,9 +45,9 @@ model100 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_loss_FOV100.h5', custo
 model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_acc': f1_acc})
 
 #specify the thresholds for the different sizes
-th_150 = .5
-th_100 = .5
-th_30 = .5
+th_150 = .8
+th_100 = .8
+th_30 = .9
 
 NumImages = 10000 #number of images to look through
 
@@ -73,6 +73,10 @@ def norm3(im):
 		return im - mean
 	return (im - mean) / std 
 
+def norm_all(im):
+	temp = norm3(im)
+	return norm1(temp)
+
 def split_predict_150(im):
 	a = [0, 100, 200, 234]
 	b = [0, 100, 200, 300, 362]
@@ -82,7 +86,7 @@ def split_predict_150(im):
 		for j in b:
 			z = j + 150
 			sub_img = (im[i:w, j:z]).reshape(1, 150, 150, 1)
-			sin = norm1(sub_img)
+			sin = norm_all(sub_img)
 			pred = model150.predict(sin)
 			if pred > th_150:
 				new_pred = split_predict_100(sin)
@@ -106,7 +110,7 @@ def split_predict_100(im):
 			# print(z)
 			# print(' ')
 			sub_img = (im[i:w, j:z]).reshape(1, 100, 100, 1)
-			sin = norm1(sub_img)
+			sin = norm_all(sub_img)
 			pred = model100.predict(sin)
 			if pred > th_100:
 				pred30 = split_predict_30(sin)
@@ -122,7 +126,7 @@ def split_predict_30(im):
 		for j in a:
 			z = j + 30
 			sub_img = (im[i:w, j:z]).reshape(1, 30, 30, 1)
-			sin = norm1(sub_img)
+			sin = norm_all(sub_img)
 			pred = model30.predict(sin)
 			if pred > th_30:
 				#early cutoff
@@ -167,13 +171,17 @@ def find_codes(ims, codes):
 	print(" ")
 	return yes_codes
 
-
-for i in range(12):
+file = open("yesCodes.txt", "w")
+for i in range(5):
 	name = "20181207_" + str(i)
 	f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 	codes = f.attrs["codes"]
 	ims = f["images"]
-	find_codes(ims, codes)
+	codes = find_codes(ims, codes)
+	for code in codes:
+		file.write(code)
+		file.write("\n")
+
 
 
 
