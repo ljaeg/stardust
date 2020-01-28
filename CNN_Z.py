@@ -37,7 +37,7 @@ from sklearn.utils import shuffle
 
 
 # Train/validate/test info
-batch_size=int(512 * 1)
+batch_size=int(512 * .2)
 #NOTE: CLASS WEIGHTS ARE UNEVEN
 class_weight={0: 1, 1: 1}
 epochs = 250
