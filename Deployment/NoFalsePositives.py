@@ -111,8 +111,8 @@ def split_predict_100(im):
 			# print(z)
 			# print(' ')
 			sub_img = (im[i:w, j:z]).reshape(1, 100, 100, 1)
-			sin = norm_all(sub_img)
-			#sin = sub_img
+			#sin = norm_all(sub_img)
+			sin = sub_img
 			pred = model100.predict(sin)
 			if pred > th_100:
 				pred30 = split_predict_30(sin)
@@ -129,8 +129,8 @@ def split_predict_30(im):
 		for j in a:
 			z = j + 30
 			sub_img = (im[i:w, j:z]).reshape(1, 30, 30, 1)
-			sin = norm_all(sub_img)
-			#sin = sub_img
+			#sin = norm_all(sub_img)
+			sin = sub_img
 			pred = model30.predict(sin)
 			if pred > th_30:
 				#early cutoff

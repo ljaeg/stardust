@@ -25,24 +25,31 @@ def test(code, f, i):
 	plt.waitforbuttonpress(25)
 	plt.close()
 	human_answer = input('Y or N: ')
-	while not (human_answer == 'y' or human_answer == 'n' or human_answer == 'Y' or human_answer == 'N'):
+	while not (human_answer == 'y' or human_answer == 'n' or human_answer == 'Y' or human_answer == 'N' or human_answer == "end"):
 		print('please enter valid answer')
 		human_answer = input('Y or N: ')
 	if human_answer == "Y" or human_answer == "y":
 		f.write(code)
 		f.write("\n")
-	if human_answer == "yes":
-		super_f.write(code)
-		super_f.write("\n")
+		return 0
+	if human_answer == "end":
+		return 1
+	else:
+		return 0
 
 def test_codes(code_file, start):
-	f = open("verified_codes_2.txt", "w")
+	f = open("verified_codes_2.txt", "a+")
 	i = start
 	for code in code_file.read().splitlines()[start:]:
-		test(code, f, i)
+		x = test(code, f, i)
+		if x:
+			break
 		i += 1
+	print(i)
 
 
 #Note that I got thru approx the first 120 before, so adjust that for next time
 yes_codes = open("/Users/loganjaeger/Desktop/stardust/yesCodes.txt", "r")
-test_codes(yes_codes, 169)
+test_codes(yes_codes, 220)
+
+
