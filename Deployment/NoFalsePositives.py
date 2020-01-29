@@ -195,13 +195,33 @@ def actual():
 def testing_positives(ims):
 	pos = 0
 	neg = 0
+	i = 0
 	for im in ims:
 		x = split_predict_150(im)
 		if x == 1:
 			pos += 1
 		else:
 			neg += 1
+		i += 1
+		if (i % 150) == 0:
+			print(i)
 	print("accuracy on pos: ", pos / (pos + neg))
+	print(' ')
+
+def testing_negatives(ims):
+	pos = 0
+	neg = 0
+	i = 0
+	for im in ims:
+		x = split_predict_150(im)
+		if x == 1:
+			pos += 1
+		else:
+			neg += 1
+		i += 1
+		if (i % 150) == 0:
+			print(i)
+	print("accuracy on neg: ", neg / (pos + neg))
 	print(' ')
 
 def testing():
@@ -209,6 +229,10 @@ def testing():
 		f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 		ims = f["images"]
 		testing_positives(ims)
+	for name in ["negatives_0", "negatives_1", "negatives_2"]:
+		f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
+		ims = f["images"]
+		testing_negatives(ims)
 
 
 testing()

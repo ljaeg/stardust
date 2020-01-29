@@ -10,12 +10,12 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "likely_2.txt"
-save_f_base = "likely_two"
+fname = "negatives.txt"
+save_f_base = "negatives"
 
 Save_to_Dir = Dir
-step_size = 527
-steps = 1
+step_size = 500
+steps = 3
 start_number = 0
 
 """
