@@ -130,7 +130,7 @@ def split_predict_30(im):
 	a = [0, 15, 30, 45, 60, 70]
 	b = [0, 20, 40, 60, 80, 100, 120]
 	a = b
-	im = im.reshape(100, 100)
+	im = im.reshape(150, 150)
 	preds = []
 	for i in a:
 		w = i + 30
