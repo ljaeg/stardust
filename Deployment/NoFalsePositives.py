@@ -111,7 +111,7 @@ def split_predict_100(im):
 			# print(z)
 			# print(' ')
 			sub_img = (im[i:w, j:z]).reshape(1, 100, 100, 1)
-			sin = norm1(sub_img)
+			sin = norm_all(sub_img)
 			#sin = sub_img
 			pred = model100.predict(sin)
 			if pred > th_100:
@@ -205,8 +205,10 @@ def testing_positives(ims):
 		i += 1
 		if (i % 150) == 0:
 			print(i)
-	print("accuracy on pos: ", pos / (pos + neg))
+	acc = pos / (pos + neg)
+	print("accuracy on pos: ", acc)
 	print(' ')
+	return acc
 
 def testing_negatives(ims):
 	pos = 0
@@ -221,18 +223,26 @@ def testing_negatives(ims):
 		i += 1
 		if (i % 150) == 0:
 			print(i)
-	print("accuracy on neg: ", neg / (pos + neg))
+	acc = neg / (pos + neg)
+	print("accuracy on neg: ", acc)
 	print(' ')
+	return acc
 
 def testing():
-	for name in ["testing_0", "testing_1"]:
+	ps = []
+	ns = []
+	for name in ["testing_0"]:
 		f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 		ims = f["images"]
-		testing_positives(ims)
+		acc_p = testing_positives(ims)
+		ps.append(acc_p)
 	for name in ["negatives_0", "negatives_1", "negatives_2"]:
 		f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 		ims = f["images"]
-		testing_negatives(ims)
+		acc_n = testing_negatives(ims)
+		ns.append(acc_n)
+	print("positive accuracy: ", np.mean(ps))
+	print("negative accuracy: ", np.mean(ns))
 
 
 testing()

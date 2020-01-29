@@ -9,7 +9,7 @@ import requests
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-def test(code, f, super_f):
+def test(code, f, i):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
 	r = requests.get(url)
 	try:
@@ -19,6 +19,7 @@ def test(code, f, super_f):
 		print("got error from URL")
 		img = np.ones((384, 512, 1))
 	plt.imshow(img, cmap = 'gray')
+	plt.title(code + " " + str(i))
 	plt.ion()
 	plt.show(block = False)
 	plt.waitforbuttonpress(25)
@@ -34,13 +35,14 @@ def test(code, f, super_f):
 		super_f.write(code)
 		super_f.write("\n")
 
-def test_codes(code_file):
-	f = open("verified_codes.txt", "w")
-	sf = open("super_verified_codes.txt", "w")
-	for code in code_file.read().splitlines():
-		test(code, f, sf)
+def test_codes(code_file, start):
+	f = open("verified_codes_2.txt", "w")
+	i = start
+	for code in code_file.read().splitlines()[start:]:
+		test(code, f, i)
+		i += 1
 
 
 #Note that I got thru approx the first 120 before, so adjust that for next time
 yes_codes = open("/Users/loganjaeger/Desktop/stardust/yesCodes.txt", "r")
-test_codes(yes_codes)
+test_codes(yes_codes, 169)
