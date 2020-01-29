@@ -33,7 +33,14 @@ def get_image(code):
 	except OSError:
 		print("got error from URL")
 		img = np.ones((384, 512, 1))
-	return np.reshape(img, (384, 512, 1))
+	try:
+		x = np.reshape(img, (384, 512, 1))
+		return x
+	except ValueError:
+		print("failed reshape!")
+		print(img.shape)
+		print(url)
+		return np.ones((384, 512, 1))
 
 def get_img_array(fname, start, step_size):
 	#(N, 384, 512, 1) image array
