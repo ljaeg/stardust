@@ -39,8 +39,17 @@ def test(code, f, i):
 
 def test_codes(code_file, start):
 	f = open("verified_codes_2.txt", "a+")
+	f1 = open("verified_codes.txt", "r")
+	in_already = set()
+	for i in f.read().splitlines():
+		in_already.add(i)
+	for i in f1.read().splitlines():
+		in_already.add(i)
 	i = start
 	for code in code_file.read().splitlines()[start:]:
+		if code in in_already:
+			i+=1
+			continue
 		x = test(code, f, i)
 		if x:
 			break
@@ -50,7 +59,7 @@ def test_codes(code_file, start):
 
 #Note that I got thru approx the first 120 before, so adjust that for next time
 yes_codes = open("/Users/loganjaeger/Desktop/stardust/yesCodes.txt", "r")
-#test_codes(yes_codes, 297)
+test_codes(yes_codes, 308)
 
 
 
