@@ -205,7 +205,7 @@ def testing_positives(ims):
 	print(' ')
 
 def testing():
-	for i in ["testing_0", "testing_1"]:
+	for name in ["testing_0", "testing_1"]:
 		f = h5py.File("/home/admin/Desktop/RawDataDeploy/" + name + ".hdf5")
 		ims = f["images"]
 		testing_positives(ims)
