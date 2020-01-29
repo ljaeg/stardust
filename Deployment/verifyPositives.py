@@ -50,6 +50,7 @@ def test_codes(code_file, start):
 
 #Note that I got thru approx the first 120 before, so adjust that for next time
 yes_codes = open("/Users/loganjaeger/Desktop/stardust/yesCodes.txt", "r")
-test_codes(yes_codes, 220)
+#test_codes(yes_codes, 297)
+
 
 
