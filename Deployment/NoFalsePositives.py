@@ -93,7 +93,7 @@ def split_predict_150(im):
 			sin = norm_all(sub_img)
 			pred = model150.predict(sin)
 			if pred > th_150:
-				new_pred = split_predict_100(sin)
+				new_pred = split_predict_30(sin)
 				lower_preds.append(new_pred)
 	return max(lower_preds)
 
@@ -117,6 +117,8 @@ def split_predict_100(im):
 			sub_img = (im[i:w, j:z]).reshape(1, 100, 100, 1)
 			#sin = norm_all(sub_img)
 			sin = sub_img
+			# x = split_predict_30(sin)
+			pred_30s.append(x)
 			pred = model100.predict(sin)
 			if pred > th_100:
 				pred30 = split_predict_30(sin)
@@ -126,6 +128,8 @@ def split_predict_100(im):
 def split_predict_30(im):
 	#print("there")
 	a = [0, 15, 30, 45, 60, 70]
+	b = [0, 20, 40, 60, 80, 100, 120]
+	a = b
 	im = im.reshape(100, 100)
 	preds = []
 	for i in a:
