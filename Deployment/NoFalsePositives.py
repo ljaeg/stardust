@@ -47,7 +47,7 @@ model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_a
 #specify the thresholds for the different sizes
 th_150 = .5
 th_100 = .6
-th_30 = .7
+th_30 = .6
 
 NumImages = 10000 #number of images to look through
 
@@ -133,8 +133,8 @@ def split_predict_30(im):
 		for j in a:
 			z = j + 30
 			sub_img = (im[i:w, j:z]).reshape(1, 30, 30, 1)
-			sin = norm_most(sub_img)
-			#sin = sub_img
+			#sin = norm_most(sub_img)
+			sin = sub_img
 			pred = model30.predict(sin)
 			if pred > th_30:
 				#early cutoff
