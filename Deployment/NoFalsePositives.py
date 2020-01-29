@@ -46,8 +46,8 @@ model30 = load_model("/home/admin/Desktop/GH/NFP30_F1.h5", custom_objects={'f1_a
 
 #specify the thresholds for the different sizes
 th_150 = .5
-th_100 = .6
-th_30 = .6
+th_100 = .55
+th_30 = .65
 
 NumImages = 10000 #number of images to look through
 
