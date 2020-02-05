@@ -10,7 +10,7 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "withCraters_3500.txt"
+fname = "noCraters_3500.txt"
 save_f_base = "negatives"
 
 Save_to_Dir = Dir
@@ -107,7 +107,7 @@ def make_train_test_val(split, save_file, txt_file, dataset_name):
 
 
 #do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
-make_train_test_val([2500, 500, 500], Dir, fname, "YES_TRAIN")
+make_train_test_val([2500, 500, 500], Dir, fname, "NO_TRAIN")
 print("DONE!")
 
 
