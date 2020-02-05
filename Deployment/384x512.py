@@ -93,6 +93,10 @@ TestNo = DataNo["test"]
 ValYes = DataYes["val"]
 ValNo = DataNo["val"]
 
+shape = TrainNo.shape
+FOV1 = shape[0]
+FOV2 = shape[1]
+
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0) #[:,:,:,np.newaxis]
 TestData = np.concatenate((TestNo,TestYes), axis=0) #[:,:,:,np.newaxis]
@@ -141,8 +145,8 @@ low_loss = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5', custo
 
 
 
-no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOV1, FOV2, 1)))
+yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOV1, FOV2, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
 print("high acc:")
@@ -150,8 +154,8 @@ print("no: ", x)
 print("yes: ", y)
 print(' ')
 
-no_preds = high_f1.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-yes_preds = high_f1.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+no_preds = high_f1.predict(np.reshape(TestNo, (len(TestNo), FOV1, FOV2, 1)))
+yes_preds = high_f1.predict(np.reshape(TestYes, (len(TestYes), FOV1, FOV2, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
 print("high f1:")
@@ -159,8 +163,8 @@ print("no: ", x)
 print("yes: ", y)
 print(' ')
 
-no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+no_preds = low_loss.predict(np.reshape(TestNo, (len(TestNo), FOV1, FOV2, 1)))
+yes_preds = low_loss.predict(np.reshape(TestYes, (len(TestYes), FOV1, FOV2, 1)))
 x = len([i for i in no_preds if i < .5]) / len(no_preds)
 y = len([i for i in yes_preds if i > .5]) / len(yes_preds)
 print("low loss:")
