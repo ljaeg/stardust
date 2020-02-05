@@ -1,4 +1,19 @@
 #imports
+import tensorflow as tf
+
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
+
+import keras.backend as K
+
 import numpy as np
 import pandas as pd
 import os
@@ -16,12 +31,12 @@ from sklearn.utils import shuffle
 import tensorflow as tf
 import keras.backend as K
 
-from tensorflow.compat.v1 import ConfigProto
-from tensorflow.compat.v1 import InteractiveSession
+# from tensorflow.compat.v1 import ConfigProto
+# from tensorflow.compat.v1 import InteractiveSession
 
-config = ConfigProto()
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
+# config = ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = InteractiveSession(config=config)
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
