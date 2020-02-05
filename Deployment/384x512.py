@@ -57,7 +57,7 @@ validation_generator = validation_datagen.flow(ValData, ValAnswers, batch_size=b
 #test_generator = test_datagen.flow(TestData, TestAnswers, batch_size=batch_size, seed=5)
 
 #load the model
-model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(150), custom_objects={'f1_acc': f1_acc})
 
 Checkpoint1 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_actual_f1.h5', verbose=1, save_best_only=True, monitor='val_f1_acc')
 Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5', verbose=1, save_best_only=True, monitor='val_loss')
