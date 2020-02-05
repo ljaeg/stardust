@@ -34,9 +34,9 @@ ValYes = DataYes["val"]
 ValNo = DataNo["val"]
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
-TrainData = np.concatenate((TrainNo,TrainYes), axis=0)[:,:,:,np.newaxis]
-TestData = np.concatenate((TestNo,TestYes), axis=0)[:,:,:,np.newaxis]
-ValData = np.concatenate((ValNo,ValYes), axis=0)[:,:,:,np.newaxis]
+TrainData = np.concatenate((TrainNo,TrainYes), axis=0) #[:,:,:,np.newaxis]
+TestData = np.concatenate((TestNo,TestYes), axis=0) #[:,:,:,np.newaxis]
+ValData = np.concatenate((ValNo,ValYes), axis=0) #[:,:,:,np.newaxis]
 
 
 # And make answer vectors
