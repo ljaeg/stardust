@@ -34,7 +34,7 @@ def get_image(code):
 		print("got error from URL")
 		img = np.ones((384, 512, 1))
 	try:
-		x = np.reshape(img, (384, 512, 1))
+		x = np.reshape(img[0:384, 0:512], (384, 512, 1))
 		return x
 	except ValueError:
 		print("failed reshape!")
