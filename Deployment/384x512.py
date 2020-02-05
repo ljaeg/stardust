@@ -14,7 +14,7 @@ from keras import regularizers
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 import tensorflow as tf
-import Keras.backend as K
+import keras.backend as K
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 session = tf.Session(config=config)
