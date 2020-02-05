@@ -279,12 +279,13 @@ from time import time
 
 #TBLog = TensorBoard(log_dir = '/users/loganjaeger/Desktop/TB/testing_over_ssh/{}'.format(time()))
 TBLog = TensorBoard(log_dir = '/home/admin/Desktop/TB/Aug7/{}'.format(round(time(), 4)))
-preload_weights = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+#preload_weights = load_model('/home/admin/Desktop/Saved_CNNs/Foils_CNN_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
+preload_weights = load_model('/home/admin/Desktop/Saved_CNNs/NFP_acc_FOV{}.h5'.format(FOVSize), custom_objects={'f1_acc': f1_acc})
 preload_weights = preload_weights.get_weights()
 model.set_weights(preload_weights)
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=25,
+                   epochs=2,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -370,22 +371,22 @@ def make_and_save_filter_img(layer_number, model = high_acc, pool = None):
 # print('val:')
 # print((len([i for i in vals_y if i > .5]) + len([i for i in vals_n if i < .5])) / (len(vals_y) + len(vals_n)))
 
-# def calc_test_acc(name):
-#   DF = h5py.File(os.path.join(DataDir, 'Aug6','{}.hdf5'.format(name)), 'r+')
-#   TestYes = DF['TestYes']
-#   TestNo = DF['TestNo']
-#   FOVSize = DF.attrs['FOVSize']
-#   y = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
-#   n = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
-#   cp = len([i for i in y if i > .5]) / len(y)
-#   cn = len([i for i in n if i < .5]) / len(n)
-#   print(FOVSize,' w craters:')
-#   print(cp)
-#   print(FOVSize,' no craters:')
-#   print(cn)
-#   print(FOVSize, ' total acc:')
-#   print((cp + cn) / 2)
-#   print(' ')
+def calc_test_acc(name):
+  DF = h5py.File(os.path.join(DataDir, 'Aug6','{}.hdf5'.format(name)), 'r+')
+  TestYes = DF['TestYes']
+  TestNo = DF['TestNo']
+  FOVSize = DF.attrs['FOVSize']
+  y = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOVSize, FOVSize, 1)))
+  n = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
+  cp = len([i for i in y if i > .5]) / len(y)
+  cn = len([i for i in n if i < .5]) / len(n)
+  print(FOVSize,' w craters:')
+  print(cp)
+  print(FOVSize,' no craters:')
+  print(cn)
+  print(FOVSize, ' total acc:')
+  print((cp + cn) / 2)
+  print(' ')
 
 
 # no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOVSize, FOVSize, 1)))
