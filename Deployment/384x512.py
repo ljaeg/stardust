@@ -1,35 +1,44 @@
-#imports
-import tensorflow as tf
-
-from tensorflow.compat.v1 import ConfigProto
-from tensorflow.compat.v1 import InteractiveSession
-
-config = ConfigProto()
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
-
-# config = tf.ConfigProto()
-# config.gpu_options.allow_growth = True
-# session = tf.Session(config=config)
-
-import keras.backend as K
-
+# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
 import h5py
-from keras.models import Sequential, load_model, Model
+
+####
+#this is a test for git
+####
+
+#os.environ['KERAS_BACKEND'] = 'theano'
+
+# Tell tensorflow to only use two CPUs so I can use my computer for other stuff too.
+import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
+#config = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1, \
+#                        allow_soft_placement=True, device_count = {'CPU': 1})
+# config = tf.ConfigProto(intra_op_parallelism_threads=2)
+# session = tf.Session(config=config)
+import keras.backend as K
+#K.set_floatx('float32')
+# K.set_session(session)
+
+from keras.models import Sequential, load_model
 from keras.layers.advanced_activations import LeakyReLU
-from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D, GlobalAveragePooling2D, GlobalMaxPooling2D
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization
 from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
 from keras.utils import plot_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Nadam
 from keras import regularizers
+
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
-import tensorflow as tf
-import keras.backend as K
+
+#from scipy.misc import imread
+
+np.random.seed(5)
+tf.random.set_random_seed(3)
 
 # from tensorflow.compat.v1 import ConfigProto
 # from tensorflow.compat.v1 import InteractiveSession
