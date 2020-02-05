@@ -124,15 +124,15 @@ Checkpoint2 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5
 Checkpoint3 = ModelCheckpoint('/home/admin/Desktop/Saved_CNNs/NFP_actual_acc.h5', verbose=1, save_best_only=True, monitor='val_acc')
 
 #Fit the model
-model.fit_generator(generator=train_generator,
-                   steps_per_epoch=train_generator.n//batch_size,
-                   epochs=15,
-                   verbose=2,
-                   validation_data=validation_generator,
-                   validation_steps=validation_generator.n//batch_size,
-                   callbacks=[Checkpoint1, Checkpoint2, Checkpoint3],
-                   class_weight=class_weight
-                   )
+# model.fit_generator(generator=train_generator,
+#                    steps_per_epoch=train_generator.n//batch_size,
+#                    epochs=15,
+#                    verbose=2,
+#                    validation_data=validation_generator,
+#                    validation_steps=validation_generator.n//batch_size,
+#                    callbacks=[Checkpoint1, Checkpoint2, Checkpoint3],
+#                    class_weight=class_weight
+#                    )
 
 high_acc = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_acc.h5', custom_objects={'f1_acc': f1_acc})
 high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_f1.h5', custom_objects={'f1_acc': f1_acc})
