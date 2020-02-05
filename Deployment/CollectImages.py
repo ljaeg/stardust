@@ -10,7 +10,7 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "negatives.txt"
+fname = "withCraters_3500.txt"
 save_f_base = "negatives"
 
 Save_to_Dir = Dir
@@ -90,7 +90,24 @@ def time_til_done(total_N, current_N, current_time):
 	print("hours left: ", remaining_t / (60*60))
 	print(" ")
 
-do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
+def make_train_test_val(split, save_file, txt_file, dataset_name):
+	a = split[0]
+	b = split[1]
+	c = split[2]
+	train, codes = get_img_array(txt_file, 0, a)
+	print("got train")
+	test, codes = get_img_array(txt_file, a, b)
+	print("got test")
+	val, codes = get_img_array(txt_file, a + b, c)
+	print("got val")
+	datafile = h5py.File(save_file + dataset_name + ".hdf5", "w")
+	datafile.create_dataset("train", train.shape, data = train)
+	datafile.create_dataset("test", test.shape, data = test)
+	datafile.create_dataset("val", val.shape, data = val)
+
+
+#do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
+make_train_test_val([2500, 500, 500], Dir, fname, "YES_TRAIN")
 print("DONE!")
 
 

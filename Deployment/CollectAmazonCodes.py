@@ -8,11 +8,11 @@ mydb = mysql.connector.connect(
   host="flair.ssl.berkeley.edu",
   user="stardust",
   passwd="56y$Uq2CY",
-  database="foils-20180604"
+  database="foils_20181207"
 )
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "negatives"
+fname = "withCraters_3500"
 #note that I'm mirroring the data labeling system used in the SQL file for the variable fname
 #double check that the fname and the database name match
 
@@ -20,7 +20,7 @@ fname = "negatives"
 # 	print("file already exists")
 # else:
 file = open(Dir + fname + ".txt", "w")
-query = "SELECT amazon_key FROM `real_movie` WHERE tech = 0 AND conf = 0 AND disconf > 9 LIMIT 1500"
+query = "SELECT * FROM `real_movie` WHERE tech = 1 and clickfraction > .5 LIMIT 3500"
 cursor = mydb.cursor()
 cursor.execute(query)
 result = cursor.fetchall()
