@@ -94,8 +94,8 @@ ValYes = DataYes["val"]
 ValNo = DataNo["val"]
 
 shape = TrainNo.shape
-FOV1 = shape[0]
-FOV2 = shape[1]
+FOV1 = 384
+FOV2 = 512
 
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0) #[:,:,:,np.newaxis]
