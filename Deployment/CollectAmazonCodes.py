@@ -20,7 +20,7 @@ fname = "withCraters_3500"
 # 	print("file already exists")
 # else:
 file = open(Dir + fname + ".txt", "w")
-query = "SELECT * FROM `real_movie` WHERE tech = 1 and clickfraction > .5 LIMIT 3500"
+query = "SELECT amazon_key FROM `real_movie` WHERE tech = 1 and clickfraction > .5 LIMIT 3500"
 cursor = mydb.cursor()
 cursor.execute(query)
 result = cursor.fetchall()
