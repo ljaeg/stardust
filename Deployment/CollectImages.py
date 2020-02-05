@@ -1,5 +1,5 @@
 #This is a program for going thru the txt file and collecting images of craters 
-#To store on the machine at Berkeley (Big Dusty).
+#To store on the machine at Berkeley.
 
 from PIL import Image 
 import numpy as np 

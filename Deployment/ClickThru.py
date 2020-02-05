@@ -6,7 +6,7 @@ import requests
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-def test(code, i):
+def test(code):
 	url = "http://s3.amazonaws.com/stardustathome.testbucket/real/{x}/{x}-001.jpg".format(x=code)
 	r = requests.get(url)
 	try:
@@ -14,19 +14,19 @@ def test(code, i):
 		img = np.array(img) / 255.0
 	except OSError:
 		print("got error from URL")
-		img = np.ones((384, 512, 1))
+		return
 	plt.imshow(img, cmap = 'gray')
 	plt.title(code)
-	plt.ion()
-	plt.show(block = False)
-	plt.waitforbuttonpress(30)
+	plt.axis("off")
+	# plt.ion()
+	# plt.show(block = False)
+	# plt.waitforbuttonpress()
+	plt.savefig(code + ".png")
 	plt.close()
 
-def test_codes(code_file, start):
-	i = start
-	for code in code_file.read().splitlines()[start:]:
-		test(code, i)
-		i += 1
+def test_codes(code_file):
+	for code in code_file.read().splitlines():
+		test(code)
 
-yes_codes = open("verified_codes.txt", "r")
-test_codes(yes_codes, 120)
+yes_codes = open("all_codes_batch1.txt", "r")
+test_codes(yes_codes)

@@ -1,5 +1,5 @@
 #This is a program for going thru the SAH website and collecting amazon codes of images of craters 
-#To store on the machine at Berkeley (Big Dusty).
+#To store on the machine at Berkeley .
 
 import mysql.connector
 import os
