@@ -21,6 +21,34 @@ session = tf.Session(config=config)
 batch_size = int(512 / 4)
 class_weight ={0: 10, 1: 1}
 
+def f1_acc(y_true, y_pred):
+
+    # import numpy as np
+
+    # Count positive samples.
+    c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
+
+    # If there are no true samples, fix the F1 score at 0.
+    if c3 == 0 or c2 == 0:
+        return 0
+
+    # How many selected items are relevant?
+    precision = c1 / c2
+
+    # How many relevant items are selected?
+    recall = c1 / c3
+
+    # Calculate f1_score
+    f1_score = 2 * (precision * recall) / (precision + recall)
+    # if K.isnan(f1_score):
+    #     print('c1:', c1)
+    #     print('c2:', c2)
+    #     print('c3:', c3)
+
+    return f1_score
+
 #Load in the 384x512 data to train on
 DataDir = '/home/admin/Desktop'
 DataYes = h5py.File(os.path.join(DataDir, 'RawDataDeploy','YES_TRAIN.hdf5'), 'r')
