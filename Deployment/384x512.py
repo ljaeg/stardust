@@ -4,6 +4,15 @@ import pandas as pd
 import os
 import h5py
 from keras.models import Sequential, load_model, Model
+from keras.layers.advanced_activations import LeakyReLU
+from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D, GaussianNoise, BatchNormalization, SpatialDropout2D, GlobalAveragePooling2D, GlobalMaxPooling2D
+from keras.callbacks import ModelCheckpoint, CSVLogger, TensorBoard, EarlyStopping, TerminateOnNaN
+from keras.utils import plot_model
+from keras.preprocessing.image import ImageDataGenerator
+from keras.optimizers import Nadam
+from keras import regularizers
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.utils import shuffle
 import tensorflow as tf
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
