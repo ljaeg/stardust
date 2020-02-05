@@ -50,7 +50,7 @@ tf.random.set_random_seed(3)
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
 
-batch_size = int(512 / 16)
+batch_size = int(16)
 class_weight ={0: 10, 1: 1}
 
 def f1_acc(y_true, y_pred):
