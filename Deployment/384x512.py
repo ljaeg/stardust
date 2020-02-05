@@ -26,7 +26,7 @@ session = InteractiveSession(config=config)
 # config.gpu_options.allow_growth = True
 # session = tf.Session(config=config)
 
-batch_size = int(512 / 4)
+batch_size = int(512 / 8)
 class_weight ={0: 10, 1: 1}
 
 def f1_acc(y_true, y_pred):
