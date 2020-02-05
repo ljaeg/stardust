@@ -285,7 +285,7 @@ preload_weights = preload_weights.get_weights()
 model.set_weights(preload_weights)
 model.fit_generator(generator=train_generator,
                    steps_per_epoch=train_generator.n//batch_size,
-                   epochs=2,
+                   epochs=30,
                    verbose=2,
                    validation_data=validation_generator,
                    validation_steps=validation_generator.n//batch_size,
@@ -419,7 +419,7 @@ calc_test_acc('new_to_train_200')
 calc_test_acc('new_to_train_300')
 calc_test_acc('new_to_train_450')
 calc_test_acc('new_to_train_500')
-calc_test_acc('new_to_train_700')
+#calc_test_acc('new_to_train_700')
 
 
 

@@ -15,9 +15,16 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.utils import shuffle
 import tensorflow as tf
 import keras.backend as K
-config = tf.ConfigProto()
+
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+config = ConfigProto()
 config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
+session = InteractiveSession(config=config)
+# config = tf.ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = tf.Session(config=config)
 
 batch_size = int(512 / 4)
 class_weight ={0: 10, 1: 1}
