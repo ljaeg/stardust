@@ -14,8 +14,8 @@ fname = "disconf_is_0.txt"
 save_f_base = "dc_is_zero"
 
 Save_to_Dir = Dir
-step_size = 3124
-steps = 10
+step_size = 1562
+steps = 20
 start_number = 0
 
 """
