@@ -23,7 +23,7 @@ from sklearn.utils import shuffle
 #Specify variables
 HomeDir = "/home/admin/Desktop"
 DataDir = "RawDataDeploy"
-h5_filename = "likely.hdf5"
+# h5_filename = "likely.hdf5"
 threshold = .5
 
 #F1 score
@@ -44,18 +44,21 @@ model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5', custom_o
 #load the data
 HomeDir = "/home/admin/Desktop"
 DataDir = "RawDataDeploy"
-h5_filename = "likely_0.hdf5"
-datafile_0 = h5py.File(os.path.join(HomeDir, DataDir, h5_filename), 'r')
-images_0 = datafile_0["images"]
-codes_0 = datafile_0.attrs["codes"]
+h5_filenames = ["dc_is_zero_{}.hdf5".format(i) for i in list(range(9))]
 
-datafile_1 = h5py.File(os.path.join(HomeDir, DataDir, "likely_two_0.hdf5"), 'r')
-images_1 = datafile_1["images"]
-codes_1 = datafile_1.attrs["codes"]
-
-#predict
-preds_0 = model.predict(images_0)
-preds_1 = model.predict(images_1)
+def predict(hdf_list, mdl):
+	preds_all = []
+	codes_all = []
+	for f in hdf_list:
+		datafile = h5py.File(os.path.join(HomeDir, DataDir, f), 'r')
+		ims = datafile["images"]
+		codes = datafile.attrs["codes"]
+		preds = mdl.predict(ims)
+		preds_all.extend(preds)
+		codes_all.extend(codes)
+		datafile.close()
+		print(f, " is done")
+	return preds_all, codes_all
 
 #get the codes
 def get_codes(predictions, codes, thresh):
@@ -105,13 +108,8 @@ def write_codes(codes):
 
 
 
-yes_codes_0 = get_codes(preds_0, codes_0, threshold)
-yes_codes_1 = get_codes(preds_1, codes_1, threshold)
-yes_codes = set()
-for i in yes_codes_1:
-	yes_codes.add(i)
-for j in yes_codes_0:
-	yes_codes.add(j)
+ps, cs = predict(h5_filenames, model)
+yes_codes = get_codes(ps, cs, threshold)
 write_codes(yes_codes)
 
 
