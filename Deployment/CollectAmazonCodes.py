@@ -18,7 +18,7 @@ fname = "disconf_is_0"
 already_seen = set()
 seen_codes = open("yesCodes.txt", "r")
 for c in seen_codes.read().splitlines():
-	already_seen.append(c)
+	already_seen.add(c)
 seen_codes.close()
 # if os.path.isfile(Dir + fname):
 # 	print("file already exists")
