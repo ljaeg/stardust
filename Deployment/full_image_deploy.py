@@ -39,7 +39,7 @@ def f1_acc(y_true, y_pred):
     return f1_score
 
 #load the model
-model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_acc.h5', custom_objects={'f1_acc': f1_acc})
+model = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5', custom_objects={'f1_acc': f1_acc})
 
 #load the data
 HomeDir = "/home/admin/Desktop"
