@@ -86,6 +86,7 @@ def write_codes(codes):
 	
 	new_codes = open("1_FI.txt", "w")
 	for code in codes:
+		code = code.decode('UTF-8')
 		if code in verified:
 			same_as_seen += 1
 			same_as_v += 1
