@@ -61,7 +61,8 @@ def predict(hdf_list, mdl):
 		print(f, " is done")
 	more_than20p = [i for i in preds_all if i > .2]
 	histo = sns.distplot(more_than20p)
-	histo.savefig("histogramOfPreds384512.png")
+	fig = histo.get_figure()
+	fig.savefig("histogramOfPreds384512.png")
 	print("the fraction of the predictions greater than .2 is {}".format(len(more_than20p) / len(preds_all)))
 	return preds_all, codes_all
 
