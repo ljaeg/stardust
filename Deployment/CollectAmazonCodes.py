@@ -15,7 +15,11 @@ Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "disconf_is_0"
 #note that I'm mirroring the data labeling system used in the SQL file for the variable fname
 #double check that the fname and the database name match
-
+already_seen = set()
+seen_codes = open("yesCodes.txt", "r")
+for c in seen_codes.read().splitlines():
+	already_seen.append(c)
+seen_codes.close()
 # if os.path.isfile(Dir + fname):
 # 	print("file already exists")
 # else:
@@ -27,6 +31,8 @@ result = cursor.fetchall()
 i = 0
 for key in result:
 	i += 1
+	if key in already_seen:
+		continue
 	file.write(key[0])
 	file.write("\n")
 print(i)
