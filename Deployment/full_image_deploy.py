@@ -24,7 +24,7 @@ from sklearn.utils import shuffle
 HomeDir = "/home/admin/Desktop"
 DataDir = "RawDataDeploy"
 # h5_filename = "likely.hdf5"
-threshold = .5
+threshold = .9
 
 #F1 score
 def f1_acc(y_true, y_pred):
@@ -58,6 +58,9 @@ def predict(hdf_list, mdl):
 		codes_all.extend(codes)
 		datafile.close()
 		print(f, " is done")
+	plt.subplot(111)
+	plt.hist(preds_all)
+	plt.savefig("histogramOfPreds384512.png")
 	return preds_all, codes_all
 
 #get the codes

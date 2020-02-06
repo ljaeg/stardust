@@ -45,6 +45,7 @@ def test_codes(code_file, start):
 	# 	in_already.add(i)
 	# for i in f1.read().splitlines():
 	# 	in_already.add(i)
+	f = open("verified_codes_3.txt", "w")
 	i = start
 	for code in code_file.read().splitlines()[start:]:
 		x = test(code, f, i)
