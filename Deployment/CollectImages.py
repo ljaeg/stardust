@@ -11,11 +11,11 @@ import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
 fname = "disconf_is_0.txt"
-save_f_base = "dc0"
+save_f_base = "dc_is_zero"
 
 Save_to_Dir = Dir
-step_size = 500
-steps = 3
+step_size = 3124
+steps = 10
 start_number = 0
 
 """
@@ -106,8 +106,8 @@ def make_train_test_val(split, save_file, txt_file, dataset_name):
 	datafile.create_dataset("val", val.shape, data = val)
 
 
-#do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
-make_train_test_val([2500, 500, 500], Dir, fname, "NO_TRAIN")
+do_incrimentally(step_size, start_number, steps, Dir, save_f_base, fname)
+#make_train_test_val([2500, 500, 500], Dir, fname, "NO_TRAIN")
 print("DONE!")
 
 
