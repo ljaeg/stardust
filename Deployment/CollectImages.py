@@ -31,7 +31,7 @@ def get_image(code):
 		img = Image.open(BytesIO(r.content))
 		img = np.array(img) / 255.0
 	except OSError:
-		print("got error from URL")
+		print("got error from URL: {}".format(url))
 		img = np.ones((384, 512, 1))
 	try:
 		x = np.reshape(img[0:384, 0:512], (384, 512, 1))
