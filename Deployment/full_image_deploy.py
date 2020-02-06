@@ -60,7 +60,7 @@ def predict(hdf_list, mdl):
 		print(f, " is done")
 	more_than33 = [i for i in preds_all if i > .2]
 	plt.subplot(111)
-	plt.hist(more_than33)
+	plt.hist(more_than33, bins = 10)
 	plt.savefig("histogramOfPreds384512.png")
 	print("the fraction of the predictions greater than .2 is {}".format(len(more_than33) / len(preds_all)))
 	return preds_all, codes_all
