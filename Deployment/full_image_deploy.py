@@ -70,13 +70,13 @@ def write_codes(codes):
 	#see what we already have
 	already_seen = []
 	seen_codes = open("yesCodes.txt", "r")
-	for c in seen_codes.read().split_lines():
+	for c in seen_codes.read().splitlines():
 		already_seen.append(c)
 	seen_codes.close()
 
 	verified = []
 	verified_txt = open("all_codes_batch1.txt", "r")
-	for c in verified_txt.read().split_lines():
+	for c in verified_txt.read().splitlines():
 		verified.append(c)
 	verified_txt.close()
 
