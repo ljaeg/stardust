@@ -93,10 +93,6 @@ TestNo = DataNo["test"]
 ValYes = DataYes["val"]
 ValNo = DataNo["val"]
 
-shape = TrainNo.shape
-FOV1 = 384
-FOV2 = 512
-
 # Concatenate the no,yes crater chunks together to make cohesive training sets.
 TrainData = np.concatenate((TrainNo,TrainYes), axis=0) #[:,:,:,np.newaxis]
 TestData = np.concatenate((TestNo,TestYes), axis=0) #[:,:,:,np.newaxis]
@@ -143,7 +139,8 @@ high_f1 = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_f1.h5', custom_o
 low_loss = load_model('/home/admin/Desktop/Saved_CNNs/NFP_actual_loss.h5', custom_objects={'f1_acc': f1_acc})
 
 
-
+FOV1 = 384
+FOV2 = 512
 
 no_preds = high_acc.predict(np.reshape(TestNo, (len(TestNo), FOV1, FOV2, 1)))
 yes_preds = high_acc.predict(np.reshape(TestYes, (len(TestYes), FOV1, FOV2, 1)))
