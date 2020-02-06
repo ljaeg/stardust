@@ -10,8 +10,8 @@ from io import BytesIO
 import time
 
 Dir = "/home/admin/Desktop/RawDataDeploy/"
-fname = "noCraters_3500.txt"
-save_f_base = "negatives"
+fname = "disconf_is_0.txt"
+save_f_base = "dc0"
 
 Save_to_Dir = Dir
 step_size = 500

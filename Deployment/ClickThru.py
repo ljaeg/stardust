@@ -18,15 +18,15 @@ def test(code):
 	plt.imshow(img, cmap = 'gray')
 	plt.title(code)
 	plt.axis("off")
-	# plt.ion()
-	# plt.show(block = False)
-	# plt.waitforbuttonpress()
-	plt.savefig(code + ".png")
+	plt.ion()
+	plt.show(block = False)
+	plt.waitforbuttonpress()
+	#plt.savefig(code + ".png")
 	plt.close()
 
 def test_codes(code_file):
 	for code in code_file.read().splitlines():
 		test(code)
 
-yes_codes = open("all_codes_batch1.txt", "r")
+yes_codes = open("1_FI.txt", "r")
 test_codes(yes_codes)
