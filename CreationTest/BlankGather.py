@@ -7,20 +7,17 @@ from glob2 import glob
 from imageio import imread
 import ImageTools
 import h5py
-def blanks_do(FOVSize):
+
+def blanks_do(FOVSize, NumFOVs, PathToFile):
     ### SETUP PARAMETERS
-    # Raw data is on the Drobo.
+    # Raw data is stored locally.
     RawDir = '/home/admin/Desktop/NEW_Images'
     Foils = ['I1009N', 'I1126N', 'I1126N_2', 'I1126N_3']
-    #FOVSize = 500 # 30 pixels squadwddddare for each image.
-    NumFOVs = 1000 # How many FOVs to extract from the raw data.
-    TrainTestValSplit = [0.33, 0.33, 0.33]
-    # NumTrain = int(NumFOVs*TrainTestValSplit[0])
-    # NumTest = int(NumFOVs*TrainTestValSplit[1])
-    # NumVal = int(NumFOVs*TrainTestValSplit[2])
+    TrainTestValSplit = [.33, .33, .33] #currently this hace no bearing on anything except the attribute in the hdf5 file
+    
     NumTrain = NumFOVs
-    NumTest = int(NumFOVs / 5)
-    NumVal = int(NumFOVs / 5)
+    NumTest = NumFOVs
+    NumVal = NumFOVs
      
     ### SCAN THE RAW DATA
     # We don't need to redo globbing if we already globbed.
@@ -38,7 +35,7 @@ def blanks_do(FOVSize):
     print('There are %d image files in the raw data.' % len(GlobbedFiles))
 
     ### MAKE HDF TO HOLD OUR IMAGES.
-    DataFile = h5py.File('/home/admin/Desktop/Aug6/new_to_train_{}.hdf5'.format(FOVSize), 'w')
+    DataFile = h5py.File(PathToFile, 'w')
     DataFile.attrs['TrainTestValSplit'] = TrainTestValSplit
     DataFile.attrs['FOVSize'] = FOVSize
     DataFile.attrs['NumFOVs'] = NumFOVs
