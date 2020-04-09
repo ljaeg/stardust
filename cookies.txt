@@ -1,0 +1,50 @@
+# HTTP Cookie File downloaded with cookies.txt by Genuinous @genuinous
+# This file can be used by wget, curl, aria2c and other standard compliant tools.
+# Usage Examples:
+#   1) wget -x --load-cookies cookies.txt "https://www.mathworks.com/downloads/web_downloads/download_release?release=R2020a"
+#   2) curl --cookie cookies.txt "https://www.mathworks.com/downloads/web_downloads/download_release?release=R2020a"
+#   3) aria2c --load-cookies cookies.txt "https://www.mathworks.com/downloads/web_downloads/download_release?release=R2020a"
+#
+.starget.mathworks.com	TRUE	/m2/themathworksinc	TRUE	1648836346	mboxPC	3c37821607104cf0937223403f38d47e.28_0
+.starget.mathworks.com	TRUE	/m2/themathworksinc	TRUE	1586476170	mboxSession	fc3609b41099415c8bc5d4d411388e4a
+.mathworks.com	TRUE	/	FALSE	1649546327	s_ecid	MCMID%7C90811582641806844092226797983173028795
+.mathworks.com	TRUE	/	FALSE	1594250327	_fbp	fb.1.1580758777982.2029591808
+.mathworks.com	TRUE	/	FALSE	3732391110	mwa_prefs	%7B%22domain%22%3A%22us%22%2C%22lang%22%3A%22%22%2C%22v%22%3A2%7D
+.mathworks.com	TRUE	/	FALSE	1616273708	ELOQUA	GUID=E95C55BEE86747508A2A1124C338AD52
+.mathworks.com	TRUE	/	FALSE	1649546323	s_fid	1FDBBC53A70FEE31-300F14D9478C1886
+www.mathworks.com	FALSE	/	FALSE	1743361096	ki_u	f984bcad-ffa7-93d3-adb1-f55b
+www.mathworks.com	FALSE	/	FALSE	1743361098	ki_s	203824%3A0.0.0.0.2%3B205164%3A1.0.0.1.2
+.mathworks.com	TRUE	/	FALSE	1588188134	s_nr	1585596134235
+matlab.mathworks.com	FALSE	/	FALSE	1648679938	_sdsat_session_count	1
+matlab.mathworks.com	FALSE	/	FALSE	1648758015	_sdsat_lt_pages_viewed	2
+.mathworks.com	TRUE	/	FALSE	1680372372	s_lastvisit	1585764372612
+www.mathworks.com	FALSE	/	FALSE	1901298637	liveagent_oref	https://www.google.com/
+www.mathworks.com	FALSE	/	FALSE	1901298638	liveagent_vc	2
+www.mathworks.com	FALSE	/	FALSE	1901298638	liveagent_ptid	c4f9d154-c0d1-458b-b266-edff5a9645ba
+.mathworks.com	TRUE	/	TRUE	1593542038	mwa	%7B%22expiration%22%3A1593542039%2C%22id%22%3A%22bdmeKe%22%7D
+.mathworks.com	TRUE	/	TRUE	1593542038	mwa_session	%7B%22id%22%3A%22bdmeKe%22%2C%22token%22%3A%22MSw1d2NnejE5cjk3a2E4MW92czlvc3NkYTZlNnpjd2Y2Zzl0eG0wc2VsNDg4bmdvejcsQjlIMng3anlScXBwUkZlbVdKcXgwdGNpRThsWWdzZUhtR3hDbnlzdmpwL0NiOWhIR1RKdzYyWTNGVWkzNDhtaFlGS2RENkJFaWF1U1RXNER2ajdMZmNaN0t2OWZtdFFDMjFKRHp1c2FPS0RXL2VCWjQ1cktuV3d0dU4zaDNERzRFUTQ5akFMdkxvbUFKUlJKczZiamtSbFY1TzduMHUvaWN1SENBcC9LaUZCaURQSFdtUmoxTHJBbWZqRnBUZEZl%22%7D
+www.mathworks.com	FALSE	/	FALSE	1743622195	ki_r	aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8%3D
+www.mathworks.com	FALSE	/	FALSE	1743622195	ki_t	1580758778735%3B1585852927873%3B1585855795000%3B7%3B80
+.mathworks.com	TRUE	/	FALSE	0	rxVisitor	1586474309461PD4GINBA4H7CKN2SD5LS88LJ9Q54K363
+.mathworks.com	TRUE	/	FALSE	0	dtLatC	37
+www.mathworks.com	FALSE	/	FALSE	0	_sdsat_landing_page	https://www.mathworks.com/products/matlab.html|1586474309599
+www.mathworks.com	FALSE	/	FALSE	1649546309	_sdsat_session_count	3
+www.mathworks.com	FALSE	/	FALSE	0	_sdsat_traffic_source	https://www.google.com/
+www.mathworks.com	FALSE	/	FALSE	0	_sdsat_Eloqua2	E95C55BEE86747508A2A1124C338AD52
+.mathworks.com	TRUE	/	FALSE	0	check	true
+.mathworks.com	TRUE	/	FALSE	0	AMCVS_B1441C8B533095C00A490D4D%40AdobeOrg	1
+.mathworks.com	TRUE	/	TRUE	1649546327	AMCV_B1441C8B533095C00A490D4D%40AdobeOrg	281789898%7CMCIDTS%7C18362%7CMCMID%7C90811582641806844092226797983173028795%7CMCAAMLH-1587079109%7C9%7CMCAAMB-1587079109%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1586481509s%7CNONE%7CMCAID%7CNONE%7CvVersion%7C4.1.0%7CMCCIDH%7C-1010126708
+www.mathworks.com	FALSE	/	FALSE	0	_sdsat_digitalDataInternalTraffic	0
+.mathworks.com	TRUE	/	FALSE	0	s_cc	true
+.mathworks.com	TRUE	/	TRUE	1586477910	mwa_profile	%7B%22id%22%3A%22bdmeKe%22%2C%22profile%22%3A%7B%22loginDisplayName%22%3A%22Logan%22%2C%22profilePicture%22%3A%2217956934_1585256936842_DEF.jpg%22%7D%7D
+.mathworks.com	TRUE	/	FALSE	0	dtSa	false%7C_load_%7C1%7C_load_%7C-%7C1586474309244%7C74309453_537%7Chttps%3A%2F%2Fwww.mathworks.com%2Fproducts%2Fmatlab.html%7CMATLAB%20-%20MathWorks%20-%20MATLAB%20%26%20Simulink%7C1586474309453%7C%7C
+.mathworks.com	TRUE	/	FALSE	0	dtCookie	v_4_srv_2_sn_328P46J7OAT5F322SLNU93FVIHNMK8DV_perc_100000_ol_0_mul_1
+.mathworks.com	TRUE	/	FALSE	0	rxvt	1586476117643|1586474309464
+.mathworks.com	TRUE	/	FALSE	0	dtPC	2$74309453_537h-vCHAYABWEXQSDNCHKXQRTKDXUXTXQLOIT-0
+www.mathworks.com	FALSE	/	TRUE	1586481526	_wdl_session	96cfee446062b6e4d421e976e9847a59
+www.mathworks.com	FALSE	/	FALSE	1649546326	_sdsat_lt_pages_viewed	88
+www.mathworks.com	FALSE	/	FALSE	0	_sdsat_pages_viewed	3
+.mathworks.com	TRUE	/	FALSE	1644003579	mbox	PC#3c37821607104cf0937223403f38d47e.28_0#1644003579|session#fc3609b41099415c8bc5d4d411388e4a#1586476187
+.mathworks.com	TRUE	/	FALSE	1586476126	_uetsid	_uet57139a49-18a0-7364-97e3-7553009ba553
+.mathworks.com	TRUE	/	FALSE	0	s_sq	%5B%5BB%5D%5D
+.mathworks.com	TRUE	/	FALSE	1649632726	adcloud	{%22_les_v%22:%22y%2Cmathworks.com%2C1586476126%22}
